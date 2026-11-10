@@ -1,1 +1,670 @@
 
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#08172d">
+<title>Low Carb – Nossa Evolução</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0"></script>
+<style>
+:root{--bg:#071426;--panel:#10233d;--panel2:#142b49;--blue:#43a5ff;--cyan:#69d6ed;--text:#f4f8ff;--muted:#a8bad0;--line:#29415f;--green:#54d6a0;--red:#ff8c8c}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(150deg,#071426,#0b1c33 55%,#071426);color:var(--text);font:15px system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;min-height:100vh}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;border:0;border-radius:12px;padding:12px 16px;background:var(--blue);color:#041326;font-weight:750}
+button.secondary{background:#203b5d;color:var(--text);border:1px solid var(--line)}
+button.danger{background:#512d3a;color:#ffd9df}
+button:disabled{opacity:.55;cursor:not-allowed}
+.wrap{max-width:1100px;margin:auto;padding:22px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:22px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:46px;height:46px;border-radius:15px;background:linear-gradient(135deg,#167bd1,#56d3ee);display:grid;place-items:center;font-size:24px}
+.brand h1{font-size:20px;margin:0}
+.brand p{margin:3px 0 0;color:var(--muted);font-size:12px}
+.userline{color:var(--muted);font-size:12px;overflow-wrap:anywhere}
+.nav{display:flex;gap:8px;overflow:auto;padding:5px 0 16px}
+.nav button{white-space:nowrap;background:transparent;border:1px solid var(--line);color:var(--muted);padding:10px 14px}
+.nav button.active{background:#173c63;color:white;border-color:#367fbd}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+.card{background:linear-gradient(145deg,rgba(20,43,73,.96),rgba(13,31,53,.98));border:1px solid var(--line);border-radius:18px;padding:18px;min-width:0}
+.span12{grid-column:span 12}
+.span8{grid-column:span 8}
+.span6{grid-column:span 6}
+.span4{grid-column:span 4}
+.card h2{font-size:17px;margin:0 0 14px}
+.muted{color:var(--muted)}
+.metric{font-size:29px;font-weight:800;letter-spacing:-1px;margin:5px 0}
+.small{font-size:12px;color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.stat{padding:15px;border-radius:14px;background:#0b1c31;border:1px solid var(--line)}
+.stat label{font-size:12px;color:var(--muted)}
+.stat strong{display:block;font-size:24px;margin-top:5px}
+form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
+input,select,textarea{width:100%;background:#08192d;color:var(--text);border:1px solid #35506e;border-radius:10px;padding:11px;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--blue)}
+textarea{min-height:75px;resize:vertical}
+.full{grid-column:1/-1}
+.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.hidden{display:none!important}
+.notice{padding:11px 13px;border-radius:12px;background:#142f4d;color:#cde6ff;border:1px solid #2d5278;margin:10px 0;font-size:13px}
+.error{color:#ffaaaa}
+.success{color:#8be8bd}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:10px 7px;border-bottom:1px solid var(--line)}
+th{color:var(--muted);font-weight:600}
+.tablewrap{overflow:auto}
+.checkrow{display:flex;gap:10px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line)}
+.checkrow input{width:auto;accent-color:var(--blue)}
+.checkrow.done span{text-decoration:line-through;color:#8295aa}
+.pill{display:inline-block;border:1px solid #345879;color:#b9dfff;padding:4px 8px;border-radius:30px;font-size:11px}
+#chart{width:100%;height:190px;display:block}
+#auth{max-width:440px;margin:8vh auto}
+.authbrand{text-align:center;margin-bottom:20px}
+.authbrand .logo{margin:auto;width:60px;height:60px;font-size:30px}
+.authbrand h1{margin:12px 0 4px}
+.authbrand p{margin:0;color:var(--muted)}
+.empty{text-align:center;color:var(--muted);padding:22px}
+.foot{text-align:center;color:#7890aa;font-size:11px;padding:25px 0}
+@media(max-width:760px){
+.wrap{padding:15px}
+.span8,.span6,.span4{grid-column:span 12}
+.stats{grid-template-columns:1fr 1fr}
+.top{align-items:flex-start}
+.brand h1{font-size:17px}
+.userline{max-width:110px;text-align:right}
+form{grid-template-columns:1fr}
+.full{grid-column:auto}
+}
+</style>
+</head>
+<body>
+
+<div id="auth" class="wrap">
+ <div class="card">
+  <div class="authbrand">
+   <div class="logo">🥑</div>
+   <h1>Low Carb – Nossa Evolução</h1>
+   <p>Um acompanhamento compartilhado, passo a passo.</p>
+  </div>
+  <div id="authMessage" class="notice hidden"></div>
+  <form id="authForm">
+   <div class="full">
+    <label for="email">E-mail</label>
+    <input id="email" type="email" autocomplete="email" required placeholder="seuemail@exemplo.com">
+   </div>
+   <div class="full">
+    <label for="password">Senha</label>
+    <input id="password" type="password" minlength="6" autocomplete="current-password" required placeholder="Mínimo de 6 caracteres">
+   </div>
+   <div class="full actions">
+    <button type="submit" id="loginBtn">Entrar</button>
+    <button type="button" class="secondary" id="signupBtn">Criar conta</button>
+   </div>
+  </form>
+  <p class="small">Criem uma única conta e usem o mesmo e-mail e senha nos dois celulares para compartilhar os registros.</p>
+ </div>
+</div>
+
+<div id="app" class="wrap hidden">
+ <header class="top">
+  <div class="brand">
+   <div class="logo">🥑</div>
+   <div>
+    <h1>Low Carb – Nossa Evolução</h1>
+    <p>Constância, saúde e evolução do casal</p>
+   </div>
+  </div>
+  <div>
+   <div id="userEmail" class="userline"></div>
+   <button class="secondary" id="logoutBtn" style="margin-top:7px;padding:8px 11px">Sair</button>
+  </div>
+ </header>
+
+ <nav class="nav">
+  <button class="active" data-tab="inicio">Visão geral</button>
+  <button data-tab="medidas">Peso e medidas</button>
+  <button data-tab="refeicoes">Refeições</button>
+  <button data-tab="compras">Lista de compras</button>
+ </nav>
+
+ <div id="message" class="notice hidden"></div>
+
+ <section id="tab-inicio" class="grid">
+  <div class="card span12">
+   <h2>📊 Evolução do casal</h2>
+   <div class="stats">
+    <div class="stat">
+     <label>Último peso – Eu</label>
+     <strong id="myWeight">—</strong>
+     <span class="small">kg</span>
+    </div>
+    <div class="stat">
+     <label>Último peso – Minha esposa</label>
+     <strong id="wifeWeight">—</strong>
+     <span class="small">kg</span>
+    </div>
+    <div class="stat">
+     <label>Registros realizados</label>
+     <strong id="totalRecords">0</strong>
+     <span class="small">medições</span>
+    </div>
+   </div>
+  </div>
+
+  <div class="card span8">
+   <h2>📈 Histórico de peso</h2>
+   <svg id="chart" viewBox="0 0 600 190" role="img" aria-label="Gráfico de evolução do peso"></svg>
+   <p class="small">O gráfico mostra os registros mais recentes de cada pessoa.</p>
+  </div>
+
+  <div class="card span4">
+   <h2>🎯 Lembrete</h2>
+   <p class="muted">Registrem peso e cintura em condições parecidas a cada semana. O objetivo é acompanhar tendências, sem cobranças por pequenas oscilações.</p>
+   <span class="pill">Consistência acima da pressa</span>
+  </div>
+
+  <div class="card span12">
+   <h2>Últimas medições</h2>
+   <div id="recentMeasurements" class="tablewrap"></div>
+  </div>
+ </section>
+
+ <section id="tab-medidas" class="grid hidden">
+  <div class="card span4">
+   <h2>➕ Registrar medição</h2>
+   <form id="measurementForm">
+    <div class="full">
+     <label>Pessoa</label>
+     <select id="person">
+      <option>Eu</option>
+      <option>Minha esposa</option>
+     </select>
+    </div>
+    <div>
+     <label>Data</label>
+     <input id="measureDate" type="date" required>
+    </div>
+    <div>
+     <label>Peso (kg)</label>
+     <input id="weight" type="number" min="1" max="399" step=".1" required placeholder="Ex.: 67,0">
+    </div>
+    <div class="full">
+     <label>Cintura (cm) – opcional</label>
+     <input id="waist" type="number" min="1" max="299" step=".1" placeholder="Ex.: 85,0">
+    </div>
+    <div class="full">
+     <label>Observações</label>
+     <textarea id="measureNotes" placeholder="Como foi a semana?"></textarea>
+    </div>
+    <div class="full">
+     <button type="submit">Salvar medição</button>
+    </div>
+   </form>
+  </div>
+
+  <div class="card span8">
+   <h2>📋 Histórico completo</h2>
+   <div id="measurementHistory" class="tablewrap"></div>
+  </div>
+ </section>
+
+ <section id="tab-refeicoes" class="grid hidden">
+  <div class="card span4">
+   <h2>🍳 Registrar refeição</h2>
+   <form id="mealForm">
+    <div class="full">
+     <label>Pessoa</label>
+     <select id="mealPerson">
+      <option>Eu</option>
+      <option>Minha esposa</option>
+     </select>
+    </div>
+    <div>
+     <label>Data</label>
+     <input id="mealDate" type="date" required>
+    </div>
+    <div>
+     <label>Refeição</label>
+     <select id="mealType">
+      <option>Café da manhã</option>
+      <option>Almoço</option>
+      <option>Jantar</option>
+      <option>Lanche</option>
+     </select>
+    </div>
+    <div class="full">
+     <label>O que comeu?</label>
+     <textarea id="mealDescription" required placeholder="Descreva os alimentos e bebidas"></textarea>
+    </div>
+    <div class="full">
+     <button type="submit">Salvar refeição</button>
+    </div>
+   </form>
+  </div>
+
+  <div class="card span8">
+   <h2>Registros de alimentação</h2>
+   <div id="mealHistory" class="tablewrap"></div>
+  </div>
+ </section>
+
+ <section id="tab-compras" class="grid hidden">
+  <div class="card span4">
+   <h2>🛒 Adicionar à lista</h2>
+   <form id="shoppingForm">
+    <div class="full">
+     <label>Item</label>
+     <input id="shoppingItem" required placeholder="Ex.: ovos">
+    </div>
+    <div>
+     <label>Quantidade</label>
+     <input id="shoppingQty" placeholder="Ex.: 2 dúzias">
+    </div>
+    <div>
+     <label>Categoria</label>
+     <select id="shoppingCategory">
+      <option>Proteínas</option>
+      <option>Verduras e legumes</option>
+      <option>Laticínios</option>
+      <option>Mercearia</option>
+      <option>Outros</option>
+     </select>
+    </div>
+    <div class="full">
+     <button type="submit">Adicionar item</button>
+    </div>
+   </form>
+  </div>
+
+  <div class="card span8">
+   <h2>Itens para comprar</h2>
+   <div id="shoppingList"></div>
+   <div class="actions" style="margin-top:14px">
+    <button class="secondary" id="clearChecked">Apagar itens marcados</button>
+   </div>
+  </div>
+ </section>
+
+ <footer class="foot">Seus registros são privados e protegidos por autenticação e políticas de acesso do banco.</footer>
+</div>
+
+<script>
+const SUPABASE_URL = "https://pdvelxvewuatedwhifpv.supabase.co";
+const SUPABASE_KEY = "sb_publishable__QIiwci0ePZjvPTbK4mIjg_b1JWJYlV";
+
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let currentUser = null;
+let measurements = [];
+let meals = [];
+let shopping = [];
+
+const $ = id => document.getElementById(id);
+const today = new Date().toLocaleDateString('en-CA');
+
+$('measureDate').value = today;
+$('mealDate').value = today;
+
+function notice(target,text,error=false){
+ const el=$(target);
+ el.textContent=text;
+ el.classList.remove('hidden','error','success');
+ el.classList.add(error?'error':'success');
+}
+
+function hideNotice(target){
+ $(target).classList.add('hidden');
+}
+
+function fmtDate(d){
+ if(!d)return '—';
+ const [y,m,day]=d.split('-');
+ return `${day}/${m}/${y}`;
+}
+
+function num(v){
+ return Number(v).toLocaleString('pt-BR',{maximumFractionDigits:1});
+}
+
+function esc(s){
+ return String(s??'').replace(/[&<>"']/g,c=>({
+  '&':'&amp;',
+  '<':'&lt;',
+  '>':'&gt;',
+  '"':'&quot;',
+  "'":'&#39;'
+ }[c]));
+}
+
+function showAuth(){
+ $('auth').classList.remove('hidden');
+ $('app').classList.add('hidden');
+}
+
+function showApp(user){
+ currentUser=user;
+ $('auth').classList.add('hidden');
+ $('app').classList.remove('hidden');
+ $('userEmail').textContent=user.email||'';
+ refreshAll().catch(e=>notice('message',e.message||'Erro ao carregar os dados.',true));
+}
+
+async function refreshAll(){
+ await Promise.all([
+  loadMeasurements(),
+  loadMeals(),
+  loadShopping()
+ ]);
+ render();
+}
+
+async function loadMeasurements(){
+ const {data,error}=await db.from('measurements')
+  .select('*')
+  .order('measured_on',{ascending:false})
+  .limit(200);
+ if(error)throw error;
+ measurements=data||[];
+}
+
+async function loadMeals(){
+ const {data,error}=await db.from('meal_logs')
+  .select('*')
+  .order('eaten_on',{ascending:false})
+  .limit(200);
+ if(error)throw error;
+ meals=data||[];
+}
+
+async function loadShopping(){
+ const {data,error}=await db.from('shopping_items')
+  .select('*')
+  .order('created_at',{ascending:false});
+ if(error)throw error;
+ shopping=data||[];
+}
+
+function table(rows,headers){
+ if(!rows.length)return '<div class="empty">Nenhum registro por enquanto.</div>';
+ return `<table>
+  <thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead>
+  <tbody>${rows.join('')}</tbody>
+ </table>`;
+}
+
+function render(){
+ const latest=p=>measurements
+  .filter(x=>x.person===p)
+  .sort((a,b)=>b.measured_on.localeCompare(a.measured_on))[0];
+
+ const a=latest('Eu');
+ const b=latest('Minha esposa');
+
+ $('myWeight').textContent=a?num(a.weight_kg):'—';
+ $('wifeWeight').textContent=b?num(b.weight_kg):'—';
+ $('totalRecords').textContent=measurements.length;
+
+ $('recentMeasurements').innerHTML=table(
+  measurements.slice(0,6).map(x=>`
+   <tr>
+    <td>${fmtDate(x.measured_on)}</td>
+    <td>${esc(x.person)}</td>
+    <td>${num(x.weight_kg)} kg</td>
+    <td>${x.waist_cm?num(x.waist_cm)+' cm':'—'}</td>
+   </tr>`),
+  ['Data','Pessoa','Peso','Cintura']
+ );
+
+ $('measurementHistory').innerHTML=table(
+  measurements.map(x=>`
+   <tr>
+    <td>${fmtDate(x.measured_on)}</td>
+    <td>${esc(x.person)}</td>
+    <td>${num(x.weight_kg)} kg</td>
+    <td>${x.waist_cm?num(x.waist_cm)+' cm':'—'}</td>
+    <td>${esc(x.notes||'')}</td>
+    <td><button class="danger" style="padding:6px 9px" onclick="deleteMeasurement('${x.id}')">Excluir</button></td>
+   </tr>`),
+  ['Data','Pessoa','Peso','Cintura','Observação','']
+ );
+
+ $('mealHistory').innerHTML=table(
+  meals.map(x=>`
+   <tr>
+    <td>${fmtDate(x.eaten_on)}</td>
+    <td>${esc(x.person)}</td>
+    <td>${esc(x.meal_type)}</td>
+    <td>${esc(x.description)}</td>
+    <td><button class="danger" style="padding:6px 9px" onclick="deleteMeal('${x.id}')">Excluir</button></td>
+   </tr>`),
+  ['Data','Pessoa','Refeição','Descrição','']
+ );
+
+ $('shoppingList').innerHTML=shopping.length
+  ?shopping.map(x=>`
+   <div class="checkrow ${x.is_checked?'done':''}">
+    <input type="checkbox" ${x.is_checked?'checked':''} onchange="toggleShopping('${x.id}',this.checked)">
+    <span style="flex:1">${esc(x.item)}
+     <small class="muted">${esc(x.quantity||'')} · ${esc(x.category||'')}</small>
+    </span>
+    <button class="danger" style="padding:6px 9px" onclick="deleteShopping('${x.id}')">×</button>
+   </div>`).join('')
+  :'<div class="empty">Sua lista está vazia. Adicione os itens da semana.</div>';
+
+ drawChart();
+}
+
+function drawChart(){
+ const svg=$('chart');
+ const w=600,h=190,pad=32;
+ const people=[
+  ['Eu','#45a7ff'],
+  ['Minha esposa','#65d9c5']
+ ];
+
+ let all=measurements.slice().sort((a,b)=>a.measured_on.localeCompare(b.measured_on));
+
+ if(!all.length){
+  svg.innerHTML='<text x="300" y="95" text-anchor="middle" fill="#a8bad0">Adicione medições para visualizar a evolução.</text>';
+  return;
+ }
+
+ let vals=all.map(x=>Number(x.weight_kg));
+ let min=Math.min(...vals)-1;
+ let max=Math.max(...vals)+1;
+ if(max===min)max=min+1;
+
+ let dates=[...new Set(all.map(x=>x.measured_on))].slice(-8);
+
+ let xpos=d=>pad+(dates.indexOf(d)/(Math.max(1,dates.length-1)))*(w-2*pad);
+ let ypos=v=>h-pad-((v-min)/(max-min))*(h-2*pad);
+
+ let out='';
+
+ [0,1,2,3].forEach(i=>{
+  let y=pad+i*(h-2*pad)/3;
+  out+=`<line x1="${pad}" y1="${y}" x2="${w-pad}" y2="${y}" stroke="#29415f"/>`;
+  out+=`<text x="4" y="${y+4}" fill="#a8bad0" font-size="10">${num(max-(max-min)*i/3)}</text>`;
+ });
+
+ people.forEach(([person,color])=>{
+  let pts=all.filter(x=>x.person===person&&dates.includes(x.measured_on));
+  if(!pts.length)return;
+
+  out+=`<polyline fill="none" stroke="${color}" stroke-width="3" points="${pts.map(x=>`${xpos(x.measured_on)},${ypos(Number(x.weight_kg))}`).join(' ')}"/>`;
+
+  pts.forEach(x=>{
+   out+=`<circle cx="${xpos(x.measured_on)}" cy="${ypos(Number(x.weight_kg))}" r="4" fill="${color}"/>`;
+  });
+ });
+
+ dates.forEach(d=>{
+  out+=`<text x="${xpos(d)}" y="${h-7}" text-anchor="middle" fill="#a8bad0" font-size="10">${d.slice(5).split('-').reverse().join('/')}</text>`;
+ });
+
+ out+='<text x="470" y="15" fill="#45a7ff" font-size="11">● Eu</text>';
+ out+='<text x="520" y="15" fill="#65d9c5" font-size="11">● Esposa</text>';
+
+ svg.innerHTML=out;
+}
+
+async function run(action){
+ try{
+  hideNotice('message');
+  await action();
+  await refreshAll();
+  notice('message','Registro atualizado com sucesso.');
+ }catch(e){
+  notice('message',e.message||'Não foi possível concluir a operação.',true);
+ }
+}
+
+$('authForm').addEventListener('submit',async e=>{
+ e.preventDefault();
+ $('loginBtn').disabled=true;
+
+ try{
+  const {data,error}=await db.auth.signInWithPassword({
+   email:$('email').value.trim(),
+   password:$('password').value
+  });
+
+  if(error)throw error;
+  showApp(data.user);
+ }catch(err){
+  notice('authMessage',err.message,true);
+ }finally{
+  $('loginBtn').disabled=false;
+ }
+});
+
+$('signupBtn').addEventListener('click',async()=>{
+ try{
+  const {data,error}=await db.auth.signUp({
+   email:$('email').value.trim(),
+   password:$('password').value
+  });
+
+  if(error)throw error;
+
+  if(data.session){
+   showApp(data.user);
+  }else{
+   notice('authMessage','Conta criada! Confira o e-mail para confirmar o cadastro antes de entrar.');
+  }
+ }catch(err){
+  notice('authMessage',err.message,true);
+ }
+});
+
+$('logoutBtn').onclick=async()=>{
+ await db.auth.signOut();
+ showAuth();
+};
+
+document.querySelectorAll('.nav button').forEach(btn=>{
+ btn.onclick=()=>{
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b===btn));
+  document.querySelectorAll('[id^="tab-"]').forEach(s=>s.classList.add('hidden'));
+  $('tab-'+btn.dataset.tab).classList.remove('hidden');
+ };
+});
+
+$('measurementForm').onsubmit=e=>{
+ e.preventDefault();
+
+ run(async()=>{
+  const row={
+   user_id:currentUser.id,
+   person:$('person').value,
+   measured_on:$('measureDate').value,
+   weight_kg:Number($('weight').value),
+   waist_cm:$('waist').value?Number($('waist').value):null,
+   notes:$('measureNotes').value.trim()
+  };
+
+  const {error}=await db.from('measurements').insert(row);
+  if(error)throw error;
+
+  $('measurementForm').reset();
+  $('measureDate').value=today;
+ });
+};
+
+$('mealForm').onsubmit=e=>{
+ e.preventDefault();
+
+ run(async()=>{
+  const {error}=await db.from('meal_logs').insert({
+   user_id:currentUser.id,
+   person:$('mealPerson').value,
+   eaten_on:$('mealDate').value,
+   meal_type:$('mealType').value,
+   description:$('mealDescription').value.trim()
+  });
+
+  if(error)throw error;
+
+  $('mealForm').reset();
+  $('mealDate').value=today;
+ });
+};
+
+$('shoppingForm').onsubmit=e=>{
+ e.preventDefault();
+
+ run(async()=>{
+  const {error}=await db.from('shopping_items').insert({
+   user_id:currentUser.id,
+   item:$('shoppingItem').value.trim(),
+   quantity:$('shoppingQty').value.trim(),
+   category:$('shoppingCategory').value
+  });
+
+  if(error)throw error;
+  $('shoppingForm').reset();
+ });
+};
+
+window.deleteMeasurement=id=>run(async()=>{
+ const {error}=await db.from('measurements').delete().eq('id',id);
+ if(error)throw error;
+});
+
+window.deleteMeal=id=>run(async()=>{
+ const {error}=await db.from('meal_logs').delete().eq('id',id);
+ if(error)throw error;
+});
+
+window.deleteShopping=id=>run(async()=>{
+ const {error}=await db.from('shopping_items').delete().eq('id',id);
+ if(error)throw error;
+});
+
+window.toggleShopping=(id,value)=>run(async()=>{
+ const {error}=await db.from('shopping_items').update({is_checked:value}).eq('id',id);
+ if(error)throw error;
+});
+
+$('clearChecked').onclick=()=>run(async()=>{
+ const {error}=await db.from('shopping_items').delete().eq('is_checked',true);
+ if(error)throw error;
+});
+
+db.auth.getSession().then(({data})=>{
+ if(data.session)showApp(data.session.user);
+});
+
+db.auth.onAuthStateChange((_event,session)=>{
+ if(session&&!currentUser)showApp(session.user);
+ if(!session){
+  currentUser=null;
+  showAuth();
+ }
+});
+</script>
+</body>
+</html>
+
