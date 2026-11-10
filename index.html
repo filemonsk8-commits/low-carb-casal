@@ -77,6 +77,15 @@ th{color:var(--muted);font-weight:600}
 form{grid-template-columns:1fr}
 .full{grid-column:auto}
 }
+
+/* Nossa Dieta – identidade visual */
+.diet-page{display:block;min-width:0}
+.diet-hero{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:30px 34px;margin-bottom:26px;border:1px solid #28517a;border-radius:24px;background:radial-gradient(circle at 88% 20%,rgba(56,160,230,.22),transparent 32%),linear-gradient(115deg,#102b49 0%,#123b60 58%,#0d2945 100%)}
+.diet-hero-copy{max-width:690px;position:relative;z-index:1}.diet-kicker{display:block;color:#75c9ff;font-size:10px;font-weight:850;letter-spacing:2px;margin-bottom:8px}.diet-hero h2{font-size:clamp(25px,4vw,36px);letter-spacing:-1px;margin:0 0 9px}.diet-hero p{max-width:590px;color:#c0d4e8;line-height:1.6;margin:0}.diet-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:19px}.diet-tags span,.week-label{font-size:11px;color:#d9edff;background:rgba(4,19,36,.32);border:1px solid rgba(140,196,235,.25);border-radius:30px;padding:7px 11px}.diet-hero-mark{flex:0 0 104px;width:104px;height:104px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(145deg,#58b9f4,#237fc2);box-shadow:0 12px 35px rgba(0,0,0,.2);color:#06213a}.diet-hero-mark span{font-size:43px;font-weight:900;line-height:1}.diet-hero-mark small{font-size:9px;font-weight:900;letter-spacing:2px;margin-top:4px}
+.diet-section-head{display:flex;justify-content:space-between;align-items:end;gap:15px;margin:25px 2px 14px}.diet-section-head h3{font-size:21px;letter-spacing:-.4px;margin:0}.diet-section-head>p{font-size:12px;color:var(--muted);margin:0 0 3px}.portion-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.portion-card{display:flex;gap:13px;align-items:flex-start;padding:17px;border:1px solid #294968;border-radius:17px;background:linear-gradient(145deg,#122d4a,#0e223a);min-width:0}.portion-icon{width:42px;height:42px;flex:0 0 42px;border-radius:13px;display:grid;place-items:center;background:#1b4265;font-size:21px}.portion-label{display:block;font-size:9px;font-weight:850;letter-spacing:1.4px;color:#76caff;margin:1px 0 5px}.portion-card strong{font-size:14px;display:block}.portion-card p{font-size:12px;line-height:1.5;color:#b6c8dc;margin:5px 0 0}.portion-card i{font-style:normal;color:#6ec5ff}.diet-note,.diet-footer-note{display:flex;align-items:flex-start;gap:11px;padding:13px 16px;border-radius:13px;background:rgba(28,77,111,.32);border:1px solid #285276;margin-top:13px}.diet-note>span{color:#65d9ae;font-size:18px;font-weight:900}.diet-note p,.diet-footer-note p{font-size:12px;line-height:1.55;color:#c1d4e6;margin:0}.diet-note strong,.diet-footer-note strong{color:#f1f7ff}.week-heading{margin-top:32px}.week-label{white-space:nowrap;color:#9dcff3}.menu-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.day-card{border:1px solid #294967;border-radius:18px;overflow:hidden;background:linear-gradient(155deg,#132d49,#0d2036);min-width:0;box-shadow:0 8px 22px rgba(0,0,0,.12)}.day-card>header{display:flex;align-items:center;gap:12px;padding:15px 17px;background:linear-gradient(100deg,rgba(35,112,169,.27),rgba(21,58,89,.12));border-bottom:1px solid #294967}.day-number{width:39px;height:39px;display:grid;place-items:center;border-radius:12px;background:#1c5b89;color:#dff3ff;font-size:14px;font-weight:900;letter-spacing:.5px}.day-card h4{font-size:16px;margin:0 0 3px;text-transform:capitalize}.day-card header small{font-size:11px;color:#8eabc5}.meal-line{display:flex;gap:11px;padding:12px 16px;border-bottom:1px solid rgba(48,75,101,.58)}.meal-line:last-child{border-bottom:0}.meal-icon{width:29px;height:29px;flex:0 0 29px;display:grid;place-items:center;border-radius:9px;background:#102b46;font-size:15px}.meal-line>div{min-width:0}.meal-line strong{font-size:11px;color:#82caff;letter-spacing:.25px}.meal-line p{font-size:13px;line-height:1.45;color:#e2ebf5;margin:3px 0 0}.meal-line small{display:block;font-size:10px;line-height:1.4;color:#91a9c0;margin-top:4px}.sunday-card{grid-column:1/-1}.sunday-card .meal-line{width:50%;display:inline-flex;vertical-align:top}.sunday-card .meal-line:nth-of-type(2){border-bottom:1px solid rgba(48,75,101,.58)}.sunday-card .meal-line:nth-of-type(3){border-bottom:1px solid rgba(48,75,101,.58)}.diet-footer-note{margin-top:17px;background:rgba(20,51,78,.5)}
+@media(max-width:760px){.diet-hero{padding:23px 20px;border-radius:19px}.diet-hero-mark{flex-basis:75px;width:75px;height:75px}.diet-hero-mark span{font-size:32px}.diet-hero-mark small{font-size:8px}.diet-hero p{font-size:13px}.diet-section-head{align-items:flex-start;flex-direction:column;gap:5px}.diet-section-head h3{font-size:19px}.portion-grid{grid-template-columns:1fr}.portion-card{padding:14px}.menu-grid{grid-template-columns:1fr}.sunday-card{grid-column:auto}.sunday-card .meal-line{width:100%;display:flex}.week-label{align-self:flex-start}}
+@media(min-width:1100px){.menu-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.day-card{transition:transform .18s ease,border-color .18s ease}.day-card:hover{transform:translateY(-2px);border-color:#4385b5}}
+
 </style>
 </head>
 <body>
@@ -252,70 +261,42 @@ form{grid-template-columns:1fr}
  </section>
 
 
- <section id="tab-dieta" class="grid hidden">
-  <div class="card span12">
-   <h2>🥑 Cardápio da semana – Low Carb</h2>
-   <p class="muted">Plano semanal do casal, com refeições simples e alimentos que vocês já utilizam. Sem peixe.</p>
-   <div class="portion-note">
-    <strong>Porções de referência do plano:</strong><br>
-    Café da manhã: 2 ovos por pessoa; queijo quando indicado (Eu: 30 g; Minha esposa: 30–40 g).<br>
-    Almoço: Eu 120–140 g de carne/frango; Minha esposa 140–160 g.<br>
-    Jantar: Eu 120 g; Minha esposa 130–150 g.<br>
-    Saladas à vontade e 1 porção de legumes por refeição principal. Ajustem conforme fome, saciedade e orientação profissional.
+ <section id="tab-dieta" class="diet-page hidden">
+  <div class="diet-hero">
+   <div class="diet-hero-copy">
+    <span class="diet-kicker">PLANEJAMENTO DO CASAL</span>
+    <h2>Comer bem. Seguir juntos.</h2>
+    <p>Um roteiro simples para organizar a semana, facilitar as escolhas e deixar as refeições mais práticas.</p>
+    <div class="diet-tags"><span>🥑 Low carb</span><span>👫 Duas pessoas</span><span>🐟 Sem peixe</span></div>
    </div>
-   <div class="menu-grid">
-    <div class="day-card">
-     <h3>SEGUNDA-FEIRA</h3>
-     <div class="meal-line"><strong>Café da manhã</strong><p>2 ovos mexidos para cada um, queijo e café sem açúcar.</p></div>
-     <div class="meal-line"><strong>Almoço</strong><p>Frango grelhado, salada de folhas e brócolis.</p><p class="small">Porções de proteína conforme referência do almoço.</p></div>
-     <div class="meal-line"><strong>Lanche</strong><p>Iogurte natural sem açúcar.</p></div>
-     <div class="meal-line"><strong>Jantar</strong><p>Omelete com ovos, queijo e tomate, acompanhada de salada.</p></div>
-    </div>
-    <div class="day-card">
-     <h3>TERÇA-FEIRA</h3>
-     <div class="meal-line"><strong>Café da manhã</strong><p>2 ovos cozidos ou mexidos para cada um e café.</p></div>
-     <div class="meal-line"><strong>Almoço</strong><p>Carne bovina grelhada com abobrinha refogada e salada.</p><p class="small">Porções de proteína conforme referência do almoço.</p></div>
-     <div class="meal-line"><strong>Lanche</strong><p>1 maçã pequena.</p></div>
-     <div class="meal-line"><strong>Jantar</strong><p>Frango desfiado com legumes refogados.</p><p class="small">Porções de proteína conforme referência do jantar.</p></div>
-    </div>
-    <div class="day-card">
-     <h3>QUARTA-FEIRA</h3>
-     <div class="meal-line"><strong>Café da manhã</strong><p>Omelete simples com 2 ovos por pessoa.</p></div>
-     <div class="meal-line"><strong>Almoço</strong><p>Frango grelhado com couve refogada e salada.</p><p class="small">Porções de proteína conforme referência do almoço.</p></div>
-     <div class="meal-line"><strong>Lanche</strong><p>Iogurte natural sem açúcar com chia.</p></div>
-     <div class="meal-line"><strong>Jantar</strong><p>Carne moída refogada com abobrinha.</p><p class="small">Porções de proteína conforme referência do jantar.</p></div>
-    </div>
-    <div class="day-card">
-     <h3>QUINTA-FEIRA</h3>
-     <div class="meal-line"><strong>Café da manhã</strong><p>2 ovos por pessoa, preparados mexidos ou cozidos.</p></div>
-     <div class="meal-line"><strong>Almoço</strong><p>Carne bovina com brócolis e salada.</p><p class="small">Porções de proteína conforme referência do almoço.</p></div>
-     <div class="meal-line"><strong>Lanche</strong><p>Morangos em porção pequena.</p></div>
-     <div class="meal-line"><strong>Jantar</strong><p>Omelete com frango desfiado e folhas.</p></div>
-    </div>
-    <div class="day-card">
-     <h3>SEXTA-FEIRA</h3>
-     <div class="meal-line"><strong>Café da manhã</strong><p>2 ovos por pessoa com queijo e café.</p></div>
-     <div class="meal-line"><strong>Almoço</strong><p>Frango grelhado com couve-flor e salada.</p><p class="small">Porções de proteína conforme referência do almoço.</p></div>
-     <div class="meal-line"><strong>Lanche</strong><p>Iogurte natural sem açúcar.</p></div>
-     <div class="meal-line"><strong>Jantar</strong><p>Carne bovina com berinjela refogada.</p><p class="small">Porções de proteína conforme referência do jantar.</p></div>
-    </div>
-    <div class="day-card">
-     <h3>SÁBADO</h3>
-     <div class="meal-line"><strong>Café da manhã</strong><p>Omelete com 2 ovos por pessoa.</p></div>
-     <div class="meal-line"><strong>Almoço</strong><p>Churrasco com carne bovina e frango, acompanhado de salada.</p><p class="small">Porções de proteína conforme referência do almoço.</p></div>
-     <div class="meal-line"><strong>Lanche</strong><p>Pequena porção de castanhas.</p></div>
-     <div class="meal-line"><strong>Jantar</strong><p>Salada reforçada com ovos e frango desfiado.</p></div>
-    </div>
-    <div class="day-card">
-     <h3>DOMINGO</h3>
-     <div class="meal-line"><strong>Café da manhã</strong><p>2 ovos por pessoa e café.</p></div>
-     <div class="meal-line"><strong>Almoço</strong><p>Carne assada com salada e legumes.</p><p class="small">Porções de proteína conforme referência do almoço.</p></div>
-     <div class="meal-line"><strong>Lanche</strong><p>Uma porção pequena de fruta.</p></div>
-     <div class="meal-line"><strong>Jantar</strong><p>Sopa de frango com chuchu, abobrinha e couve-flor.</p></div>
-    </div>
-   </div>
-   <p class="small">O cardápio é uma organização prática do plano conversado, não substitui avaliação nutricional. Água ao longo do dia; não é necessário cortar totalmente carboidratos nem passar fome.</p>
+   <div class="diet-hero-mark" aria-hidden="true"><span>7</span><small>DIAS</small></div>
   </div>
+
+  <div class="diet-section-head">
+   <div><span class="diet-kicker">REFERÊNCIA DIÁRIA</span><h3>Porções do casal</h3></div>
+   <p>Use como referência, respeitando a fome e a saciedade.</p>
+  </div>
+  <div class="portion-grid">
+   <article class="portion-card"><div class="portion-icon">🍳</div><div><span class="portion-label">CAFÉ DA MANHÃ</span><strong>2 ovos por pessoa</strong><p>Quando houver queijo: 30 g para mim e 30–40 g para minha esposa.</p></div></article>
+   <article class="portion-card"><div class="portion-icon">🍗</div><div><span class="portion-label">ALMOÇO</span><strong>Proteína por pessoa</strong><p>Eu: 120–140 g <i>·</i> Minha esposa: 140–160 g.</p></div></article>
+   <article class="portion-card"><div class="portion-icon">🥗</div><div><span class="portion-label">JANTAR</span><strong>Proteína por pessoa</strong><p>Eu: 120 g <i>·</i> Minha esposa: 130–150 g.</p></div></article>
+  </div>
+  <div class="diet-note"><span>✓</span><p><strong>Para acompanhar:</strong> saladas à vontade e uma porção de legumes nas refeições principais. Ajustem as quantidades conforme a fome, a saciedade e a orientação profissional.</p></div>
+
+  <div class="diet-section-head week-heading">
+   <div><span class="diet-kicker">CARDÁPIO ORGANIZADO</span><h3>O que vamos comer nesta semana</h3></div>
+   <span class="week-label">SEGUNDA A DOMINGO</span>
+  </div>
+  <div class="menu-grid">
+   <article class="day-card"><header><span class="day-number">01</span><div><h4>Segunda-feira</h4><small>Começo leve e prático</small></div></header><div class="meal-line"><span class="meal-icon">☀️</span><div><strong>Café da manhã</strong><p>2 ovos mexidos para cada um, queijo e café sem açúcar.</p></div></div><div class="meal-line"><span class="meal-icon">🍽️</span><div><strong>Almoço</strong><p>Frango grelhado, salada de folhas e brócolis.</p><small>Porções de proteína conforme a referência.</small></div></div><div class="meal-line"><span class="meal-icon">🍓</span><div><strong>Lanche</strong><p>Iogurte natural sem açúcar.</p></div></div><div class="meal-line"><span class="meal-icon">🌙</span><div><strong>Jantar</strong><p>Omelete com ovos, queijo e tomate, acompanhada de salada.</p></div></div></article>
+   <article class="day-card"><header><span class="day-number">02</span><div><h4>Terça-feira</h4><small>Variedade no prato</small></div></header><div class="meal-line"><span class="meal-icon">☀️</span><div><strong>Café da manhã</strong><p>2 ovos cozidos ou mexidos para cada um e café.</p></div></div><div class="meal-line"><span class="meal-icon">🍽️</span><div><strong>Almoço</strong><p>Carne bovina grelhada com abobrinha refogada e salada.</p><small>Porções de proteína conforme a referência.</small></div></div><div class="meal-line"><span class="meal-icon">🍓</span><div><strong>Lanche</strong><p>1 maçã pequena.</p></div></div><div class="meal-line"><span class="meal-icon">🌙</span><div><strong>Jantar</strong><p>Frango desfiado com legumes refogados.</p><small>Porções de proteína conforme a referência.</small></div></div></article>
+   <article class="day-card"><header><span class="day-number">03</span><div><h4>Quarta-feira</h4><small>Refeições sem complicação</small></div></header><div class="meal-line"><span class="meal-icon">☀️</span><div><strong>Café da manhã</strong><p>Omelete simples com 2 ovos por pessoa.</p></div></div><div class="meal-line"><span class="meal-icon">🍽️</span><div><strong>Almoço</strong><p>Frango grelhado com couve refogada e salada.</p><small>Porções de proteína conforme a referência.</small></div></div><div class="meal-line"><span class="meal-icon">🍓</span><div><strong>Lanche</strong><p>Iogurte natural sem açúcar com chia.</p></div></div><div class="meal-line"><span class="meal-icon">🌙</span><div><strong>Jantar</strong><p>Carne moída refogada com abobrinha.</p><small>Porções de proteína conforme a referência.</small></div></div></article>
+   <article class="day-card"><header><span class="day-number">04</span><div><h4>Quinta-feira</h4><small>Equilíbrio e simplicidade</small></div></header><div class="meal-line"><span class="meal-icon">☀️</span><div><strong>Café da manhã</strong><p>2 ovos por pessoa, preparados mexidos ou cozidos.</p></div></div><div class="meal-line"><span class="meal-icon">🍽️</span><div><strong>Almoço</strong><p>Carne bovina com brócolis e salada.</p><small>Porções de proteína conforme a referência.</small></div></div><div class="meal-line"><span class="meal-icon">🍓</span><div><strong>Lanche</strong><p>Morangos em porção pequena.</p></div></div><div class="meal-line"><span class="meal-icon">🌙</span><div><strong>Jantar</strong><p>Omelete com frango desfiado e folhas.</p></div></div></article>
+   <article class="day-card"><header><span class="day-number">05</span><div><h4>Sexta-feira</h4><small>Fechando a semana útil</small></div></header><div class="meal-line"><span class="meal-icon">☀️</span><div><strong>Café da manhã</strong><p>2 ovos por pessoa com queijo e café.</p></div></div><div class="meal-line"><span class="meal-icon">🍽️</span><div><strong>Almoço</strong><p>Frango grelhado com couve-flor e salada.</p><small>Porções de proteína conforme a referência.</small></div></div><div class="meal-line"><span class="meal-icon">🍓</span><div><strong>Lanche</strong><p>Iogurte natural sem açúcar.</p></div></div><div class="meal-line"><span class="meal-icon">🌙</span><div><strong>Jantar</strong><p>Carne bovina com berinjela refogada.</p><small>Porções de proteína conforme a referência.</small></div></div></article>
+   <article class="day-card"><header><span class="day-number">06</span><div><h4>Sábado</h4><small>Um almoço para compartilhar</small></div></header><div class="meal-line"><span class="meal-icon">☀️</span><div><strong>Café da manhã</strong><p>Omelete com 2 ovos por pessoa.</p></div></div><div class="meal-line"><span class="meal-icon">🍽️</span><div><strong>Almoço</strong><p>Churrasco com carne bovina e frango, acompanhado de salada.</p><small>Porções de proteína conforme a referência.</small></div></div><div class="meal-line"><span class="meal-icon">🍓</span><div><strong>Lanche</strong><p>Pequena porção de castanhas.</p></div></div><div class="meal-line"><span class="meal-icon">🌙</span><div><strong>Jantar</strong><p>Salada reforçada com ovos e frango desfiado.</p></div></div></article>
+   <article class="day-card sunday-card"><header><span class="day-number">07</span><div><h4>Domingo</h4><small>Encerrando a semana com comida caseira</small></div></header><div class="meal-line"><span class="meal-icon">☀️</span><div><strong>Café da manhã</strong><p>2 ovos por pessoa e café.</p></div></div><div class="meal-line"><span class="meal-icon">🍽️</span><div><strong>Almoço</strong><p>Carne assada com salada e legumes.</p><small>Porções de proteína conforme a referência.</small></div></div><div class="meal-line"><span class="meal-icon">🍓</span><div><strong>Lanche</strong><p>Uma porção pequena de fruta.</p></div></div><div class="meal-line"><span class="meal-icon">🌙</span><div><strong>Jantar</strong><p>Sopa de frango com chuchu, abobrinha e couve-flor.</p></div></div></article>
+  </div>
+  <div class="diet-footer-note"><span>💙</span><p><strong>Constância vale mais que perfeição.</strong> Este cardápio é uma organização prática da alimentação do casal; não substitui avaliação nutricional. Mantenham boa hidratação e não é necessário passar fome nem eliminar totalmente os carboidratos.</p></div>
  </section>
 
  <section id="tab-compras" class="grid hidden">
