@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#08172d">
-<title>Low Carb – Nossa Evolução</title>
+<title>Low Carb – Eduardo &amp; Nádia</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0"></script>
 <style>
 :root{--bg:#071426;--panel:#10233d;--panel2:#142b49;--blue:#43a5ff;--cyan:#69d6ed;--text:#f4f8ff;--muted:#a8bad0;--line:#29415f;--green:#54d6a0;--red:#ff8c8c}
@@ -86,6 +86,42 @@ form{grid-template-columns:1fr}
 @media(max-width:760px){.diet-hero{padding:23px 20px;border-radius:19px}.diet-hero-mark{flex-basis:75px;width:75px;height:75px}.diet-hero-mark span{font-size:32px}.diet-hero-mark small{font-size:8px}.diet-hero p{font-size:13px}.diet-section-head{align-items:flex-start;flex-direction:column;gap:5px}.diet-section-head h3{font-size:19px}.portion-grid{grid-template-columns:1fr}.portion-card{padding:14px}.menu-grid{grid-template-columns:1fr}.sunday-card{grid-column:auto}.sunday-card .meal-line{width:100%;display:flex}.week-label{align-self:flex-start}}
 @media(min-width:1100px){.menu-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.day-card{transition:transform .18s ease,border-color .18s ease}.day-card:hover{transform:translateY(-2px);border-color:#4385b5}}
 
+
+
+/* Painel principal renovado */
+.dashboard-hero{grid-column:span 12;position:relative;overflow:hidden;padding:26px 30px;border:1px solid #28517a;border-radius:22px;background:radial-gradient(circle at 90% 15%,rgba(67,165,255,.24),transparent 30%),linear-gradient(112deg,#102b49,#123e61 65%,#102b49)}
+.dashboard-hero .eyebrow{font-size:10px;letter-spacing:1.8px;font-weight:850;color:#78caff}
+.dashboard-hero h2{font-size:clamp(23px,3vw,31px);letter-spacing:-.8px;margin:8px 0 6px}
+.dashboard-hero p{margin:0;color:#c3d7e9;line-height:1.55;font-size:13px}
+.dashboard-date{display:inline-flex;margin-top:16px;padding:7px 11px;border-radius:30px;background:rgba(4,19,36,.3);border:1px solid rgba(140,196,235,.25);font-size:11px;color:#d9edff}
+.profile-card{grid-column:span 6;position:relative;overflow:hidden;background:linear-gradient(145deg,#132f4e,#0c2037);border:1px solid #2c4d6d;border-radius:19px;padding:20px;min-width:0}
+.profile-head{display:flex;align-items:center;gap:12px;margin-bottom:19px}
+.profile-avatar{width:45px;height:45px;display:grid;place-items:center;border-radius:15px;background:linear-gradient(145deg,#267fbd,#52c8e4);color:#06213a;font-size:18px;font-weight:900}
+.profile-card.nadia .profile-avatar{background:linear-gradient(145deg,#278b8e,#65d9c5)}
+.profile-head h3{font-size:16px;margin:0 0 3px}.profile-head p{font-size:11px;color:var(--muted);margin:0}
+.profile-main{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.profile-weight label{font-size:11px;color:#a9bfd4}.profile-weight strong{display:block;font-size:34px;letter-spacing:-1.2px;line-height:1.12;margin-top:4px}.profile-weight strong small{font-size:14px;letter-spacing:0;color:#b7ccdf;font-weight:600}
+.profile-meta{font-size:11px;color:#a5bad0;margin-top:7px;line-height:1.5}
+.profile-side{text-align:right;min-width:90px}.profile-side span{display:block;color:#8eabc5;font-size:10px;margin-bottom:4px}.profile-side strong{font-size:14px;color:#e8f4ff}.profile-change{border-top:1px solid rgba(74,111,145,.45);margin-top:16px;padding-top:12px;color:#a9c2d9;font-size:11px}
+.overview-kpi{grid-column:span 8;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.overview-kpi .kpi{border:1px solid var(--line);border-radius:16px;padding:16px;background:linear-gradient(145deg,#112943,#0b1c31);min-width:0}
+.kpi-label{font-size:11px;color:var(--muted)}.kpi-value{font-size:27px;font-weight:850;letter-spacing:-.7px;margin:7px 0 2px}.kpi-note{font-size:10px;color:#8fa8c1}
+.week-card{grid-column:span 4}.week-highlight{display:flex;align-items:center;gap:12px;padding:12px;border-radius:13px;background:#0b1d32;border:1px solid #294560;margin:10px 0}.week-icon{width:36px;height:36px;display:grid;place-items:center;border-radius:11px;background:#173e60;font-size:18px}.week-highlight strong{display:block;font-size:19px}.week-highlight small{font-size:10px;color:#9db3c9}
+.overview-chart{grid-column:span 12}.recent-card{grid-column:span 6}
+.quick-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.quick-actions button{font-size:11px;padding:9px 11px}
+/* Seletor de alimentos no registro */
+.food-picker{display:flex;gap:8px;align-items:stretch}.food-picker select{flex:1;min-width:0}.food-picker button{white-space:nowrap;padding:10px 13px}
+.food-help{font-size:10px;color:#8fa8c1;line-height:1.45;margin:7px 0 9px}
+.food-chips{display:flex;flex-wrap:wrap;gap:7px;min-height:14px}
+.food-chip{display:inline-flex;align-items:center;gap:7px;padding:7px 9px;border-radius:30px;background:#173e60;border:1px solid #37658a;color:#d9edff;font-size:11px}
+.food-chip button{padding:0;width:18px;height:18px;border-radius:50%;background:#285b80;color:white;font-size:13px;line-height:1}
+.food-empty{font-size:11px;color:#7f98b1;padding:4px 0}
+.meal-form-card{border-color:#315677}
+.meal-form-card h2{display:flex;align-items:center;gap:8px}
+@media(max-width:760px){
+ .dashboard-hero{padding:22px 19px;border-radius:18px}.profile-card,.overview-kpi,.week-card,.overview-chart,.recent-card{grid-column:span 12}.profile-card{padding:17px}.profile-weight strong{font-size:31px}.overview-kpi{grid-template-columns:1fr 1fr}.food-picker{flex-direction:column}.food-picker button{width:100%}
+}
+
 </style>
 </head>
 <body>
@@ -141,43 +177,57 @@ form{grid-template-columns:1fr}
 
  <div id="message" class="notice hidden"></div>
 
- <section id="tab-inicio" class="grid">
-  <div class="card span12">
-   <h2>📊 Evolução do casal</h2>
-   <div class="stats">
-    <div class="stat">
-     <label>Último peso – Eu</label>
-     <strong id="myWeight">—</strong>
-     <span class="small">kg</span>
-    </div>
-    <div class="stat">
-     <label>Último peso – Minha esposa</label>
-     <strong id="wifeWeight">—</strong>
-     <span class="small">kg</span>
-    </div>
-    <div class="stat">
-     <label>Registros realizados</label>
-     <strong id="totalRecords">0</strong>
-     <span class="small">medições</span>
-    </div>
+ <section id="tab-inicio" class="grid dashboard-grid">
+  <div class="dashboard-hero">
+   <span class="eyebrow">NOSSO ACOMPANHAMENTO</span>
+   <h2>Eduardo &amp; Nádia, juntos nessa evolução. 💙</h2>
+   <p>Um espaço para acompanhar hábitos, alimentação e medidas com tranquilidade. O importante é observar a evolução ao longo do tempo.</p>
+   <span class="dashboard-date" id="todayLabel">Hoje</span>
+  </div>
+
+  <article class="profile-card">
+   <div class="profile-head"><div class="profile-avatar">E</div><div><h3>Eduardo</h3><p>Meu acompanhamento</p></div></div>
+   <div class="profile-main">
+    <div class="profile-weight"><label>Último peso registrado</label><strong><span id="myWeight">—</span> <small>kg</small></strong><div class="profile-meta" id="eduardoWeightMeta">Ainda sem medição</div></div>
+    <div class="profile-side"><span>Cintura</span><strong id="eduardoWaist">—</strong></div>
    </div>
+   <div class="profile-change" id="eduardoChange">Registre a primeira medição para começar a acompanhar.</div>
+  </article>
+
+  <article class="profile-card nadia">
+   <div class="profile-head"><div class="profile-avatar">N</div><div><h3>Nádia</h3><p>Meu acompanhamento</p></div></div>
+   <div class="profile-main">
+    <div class="profile-weight"><label>Último peso registrado</label><strong><span id="wifeWeight">—</span> <small>kg</small></strong><div class="profile-meta" id="nadiaWeightMeta">Ainda sem medição</div></div>
+    <div class="profile-side"><span>Cintura</span><strong id="nadiaWaist">—</strong></div>
+   </div>
+   <div class="profile-change" id="nadiaChange">Registre a primeira medição para começar a acompanhar.</div>
+  </article>
+
+  <div class="overview-kpi">
+   <div class="kpi"><div class="kpi-label">Refeições nos últimos 7 dias</div><div class="kpi-value" id="weekMeals">0</div><div class="kpi-note">Lançamentos de Eduardo e Nádia</div></div>
+   <div class="kpi"><div class="kpi-label">Medições registradas</div><div class="kpi-value" id="totalRecords">0</div><div class="kpi-note">Histórico de peso e cintura</div></div>
   </div>
 
-  <div class="card span8">
-   <h2>📈 Histórico de peso</h2>
+  <div class="card week-card">
+   <h2>🗓️ Ritmo da semana</h2>
+   <div class="week-highlight"><div class="week-icon">🍽️</div><div><strong id="todayMeals">0</strong><small>refeições registradas hoje</small></div></div>
+   <p class="small">Cada registro ajuda a entender a rotina alimentar. Não é uma cobrança: usem o painel como apoio.</p>
+   <div class="quick-actions"><button type="button" data-open-tab="refeicoes">+ Registrar refeição</button><button type="button" class="secondary" data-open-tab="medidas">+ Registrar medida</button></div>
+  </div>
+
+  <div class="card overview-chart">
+   <h2>📈 Evolução do peso</h2>
    <svg id="chart" viewBox="0 0 600 190" role="img" aria-label="Gráfico de evolução do peso"></svg>
-   <p class="small">O gráfico mostra os registros mais recentes de cada pessoa.</p>
+   <p class="small">Compare os registros de cada um ao longo das semanas.</p>
   </div>
 
-  <div class="card span4">
-   <h2>🎯 Lembrete</h2>
-   <p class="muted">Registrem peso e cintura em condições parecidas a cada semana. O objetivo é acompanhar tendências, sem cobranças por pequenas oscilações.</p>
-   <span class="pill">Consistência acima da pressa</span>
-  </div>
-
-  <div class="card span12">
-   <h2>Últimas medições</h2>
+  <div class="card recent-card">
+   <h2>📋 Últimas medições</h2>
    <div id="recentMeasurements" class="tablewrap"></div>
+  </div>
+  <div class="card recent-card">
+   <h2>🥗 Alimentação recente</h2>
+   <div id="recentMeals" class="tablewrap"></div>
   </div>
  </section>
 
@@ -188,8 +238,8 @@ form{grid-template-columns:1fr}
     <div class="full">
      <label>Pessoa</label>
      <select id="person">
-      <option>Eu</option>
-      <option>Minha esposa</option>
+      <option value="Eu">Eduardo</option>
+      <option value="Minha esposa">Nádia</option>
      </select>
     </div>
     <div>
@@ -221,22 +271,22 @@ form{grid-template-columns:1fr}
  </section>
 
  <section id="tab-refeicoes" class="grid hidden">
-  <div class="card span4">
+  <div class="card span4 meal-form-card">
    <h2>🍳 Registrar refeição</h2>
    <form id="mealForm">
     <div class="full">
-     <label>Pessoa</label>
+     <label for="mealPerson">Quem fez a refeição?</label>
      <select id="mealPerson">
-      <option>Eu</option>
-      <option>Minha esposa</option>
+      <option value="Eu">Eduardo</option>
+      <option value="Minha esposa">Nádia</option>
      </select>
     </div>
     <div>
-     <label>Data</label>
+     <label for="mealDate">Data</label>
      <input id="mealDate" type="date" required>
     </div>
     <div>
-     <label>Refeição</label>
+     <label for="mealType">Tipo de refeição</label>
      <select id="mealType">
       <option>Café da manhã</option>
       <option>Almoço</option>
@@ -245,8 +295,38 @@ form{grid-template-columns:1fr}
      </select>
     </div>
     <div class="full">
-     <label>O que comeu?</label>
-     <textarea id="mealDescription" required placeholder="Descreva os alimentos e bebidas"></textarea>
+     <label for="mealFood">Escolha os alimentos</label>
+     <div class="food-picker">
+      <select id="mealFood">
+       <option value="">Selecione um alimento...</option>
+       <optgroup label="Proteínas e ovos">
+        <option>Ovos mexidos</option><option>Ovos cozidos</option><option>Omelete</option><option>Frango grelhado</option><option>Frango desfiado</option><option>Coxa ou sobrecoxa assada</option><option>Carne bovina grelhada</option><option>Carne moída</option><option>Carne assada</option><option>Hambúrguer caseiro sem pão</option>
+       </optgroup>
+       <optgroup label="Queijos e laticínios">
+        <option>Queijo muçarela</option><option>Queijo minas</option><option>Queijo parmesão</option><option>Requeijão</option><option>Iogurte natural sem açúcar</option><option>Creme de leite</option>
+       </optgroup>
+       <optgroup label="Verduras e legumes">
+        <option>Alface</option><option>Rúcula</option><option>Couve refogada</option><option>Espinafre</option><option>Repolho</option><option>Brócolis</option><option>Couve-flor</option><option>Abobrinha</option><option>Pepino</option><option>Tomate</option><option>Berinjela</option><option>Chuchu</option><option>Vagem</option><option>Pimentão</option><option>Cogumelos</option><option>Salada de folhas</option><option>Legumes refogados</option>
+       </optgroup>
+       <optgroup label="Frutas, sementes e acompanhamentos">
+        <option>Abacate</option><option>Morangos</option><option>Maçã pequena</option><option>Castanhas</option><option>Amendoim sem açúcar</option><option>Chia</option><option>Linhaça</option><option>Azeitonas</option><option>Coco sem açúcar</option>
+       </optgroup>
+       <optgroup label="Bebidas e complementos">
+        <option>Café sem açúcar</option><option>Chá sem açúcar</option><option>Água</option><option>Água com limão</option><option>Azeite de oliva</option><option>Temperos naturais</option>
+       </optgroup>
+      </select>
+      <button type="button" id="addMealFood">+ Adicionar</button>
+     </div>
+     <p class="food-help">Escolha um alimento por vez. Você pode adicionar vários itens ao mesmo lançamento.</p>
+     <div id="selectedMealFoods" class="food-chips"><span class="food-empty">Nenhum alimento selecionado ainda.</span></div>
+    </div>
+    <div class="full">
+     <label for="mealPortion">Porção ou quantidade (opcional)</label>
+     <input id="mealPortion" placeholder="Ex.: 2 ovos, 130 g de frango, 1 pote">
+    </div>
+    <div class="full">
+     <label for="mealNotes">Observações (opcional)</label>
+     <textarea id="mealNotes" placeholder="Ex.: preparado com azeite, sem açúcar..." rows="2"></textarea>
     </div>
     <div class="full">
      <button type="submit">Salvar refeição</button>
@@ -277,9 +357,9 @@ form{grid-template-columns:1fr}
    <p>Use como referência, respeitando a fome e a saciedade.</p>
   </div>
   <div class="portion-grid">
-   <article class="portion-card"><div class="portion-icon">🍳</div><div><span class="portion-label">CAFÉ DA MANHÃ</span><strong>2 ovos por pessoa</strong><p>Quando houver queijo: 30 g para mim e 30–40 g para minha esposa.</p></div></article>
-   <article class="portion-card"><div class="portion-icon">🍗</div><div><span class="portion-label">ALMOÇO</span><strong>Proteína por pessoa</strong><p>Eu: 120–140 g <i>·</i> Minha esposa: 140–160 g.</p></div></article>
-   <article class="portion-card"><div class="portion-icon">🥗</div><div><span class="portion-label">JANTAR</span><strong>Proteína por pessoa</strong><p>Eu: 120 g <i>·</i> Minha esposa: 130–150 g.</p></div></article>
+   <article class="portion-card"><div class="portion-icon">🍳</div><div><span class="portion-label">CAFÉ DA MANHÃ</span><strong>2 ovos por pessoa</strong><p>Quando houver queijo: 30 g para Eduardo e 30–40 g para Nádia.</p></div></article>
+   <article class="portion-card"><div class="portion-icon">🍗</div><div><span class="portion-label">ALMOÇO</span><strong>Proteína por pessoa</strong><p>Eduardo: 120–140 g <i>·</i> Nádia: 140–160 g.</p></div></article>
+   <article class="portion-card"><div class="portion-icon">🥗</div><div><span class="portion-label">JANTAR</span><strong>Proteína por pessoa</strong><p>Eduardo: 120 g <i>·</i> Nádia: 130–150 g.</p></div></article>
   </div>
   <div class="diet-note"><span>✓</span><p><strong>Para acompanhar:</strong> saladas à vontade e uma porção de legumes nas refeições principais. Ajustem as quantidades conforme a fome, a saciedade e a orientação profissional.</p></div>
 
@@ -349,9 +429,10 @@ let currentUser = null;
 let measurements = [];
 let meals = [];
 let shopping = [];
+let selectedMealFoods = [];
 
 const $ = id => document.getElementById(id);
-const today = new Date().toLocaleDateString('en-CA');
+const today = localISODate();
 
 $('measureDate').value = today;
 $('mealDate').value = today;
@@ -377,6 +458,15 @@ function num(v){
  return Number(v).toLocaleString('pt-BR',{maximumFractionDigits:1});
 }
 
+function personLabel(person){
+ return person==='Eu'?'Eduardo':person==='Minha esposa'?'Nádia':String(person||'');
+}
+
+function localISODate(date=new Date()){
+ const d=new Date(date.getTime()-date.getTimezoneOffset()*60000);
+ return d.toISOString().slice(0,10);
+}
+
 function esc(s){
  return String(s??'').replace(/[&<>"']/g,c=>({
   '&':'&amp;',
@@ -396,7 +486,7 @@ function showApp(user){
  currentUser=user;
  $('auth').classList.add('hidden');
  $('app').classList.remove('hidden');
- $('userEmail').textContent=user.email||'';
+ $('userEmail').textContent='Espaço compartilhado · Eduardo & Nádia';
  refreshAll().catch(e=>notice('message',e.message||'Erro ao carregar os dados.',true));
 }
 
@@ -502,30 +592,68 @@ function render(){
  const latest=p=>measurements
   .filter(x=>x.person===p)
   .sort((a,b)=>b.measured_on.localeCompare(a.measured_on))[0];
+ const first=p=>measurements
+  .filter(x=>x.person===p)
+  .sort((a,b)=>a.measured_on.localeCompare(b.measured_on))[0];
 
  const a=latest('Eu');
  const b=latest('Minha esposa');
+ const todayDate=localISODate();
+ const weekStart=new Date();
+ weekStart.setHours(0,0,0,0);
+ weekStart.setDate(weekStart.getDate()-6);
+ const weekStartISO=localISODate(weekStart);
+ const mealsThisWeek=meals.filter(x=>x.eaten_on>=weekStartISO&&x.eaten_on<=todayDate);
+ const mealsToday=meals.filter(x=>x.eaten_on===todayDate);
 
+ $('todayLabel').textContent=new Intl.DateTimeFormat('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(new Date());
  $('myWeight').textContent=a?num(a.weight_kg):'—';
  $('wifeWeight').textContent=b?num(b.weight_kg):'—';
+ $('eduardoWeightMeta').textContent=a?`Atualizado em ${fmtDate(a.measured_on)}`:'Ainda sem medição';
+ $('nadiaWeightMeta').textContent=b?`Atualizado em ${fmtDate(b.measured_on)}`:'Ainda sem medição';
+ $('eduardoWaist').textContent=a&&a.waist_cm?`${num(a.waist_cm)} cm`:'—';
+ $('nadiaWaist').textContent=b&&b.waist_cm?`${num(b.waist_cm)} cm`:'—';
+ const changeText=(person)=>{
+  const newest=latest(person),oldest=first(person);
+  if(!newest)return 'Registre a primeira medição para começar a acompanhar.';
+  if(!oldest||newest.id===oldest.id)return 'Primeira medição registrada. A evolução aparecerá nos próximos registros.';
+  const delta=Number(newest.weight_kg)-Number(oldest.weight_kg);
+  const prefix=delta>0?'+':'';
+  return `${prefix}${num(delta)} kg desde o primeiro registro (${fmtDate(oldest.measured_on)}).`;
+ };
+ $('eduardoChange').textContent=changeText('Eu');
+ $('nadiaChange').textContent=changeText('Minha esposa');
  $('totalRecords').textContent=measurements.length;
+ $('weekMeals').textContent=mealsThisWeek.length;
+ $('todayMeals').textContent=mealsToday.length;
 
  $('recentMeasurements').innerHTML=table(
   measurements.slice(0,6).map(x=>`
    <tr>
     <td>${fmtDate(x.measured_on)}</td>
-    <td>${esc(x.person)}</td>
+    <td>${esc(personLabel(x.person))}</td>
     <td>${num(x.weight_kg)} kg</td>
     <td>${x.waist_cm?num(x.waist_cm)+' cm':'—'}</td>
    </tr>`),
   ['Data','Pessoa','Peso','Cintura']
  );
 
+ $('recentMeals').innerHTML=table(
+  meals.slice(0,6).map(x=>`
+   <tr>
+    <td>${fmtDate(x.eaten_on)}</td>
+    <td>${esc(personLabel(x.person))}</td>
+    <td>${esc(x.meal_type)}</td>
+    <td>${esc(x.description)}</td>
+   </tr>`),
+  ['Data','Pessoa','Refeição','Alimentos']
+ );
+
  $('measurementHistory').innerHTML=table(
   measurements.map(x=>`
    <tr>
     <td>${fmtDate(x.measured_on)}</td>
-    <td>${esc(x.person)}</td>
+    <td>${esc(personLabel(x.person))}</td>
     <td>${num(x.weight_kg)} kg</td>
     <td>${x.waist_cm?num(x.waist_cm)+' cm':'—'}</td>
     <td>${esc(x.notes||'')}</td>
@@ -538,7 +666,7 @@ function render(){
   meals.map(x=>`
    <tr>
     <td>${fmtDate(x.eaten_on)}</td>
-    <td>${esc(x.person)}</td>
+    <td>${esc(personLabel(x.person))}</td>
     <td>${esc(x.meal_type)}</td>
     <td>${esc(x.description)}</td>
     <td><button class="danger" style="padding:6px 9px" onclick="deleteMeal('${x.id}')">Excluir</button></td>
@@ -559,6 +687,20 @@ function render(){
 
  drawChart();
 }
+
+function renderSelectedMealFoods(){
+ const target=$('selectedMealFoods');
+ if(!selectedMealFoods.length){
+  target.innerHTML='<span class="food-empty">Nenhum alimento selecionado ainda.</span>';
+  return;
+ }
+ target.innerHTML=selectedMealFoods.map((food,index)=>`<span class="food-chip">${esc(food)}<button type="button" aria-label="Remover ${esc(food)}" onclick="removeMealFood(${index})">×</button></span>`).join('');
+}
+
+window.removeMealFood=index=>{
+ selectedMealFoods.splice(index,1);
+ renderSelectedMealFoods();
+};
 
 function drawChart(){
  const svg=$('chart');
@@ -608,8 +750,8 @@ function drawChart(){
   out+=`<text x="${xpos(d)}" y="${h-7}" text-anchor="middle" fill="#a8bad0" font-size="10">${d.slice(5).split('-').reverse().join('/')}</text>`;
  });
 
- out+='<text x="470" y="15" fill="#45a7ff" font-size="11">● Eu</text>';
- out+='<text x="520" y="15" fill="#65d9c5" font-size="11">● Esposa</text>';
+ out+='<text x="445" y="15" fill="#45a7ff" font-size="11">● Eduardo</text>';
+ out+='<text x="520" y="15" fill="#65d9c5" font-size="11">● Nádia</text>'; 
 
  svg.innerHTML=out;
 }
@@ -668,12 +810,17 @@ $('logoutBtn').onclick=async()=>{
  showAuth();
 };
 
+function openTab(tab){
+ document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
+ document.querySelectorAll('[id^="tab-"]').forEach(section=>section.classList.add('hidden'));
+ $('tab-'+tab).classList.remove('hidden');
+}
+
 document.querySelectorAll('.nav button').forEach(btn=>{
- btn.onclick=()=>{
-  document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b===btn));
-  document.querySelectorAll('[id^="tab-"]').forEach(s=>s.classList.add('hidden'));
-  $('tab-'+btn.dataset.tab).classList.remove('hidden');
- };
+ btn.onclick=()=>openTab(btn.dataset.tab);
+});
+document.querySelectorAll('[data-open-tab]').forEach(btn=>{
+ btn.onclick=()=>openTab(btn.dataset.openTab);
 });
 
 $('measurementForm').onsubmit=e=>{
@@ -697,8 +844,27 @@ $('measurementForm').onsubmit=e=>{
  });
 };
 
+$('addMealFood').onclick=()=>{
+ const food=$('mealFood').value;
+ if(!food)return;
+ if(!selectedMealFoods.includes(food))selectedMealFoods.push(food);
+ $('mealFood').value='';
+ renderSelectedMealFoods();
+};
+
 $('mealForm').onsubmit=e=>{
  e.preventDefault();
+ const portion=$('mealPortion').value.trim();
+ const notes=$('mealNotes').value.trim();
+ const parts=[];
+ if(selectedMealFoods.length)parts.push('Alimentos: '+selectedMealFoods.join(', '));
+ if(portion)parts.push('Porção: '+portion);
+ if(notes)parts.push('Observações: '+notes);
+ const description=parts.join(' | ');
+ if(!description){
+  notice('message','Selecione pelo menos um alimento ou preencha as observações.',true);
+  return;
+ }
 
  run(async()=>{
   const {error}=await db.from('meal_logs').insert({
@@ -706,12 +872,14 @@ $('mealForm').onsubmit=e=>{
    person:$('mealPerson').value,
    eaten_on:$('mealDate').value,
    meal_type:$('mealType').value,
-   description:$('mealDescription').value.trim()
+   description
   });
 
   if(error)throw error;
 
   $('mealForm').reset();
+  selectedMealFoods=[];
+  renderSelectedMealFoods();
   $('mealDate').value=today;
  });
 };
