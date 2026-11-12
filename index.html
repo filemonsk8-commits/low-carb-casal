@@ -5,6 +5,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#08172d">
+<meta name="description" content="Acompanhe a evolução low carb de Eduardo e Nádia, com metas individuais e planejamento compartilhado.">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Low Carb Casal">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
 <title>Low Carb – Eduardo &amp; Nádia</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0"></script>
 <style>
@@ -67,6 +75,7 @@ th{color:var(--muted);font-weight:600}
 .authbrand p{margin:0;color:var(--muted)}
 .empty{text-align:center;color:var(--muted);padding:22px}
 .foot{text-align:center;color:#7890aa;font-size:11px;padding:25px 0}
+.pwa-install-btn{display:block;font-size:12px;white-space:nowrap}
 @media(max-width:760px){
 .wrap{padding:15px}
 .span8,.span6,.span4{grid-column:span 12}
@@ -131,7 +140,7 @@ form{grid-template-columns:1fr}
   <div class="authbrand">
    <div class="logo">🥑</div>
    <h1>Low Carb – Nossa Evolução</h1>
-   <p>Um acompanhamento compartilhado, passo a passo.</p>
+   <p>Entre com seu próprio acesso e acompanhe sua evolução.</p>
   </div>
   <div id="authMessage" class="notice hidden"></div>
   <form id="authForm">
@@ -148,7 +157,17 @@ form{grid-template-columns:1fr}
     <button type="button" class="secondary" id="signupBtn">Criar conta</button>
    </div>
   </form>
-  <p class="small">Criem uma única conta e usem o mesmo e-mail e senha nos dois celulares para compartilhar os registros.</p>
+  <button type="button" class="secondary pwa-install-btn" data-pwa-install style="width:100%;margin-top:10px">＋ Instalar aplicativo</button>
+  <div id="joinSetup" class="notice hidden" style="margin-top:16px">
+   <strong>Vincular seu perfil à família</strong>
+   <p style="margin:7px 0 12px">Acesse com seu próprio e-mail e senha. Depois, informe o código compartilhado por Eduardo e escolha seu perfil.</p>
+   <label for="joinName">Seu perfil</label>
+   <select id="joinName"><option value="Nádia">Nádia</option><option value="Eduardo">Eduardo</option></select>
+   <label for="inviteCode" style="margin-top:10px">Código de convite da família</label>
+   <input id="inviteCode" autocomplete="off" placeholder="Ex.: 12AB34CD56EF">
+   <button type="button" id="joinBtn" style="margin-top:12px;width:100%">Vincular minha conta</button>
+  </div>
+  <p class="small" id="authHint">Cada um terá seu próprio e-mail e senha. Os registros pessoais ficam identificados por perfil, e a lista de compras e a dieta são compartilhadas.</p>
  </div>
 </div>
 
@@ -163,6 +182,7 @@ form{grid-template-columns:1fr}
   </div>
   <div>
    <div id="userEmail" class="userline"></div>
+   <button type="button" class="secondary pwa-install-btn" data-pwa-install style="margin-top:7px;padding:8px 11px">＋ Instalar</button>
    <button class="secondary" id="logoutBtn" style="margin-top:7px;padding:8px 11px">Sair</button>
   </div>
  </header>
@@ -185,6 +205,18 @@ form{grid-template-columns:1fr}
    <span class="dashboard-date" id="todayLabel">Hoje</span>
   </div>
 
+  <div class="card span12" id="personalGoalCard" style="border-color:#3475a6;background:linear-gradient(120deg,#102c49,#0d2037)">
+   <div style="display:flex;justify-content:space-between;gap:15px;align-items:flex-start;flex-wrap:wrap">
+    <div><span class="eyebrow" style="color:#78caff;font-size:10px;letter-spacing:1.5px;font-weight:850">SEU OBJETIVO PESSOAL</span><h2 id="personalGreeting" style="margin:7px 0 5px">Sua jornada, no seu ritmo.</h2><p class="small" id="goalSummary">Defina suas metas e acompanhe cada conquista.</p></div>
+    <div class="pill" id="profilePill">Perfil</div>
+   </div>
+   <form id="goalForm" style="margin-top:15px;max-width:700px">
+    <div><label for="goalWeight">Meta de peso (kg)</label><input id="goalWeight" type="number" min="1" max="399" step=".1" placeholder="Ex.: 60,0"></div>
+    <div><label for="goalWaist">Meta de cintura (cm)</label><input id="goalWaist" type="number" min="1" max="299" step=".1" placeholder="Ex.: 80,0"></div>
+    <div class="full actions"><button type="submit">Salvar meus objetivos</button><span class="small">As metas podem ser alteradas a qualquer momento.</span></div>
+   </form>
+   <div style="margin-top:15px"><strong style="font-size:13px">🏆 Conquistas e marcos</strong><div id="achievementList" class="diet-tags" style="margin-top:9px"><span>Primeiro passo: registre sua primeira medição.</span></div></div>
+  </div>
   <article class="profile-card">
    <div class="profile-head"><div class="profile-avatar">E</div><div><h3>Eduardo</h3><p>Meu acompanhamento</p></div></div>
    <div class="profile-main">
@@ -228,6 +260,11 @@ form{grid-template-columns:1fr}
   <div class="card recent-card">
    <h2>🥗 Alimentação recente</h2>
    <div id="recentMeals" class="tablewrap"></div>
+  </div>
+  <div class="card span12" id="familyInviteCard">
+   <h2>👫 Acesso da família</h2>
+   <p class="small">Compartilhe este código com Nádia para ela criar a própria conta e entrar no mesmo espaço da família. Não compartilhe sua senha.</p>
+   <div class="actions" style="margin-top:12px"><strong id="familyInviteCode" style="font-size:20px;letter-spacing:2px">••••••••••••</strong><button type="button" class="secondary" id="copyInviteCode">Copiar código</button><span class="pill" id="familyMemberStatus">1 de 2 perfis</span></div>
   </div>
  </section>
 
@@ -426,6 +463,9 @@ const SUPABASE_KEY = "sb_publishable__QIiwci0ePZjvPTbK4mIjg_b1JWJYlV";
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let currentUser = null;
+let currentMember = null;
+let currentHousehold = null;
+let householdMembers = [];
 let measurements = [];
 let meals = [];
 let shopping = [];
@@ -480,14 +520,49 @@ function esc(s){
 function showAuth(){
  $('auth').classList.remove('hidden');
  $('app').classList.add('hidden');
+ $('authForm').classList.remove('hidden');
+ $('joinSetup').classList.add('hidden');
 }
 
-function showApp(user){
+async function showApp(user){
  currentUser=user;
- $('auth').classList.add('hidden');
- $('app').classList.remove('hidden');
- $('userEmail').textContent='Espaço compartilhado · Eduardo & Nádia';
- refreshAll().catch(e=>notice('message',e.message||'Erro ao carregar os dados.',true));
+ $('app').classList.add('hidden');
+ $('auth').classList.remove('hidden');
+ $('authForm').classList.add('hidden');
+ $('joinSetup').classList.add('hidden');
+ try{
+  const {data:member,error}=await db.from('household_members').select('*').eq('user_id',user.id).maybeSingle();
+  if(error)throw error;
+  if(!member){
+   $('joinSetup').classList.remove('hidden');
+   $('authHint').textContent='Sua conta foi criada. Para acessar a dieta compartilhada, informe o código de convite e escolha seu perfil.';
+   return;
+  }
+  currentMember=member;
+  const {data:house,error:houseError}=await db.from('households').select('*').eq('id',member.household_id).single();
+  if(houseError)throw houseError;
+  currentHousehold=house;
+  householdMembers=new Array(Number(house.member_count||1)).fill(null);
+  $('auth').classList.add('hidden');
+  $('app').classList.remove('hidden');
+  $('userEmail').textContent=`${member.member_name} · ${user.email||''}`;
+  $('personalGreeting').textContent=`Olá, ${member.member_name}! Sua evolução merece ser celebrada. 💙`;
+  document.querySelector('.dashboard-hero h2').textContent=`Bem-vindo(a), ${member.member_name}! 💙`;
+  document.querySelector('.dashboard-hero p').textContent='Este é o seu espaço pessoal de evolução. A dieta e a lista de compras continuam compartilhadas com a família.';
+  $('profilePill').textContent=`Perfil ${member.member_name}`;
+  $('goalWeight').value=member.target_weight_kg??'';
+  $('goalWaist').value=member.target_waist_cm??'';
+  const ownPerson=member.member_name==='Eduardo'?'Eu':'Minha esposa';
+  $('person').value=ownPerson;
+  $('mealPerson').value=ownPerson;
+  $('familyInviteCode').textContent=house.invite_code;
+  $('familyMemberStatus').textContent=`${householdMembers.length} de 2 perfis vinculados`;
+  $('familyInviteCard').classList.toggle('hidden',householdMembers.length>=2);
+  await refreshAll();
+ }catch(e){
+  $('authForm').classList.remove('hidden');
+  notice('authMessage',e.message||'Não foi possível carregar seu perfil.',true);
+ }
 }
 
 let initialShoppingChecked = false;
@@ -544,7 +619,7 @@ async function refreshAll(){
     ["Temperos naturais","A gosto","Outros"]
    ];
    const rows = starterItems.map(([item,quantity,category])=>({
-    user_id:currentUser.id,item,quantity,category,is_checked:false
+    user_id:currentUser.id,household_id:currentHousehold.id,item,quantity,category,is_checked:false
    }));
    const {error} = await db.from('shopping_items').insert(rows);
    if(error) throw error;
@@ -623,6 +698,28 @@ function render(){
  };
  $('eduardoChange').textContent=changeText('Eu');
  $('nadiaChange').textContent=changeText('Minha esposa');
+ const ownPerson=currentMember.member_name==='Eduardo'?'Eu':'Minha esposa';
+ const ownMeasurements=measurements.filter(x=>x.person===ownPerson).sort((x,y)=>x.measured_on.localeCompare(y.measured_on));
+ const ownMeals=meals.filter(x=>x.person===ownPerson);
+ const ownLatest=ownMeasurements.at(-1);
+ const ownFirst=ownMeasurements[0];
+ const goalWeight=currentMember.target_weight_kg?Number(currentMember.target_weight_kg):null;
+ const goalWaist=currentMember.target_waist_cm?Number(currentMember.target_waist_cm):null;
+ const achievement=[];
+ if(ownMeasurements.length>=1)achievement.push('🌱 Primeira medição registrada');
+ if(ownMeasurements.length>=3)achievement.push('📈 3 medições concluídas');
+ if(ownMeasurements.length>=5)achievement.push('⭐ 5 medições: constância');
+ if(ownFirst&&ownLatest&&Number(ownLatest.weight_kg)<Number(ownFirst.weight_kg))achievement.push('💙 Redução de peso registrada');
+ if(goalWeight&&ownLatest&&Number(ownLatest.weight_kg)<=goalWeight)achievement.push('🏆 Meta de peso alcançada');
+ if(goalWaist&&ownLatest&&ownLatest.waist_cm&&Number(ownLatest.waist_cm)<=goalWaist)achievement.push('🏆 Meta de cintura alcançada');
+ const weekCutoff=new Date();weekCutoff.setHours(0,0,0,0);weekCutoff.setDate(weekCutoff.getDate()-6);
+ const ownMealCount=ownMeals.filter(x=>x.eaten_on>=localISODate(weekCutoff)).length;
+ if(ownMealCount>=4)achievement.push('🥗 4 refeições registradas na semana');
+ $('achievementList').innerHTML=achievement.length?achievement.map(x=>`<span>${esc(x)}</span>`).join(''):'<span>Seu primeiro marco começa com o primeiro registro. 💙</span>';
+ const goals=[];
+ if(goalWeight)goals.push(`Peso: ${num(goalWeight)} kg`);
+ if(goalWaist)goals.push(`Cintura: ${num(goalWaist)} cm`);
+ $('goalSummary').textContent=goals.length?`Suas metas: ${goals.join(' · ')}. ${ownLatest?`Última medição: ${num(ownLatest.weight_kg)} kg.`:'Registre uma medição para acompanhar o progresso.'}`:'Defina suas metas de peso e cintura. As conquistas serão liberadas conforme seus registros.';
  $('totalRecords').textContent=measurements.length;
  $('weekMeals').textContent=mealsThisWeek.length;
  $('todayMeals').textContent=mealsToday.length;
@@ -788,6 +885,7 @@ $('authForm').addEventListener('submit',async e=>{
 
 $('signupBtn').addEventListener('click',async()=>{
  try{
+  if(!$('email').value.trim()||!$('password').value){throw new Error('Informe e-mail e senha para criar sua conta individual.');}
   const {data,error}=await db.auth.signUp({
    email:$('email').value.trim(),
    password:$('password').value
@@ -798,15 +896,47 @@ $('signupBtn').addEventListener('click',async()=>{
   if(data.session){
    showApp(data.user);
   }else{
-   notice('authMessage','Conta criada! Confira o e-mail para confirmar o cadastro antes de entrar.');
+   notice('authMessage','Conta individual criada! Confirme o e-mail e depois entre com seu próprio acesso. Na primeira entrada, use o código da família para vincular o perfil.');
   }
  }catch(err){
   notice('authMessage',err.message,true);
  }
 });
 
+$('joinBtn').onclick=async()=>{
+ $('joinBtn').disabled=true;
+ try{
+  const {error}=await db.rpc('join_household',{p_invite_code:$('inviteCode').value.trim(),p_member_name:$('joinName').value});
+  if(error)throw error;
+  await showApp(currentUser);
+ }catch(e){notice('authMessage',e.message||'Não foi possível vincular o perfil.',true)}
+ finally{$('joinBtn').disabled=false}
+};
+
+$('goalForm').onsubmit=async e=>{
+ e.preventDefault();
+ try{
+  const payload={
+   target_weight_kg:$('goalWeight').value?Number($('goalWeight').value):null,
+   target_waist_cm:$('goalWaist').value?Number($('goalWaist').value):null
+  };
+  const {error}=await db.from('household_members').update(payload).eq('user_id',currentUser.id);
+  if(error)throw error;
+  currentMember={...currentMember,...payload};
+  await refreshAll();
+  notice('message','Seus objetivos foram atualizados.');
+ }catch(e){notice('message',e.message||'Não foi possível salvar seus objetivos.',true)}
+};
+
+$('copyInviteCode').onclick=async()=>{
+ try{await navigator.clipboard.writeText(currentHousehold.invite_code);notice('message','Código copiado. Envie somente para Nádia.')}catch(e){notice('message','Código da família: '+currentHousehold.invite_code)}
+};
+
 $('logoutBtn').onclick=async()=>{
+
  await db.auth.signOut();
+ currentMember=null;currentHousehold=null;householdMembers=[];
+ $('authForm').classList.remove('hidden');$('joinSetup').classList.add('hidden');
  showAuth();
 };
 
@@ -829,6 +959,7 @@ $('measurementForm').onsubmit=e=>{
  run(async()=>{
   const row={
    user_id:currentUser.id,
+   household_id:currentHousehold.id,
    person:$('person').value,
    measured_on:$('measureDate').value,
    weight_kg:Number($('weight').value),
@@ -841,6 +972,7 @@ $('measurementForm').onsubmit=e=>{
 
   $('measurementForm').reset();
   $('measureDate').value=today;
+  $('person').value=currentMember.member_name==='Eduardo'?'Eu':'Minha esposa';
  });
 };
 
@@ -869,6 +1001,7 @@ $('mealForm').onsubmit=e=>{
  run(async()=>{
   const {error}=await db.from('meal_logs').insert({
    user_id:currentUser.id,
+   household_id:currentHousehold.id,
    person:$('mealPerson').value,
    eaten_on:$('mealDate').value,
    meal_type:$('mealType').value,
@@ -881,6 +1014,7 @@ $('mealForm').onsubmit=e=>{
   selectedMealFoods=[];
   renderSelectedMealFoods();
   $('mealDate').value=today;
+  $('mealPerson').value=currentMember.member_name==='Eduardo'?'Eu':'Minha esposa';
  });
 };
 
@@ -890,6 +1024,7 @@ $('shoppingForm').onsubmit=e=>{
  run(async()=>{
   const {error}=await db.from('shopping_items').insert({
    user_id:currentUser.id,
+   household_id:currentHousehold.id,
    item:$('shoppingItem').value.trim(),
    quantity:$('shoppingQty').value.trim(),
    category:$('shoppingCategory').value
@@ -936,6 +1071,63 @@ db.auth.onAuthStateChange((_event,session)=>{
   showAuth();
  }
 });
+
+
+// Instalação como aplicativo (PWA) em celulares e computadores.
+let deferredInstallPrompt = null;
+const pwaInstallButtons = Array.from(document.querySelectorAll('[data-pwa-install]'));
+const pwaIsStandalone = () => window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+const pwaIsIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+function updateInstallButtons() {
+  const installed = pwaIsStandalone();
+  pwaInstallButtons.forEach(button => {
+    button.classList.toggle('hidden', installed);
+    if (!installed && deferredInstallPrompt) button.textContent = '＋ Instalar aplicativo';
+    else if (!installed && pwaIsIOS()) button.textContent = '＋ Como instalar no iPhone';
+    else if (!installed) button.textContent = '＋ Instalar no celular ou PC';
+  });
+}
+
+window.addEventListener('beforeinstallprompt', event => {
+  event.preventDefault();
+  deferredInstallPrompt = event;
+  updateInstallButtons();
+});
+
+window.addEventListener('appinstalled', () => {
+  deferredInstallPrompt = null;
+  updateInstallButtons();
+});
+
+pwaInstallButtons.forEach(button => {
+  button.addEventListener('click', async () => {
+    if (deferredInstallPrompt) {
+      deferredInstallPrompt.prompt();
+      await deferredInstallPrompt.userChoice;
+      deferredInstallPrompt = null;
+      updateInstallButtons();
+      return;
+    }
+    if (pwaIsIOS()) {
+      alert('Para instalar no iPhone ou iPad:\n1. Abra este site no Safari.\n2. Toque em Compartilhar.\n3. Escolha “Adicionar à Tela de Início”.\n4. Confirme em Adicionar.');
+    } else if (/android/i.test(navigator.userAgent)) {
+      alert('No Android, abra o site no Chrome, toque no menu ⋮ e escolha “Instalar app” ou “Adicionar à tela inicial”.');
+    } else {
+      alert('No computador, abra o site no Chrome ou Edge. Use o ícone de instalação na barra de endereço ou o menu do navegador e escolha “Instalar aplicativo” / “Instalar este site como aplicativo”.');
+    }
+  });
+});
+
+updateInstallButtons();
+if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(error => {
+      console.warn('Não foi possível registrar o modo instalável:', error);
+    });
+  });
+}
+
 </script>
 </body>
 </html>
