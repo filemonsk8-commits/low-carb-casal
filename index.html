@@ -842,7 +842,7 @@ function render(){
  $('totalRecords').textContent=measurements.length;
  $('weekMeals').textContent=mealsThisWeek.length;
  $('todayMeals').textContent=mealsToday.length;
- $('mealHeroCount').textContent=meals.length+' '+(meals.length===1?'registro':'registros');
+ $('mealHeroCount').textContent=ownMeals.length+' '+(ownMeals.length===1?'registro':'registros');
 
  $('recentMeasurements').innerHTML=table(
   measurements.slice(0,6).map(x=>`
@@ -1355,12 +1355,14 @@ $('mealForm').onsubmit=e=>{
   $('mealForm').reset();
   selectedMealFoods=[];
   $('mealDate').value=today;
-   $('mealType').value='Café da manhã';
+  $('mealFoodSelectedLabel').classList.add('hidden');
+  $('mealFoodSearch').value='';
+  $('mealFoodResultsList').classList.add('hidden');
+  $('mealType').value='Café da manhã';
   $('mealFoodGrams').value=100;
   $('mealFoodMeasureQty').value=1;
   $('mealFoodCustomQty').value=1;
   setMealMeasureMode('grams');
-  syncMealPersonChoices();
   syncMealTypeButtons();
   renderTacoSearch();
   renderSelectedMealFoods();
