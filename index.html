@@ -367,7 +367,7 @@ form{grid-template-columns:1fr}
     <span class="diet-kicker">PLANEJAMENTO DO CASAL</span>
     <h2>Comer bem. Seguir juntos.</h2>
     <p>Um roteiro simples para organizar a semana, facilitar as escolhas e deixar as refeições mais práticas.</p>
-    <div class="diet-tags"><span>🥑 Low carb</span><span>👫 Duas pessoas</span><span>🐟 Sem peixe</span></div>
+    <div class="diet-tags"><span>🥑 Low carb</span><span>👫 Duas pessoas</span><span>🐟 Peixe opcional para Nádia</span></div>
    </div>
    <div class="diet-hero-mark" aria-hidden="true"><span>7</span><small>DIAS</small></div>
   </div>
@@ -825,7 +825,7 @@ function renderSelectedMealFoods(){
  }
  target.innerHTML=selectedMealFoods.map((food,index)=>'<span class="food-chip">'+esc(food.name)+' · '+num(food.grams)+' g · '+num(food.calories)+' kcal <button type="button" aria-label="Remover alimento" onclick="removeMealFood('+index+')">×</button></span>').join('');
  const t=mealTotals();
- $('mealNutritionTotal').innerHTML='<strong>Total: '+num(t.calories)+' kcal</strong> · Proteínas '+num(t.protein)+' g · Carboidratos '+num(t.carbs)+' g · Gorduras '+num(t.fat)+' g · Fibras '+num(t.fiber)+' g';
+ $('mealNutritionTotal').innerHTML='<strong>Total: '+fmtNutrient(t.calories,'kcal')+'</strong> · Proteínas '+fmtNutrient(t.protein)+' · Carboidratos '+fmtNutrient(t.carbs)+' · Gorduras '+fmtNutrient(t.fat)+' · Fibras '+fmtNutrient(t.fiber);
 }
 window.removeMealFood=index=>{selectedMealFoods.splice(index,1);renderSelectedMealFoods();};
 
