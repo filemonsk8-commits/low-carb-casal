@@ -1049,7 +1049,7 @@ function getFoodPreparation(food){
  const prep=normalizeMeasureText(food&&(food.preparation||food.preparo)||'');
  const text=normalizeMeasureText(food&&(food.description||food.name)||'');
  if(prep)return prep;
- if(/\\bcru[oa]s?\\b/.test(text))return 'cru';
+ if(/(^|[,\s])cru[oa]s?([,\s]|$)/.test(text))return 'cru';
  if(/cozid[oa]|cozido\\//.test(text))return 'cozido';
  if(/grelhad[oa]/.test(text))return 'grelhado';
  if(/assad[oa]/.test(text))return 'assado';
@@ -1061,7 +1061,7 @@ function getFoodPreparation(food){
 function isUnsafeRawFood(food){
  const category=normalizeMeasureText(food&&food.category||'');
  const description=normalizeMeasureText(food&&(food.description||food.name)||'');
- const raw=getFoodPreparation(food)==='cru'||/\\bcru[oa]s?\\b/.test(description);
+ const raw=getFoodPreparation(food)==='cru'||/(^|[,\s])cru[oa]s?([,\s]|$)/.test(description);
  if(!raw)return false;
  const highRisk=/carnes e derivados|ovos e derivados|pescados e frutos do mar/.test(category);
  const uncookedStaple=/arroz|feijao|macarrao|massa|pastel|pao de queijo|croquete/.test(description);
