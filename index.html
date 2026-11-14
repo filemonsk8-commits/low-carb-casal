@@ -200,6 +200,24 @@ form{grid-template-columns:1fr}
 @media(max-width:560px){.meal-hero{padding:20px 17px;border-radius:17px}.meal-hero-mark{width:58px;height:58px;flex-basis:58px;border-radius:16px}.meal-hero-mark span{font-size:24px}.meal-builder,.meal-history-panel{padding:14px}.meal-type-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.measure-mode-btn{font-size:9px}.quantity-controls{grid-template-columns:1fr}.quantity-controls p{grid-column:auto}.meal-card-heading h3{font-size:15px}.meal-lockup{font-size:8px}.person-choice-btn{padding:8px}.person-initial{width:30px;height:30px}}
 
 
+/* Registro de refeições organizado em etapas */
+.meal-flow-step{display:flex;flex-direction:column;gap:3px;padding:10px 12px;border-left:3px solid #39a9ed;background:rgba(15,48,78,.55);border-radius:0 11px 11px 0;margin-top:5px}
+.meal-flow-step span{font-size:9px;font-weight:850;letter-spacing:1px;color:#72caff}
+.meal-flow-step strong{font-size:14px;color:#edf7ff}
+.meal-flow-step small{font-size:11px;line-height:1.45;color:#a9bfd4}
+.food-search-area{padding:13px;border:1px solid #2c4b6a;border-radius:14px;background:rgba(7,24,42,.58)}
+.food-search-area input{font-size:14px;padding:13px}
+.food-help{font-size:10px;line-height:1.5;color:#a8bfd4;margin:7px 0 0}
+.food-results-list{max-height:220px}
+.measure-mode-buttons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.measure-mode-btn{padding:10px 7px;font-size:11px;line-height:1.3}
+.measure-mode-btn.active{border:1px solid #55baf5;background:#174b73;color:#fff}
+.quantity-controls{padding:10px;border-radius:11px;background:rgba(7,24,42,.45);margin-top:9px}
+.add-food-btn{width:100%;margin-top:12px}
+.selected-food-heading{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:11px 0}
+.save-meal-btn{width:100%;padding:14px;font-size:14px}
+@media(max-width:560px){.meal-flow-step{padding:9px 10px}.measure-mode-buttons{grid-template-columns:1fr}.measure-mode-btn{text-align:left;padding:11px}.food-search-area{padding:10px}}
+
 /* Busca de alimentos: lista própria, sem dropdown nativo do navegador */
 .food-results-list{display:grid;gap:5px;max-height:260px;overflow:auto;padding:6px;margin-top:8px;border:1px solid #315a7d;border-radius:13px;background:#091a2d;box-shadow:0 12px 28px rgba(0,0,0,.22)}
 .food-result-option{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;padding:10px 11px;text-align:left;border:1px solid transparent;border-radius:9px;background:#112b46;color:#e4f2ff}
@@ -407,6 +425,7 @@ form{grid-template-columns:1fr}
    <form id="mealForm">
 
 
+    <div class="full meal-flow-step"><span>ETAPA 1</span><strong>Quando foi a refeição?</strong><small>Escolha a data e o tipo de refeição.</small></div>
     <div>
      <label for="mealDate">Data</label>
      <input id="mealDate" type="date" required>
@@ -426,18 +445,20 @@ form{grid-template-columns:1fr}
      </select>
     </div>
 
+    <div class="full meal-flow-step"><span>ETAPA 2</span><strong>Quais alimentos você comeu?</strong><small>Pesquise um alimento e toque no resultado para selecioná-lo. Repita para adicionar outros.</small></div>
     <div class="full food-search-area">
-     <label for="mealFoodSearch">Buscar alimento no catálogo nutricional</label>
-     <input id="mealFoodSearch" placeholder="Digite o nome: ovo, frango, banana, queijo..." autocomplete="off">
+     <label for="mealFoodSearch">Pesquisar alimento</label>
+     <input id="mealFoodSearch" placeholder="Ex.: ovo, frango, alface, queijo..." autocomplete="off">
      <select id="mealFoodResult" class="hidden" aria-hidden="true" tabindex="-1"><option value="">Selecione um alimento</option></select>
      <div id="mealFoodResultsList" class="food-results-list hidden" role="listbox" aria-label="Resultados da busca de alimentos"></div>
      <div id="mealFoodCatalogStatus" class="food-help">Carregando catálogo de alimentos...</div>
      <div id="mealFoodSelectedLabel" class="food-selected-label hidden"></div>
-     <p class="food-help">Escolha o alimento que corresponde ao preparo. Os valores nutricionais da TACO são calculados a partir de 100 g da parte comestível.</p>
+     <p class="food-help">A lista aparece quando você começar a digitar. Escolha o alimento que mais corresponde ao preparo.</p>
     </div>
 
+    <div class="full meal-flow-step"><span>ETAPA 3</span><strong>Qual foi a quantidade?</strong><small>Selecione o alimento primeiro. Depois informe a porção em gramas ou medida caseira.</small></div>
     <div class="full portion-box">
-     <div class="portion-box-head"><div><span class="meal-step">QUANTIDADE</span><strong>Como você quer informar?</strong></div><span class="portion-box-icon">⚖️</span></div>
+     <div class="portion-box-head"><div><span class="meal-step">PORÇÃO DO ALIMENTO SELECIONADO</span><strong>Informe a quantidade</strong></div><span class="portion-box-icon">⚖️</span></div>
      <div class="measure-mode-buttons">
       <button type="button" class="measure-mode-btn active" data-measure-mode="grams">⚖️ Em gramas</button>
       <button type="button" class="measure-mode-btn" data-measure-mode="household">🥄 Medida caseira</button>
@@ -462,8 +483,9 @@ form{grid-template-columns:1fr}
      <button type="button" id="addMealFood" class="add-food-btn">＋ Adicionar alimento à refeição</button>
     </div>
 
+    <div class="full meal-flow-step"><span>ETAPA 4</span><strong>Confira sua refeição</strong><small>Revise os alimentos e os nutrientes calculados antes de salvar.</small></div>
     <div class="full">
-     <div class="selected-food-heading"><strong>Alimentos desta refeição</strong><span id="selectedFoodCount">0 itens</span></div>
+     <div class="selected-food-heading"><strong>Alimentos adicionados</strong><span id="selectedFoodCount">0 itens</span></div>
      <div id="selectedMealFoods" class="selected-food-list"><div class="food-empty">Nenhum alimento selecionado ainda.</div></div>
      <div id="mealNutritionTotal" class="meal-total-panel">Adicione alimentos para calcular os nutrientes.</div>
     </div>
