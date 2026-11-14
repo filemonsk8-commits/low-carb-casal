@@ -200,6 +200,17 @@ form{grid-template-columns:1fr}
 @media(max-width:560px){.meal-hero{padding:20px 17px;border-radius:17px}.meal-hero-mark{width:58px;height:58px;flex-basis:58px;border-radius:16px}.meal-hero-mark span{font-size:24px}.meal-builder,.meal-history-panel{padding:14px}.meal-type-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.measure-mode-btn{font-size:9px}.quantity-controls{grid-template-columns:1fr}.quantity-controls p{grid-column:auto}.meal-card-heading h3{font-size:15px}.meal-lockup{font-size:8px}.person-choice-btn{padding:8px}.person-initial{width:30px;height:30px}}
 
 
+/* Catálogo de alimentos: filtros, porções documentadas e segurança */
+.food-category-filters{display:flex;gap:6px;overflow-x:auto;padding:8px 0 5px;scrollbar-width:thin}
+.food-category-chip{flex:0 0 auto;border:1px solid #355675;background:#0b2037;color:#c5d9ec;padding:7px 10px;border-radius:999px;font-size:10px;font-weight:750}
+.food-category-chip.active{background:#1d5b89;color:#fff;border-color:#58b9f3}
+.food-list-caption{font-size:11px;color:#c4d9ed;font-weight:750;margin:8px 0 3px}
+.food-safety-note{margin-top:9px;padding:9px 10px;border:1px solid #66532c;border-radius:10px;background:rgba(90,67,25,.20);font-size:10px;line-height:1.5;color:#f2ddb2}
+.food-result-option small{line-height:1.45}
+.food-selected-label small{display:block;margin-top:4px;color:#91d7ff}
+.food-results-list{max-height:280px}
+@media(max-width:560px){.food-category-filters{margin-left:-2px;margin-right:-2px}.food-category-chip{font-size:10px;padding:8px 11px}.food-results-list{max-height:245px}}
+
 /* Registro de refeições organizado em etapas */
 .meal-flow-step{display:flex;flex-direction:column;gap:3px;padding:10px 12px;border-left:3px solid #39a9ed;background:rgba(15,48,78,.55);border-radius:0 11px 11px 0;margin-top:5px}
 .meal-flow-step span{font-size:9px;font-weight:850;letter-spacing:1px;color:#72caff}
@@ -452,8 +463,17 @@ form{grid-template-columns:1fr}
      <select id="mealFoodResult" class="hidden" aria-hidden="true" tabindex="-1"><option value="">Selecione um alimento</option></select>
      <div id="mealFoodResultsList" class="food-results-list hidden" role="listbox" aria-label="Resultados da busca de alimentos"></div>
      <div id="mealFoodCatalogStatus" class="food-help">Carregando catálogo de alimentos...</div>
+     <div class="food-category-filters" id="mealFoodCategoryFilters" aria-label="Filtrar alimentos">
+      <button type="button" class="food-category-chip active" data-food-group="Sugestões">Sugestões</button>
+      <button type="button" class="food-category-chip" data-food-group="Proteínas">Proteínas</button>
+      <button type="button" class="food-category-chip" data-food-group="Laticínios">Laticínios</button>
+      <button type="button" class="food-category-chip" data-food-group="Verduras">Verduras</button>
+      <button type="button" class="food-category-chip" data-food-group="Frutas">Frutas</button>
+      <button type="button" class="food-category-chip" data-food-group="Todos">Todos</button>
+     </div>
+     <div id="mealFoodListCaption" class="food-list-caption">Sugestões para registrar sua refeição</div>
      <div id="mealFoodSelectedLabel" class="food-selected-label hidden"></div>
-     <p class="food-help">A lista aparece quando você começar a digitar. Escolha o alimento que mais corresponde ao preparo.</p>
+     <div class="food-safety-note">Segurança alimentar: carnes, aves, peixes e ovos crus não aparecem na lista. Frutas, verduras e legumes podem ser registrados crus, desde que sejam bem lavados e higienizados.</div>
     </div>
 
     <div class="full meal-flow-step"><span>ETAPA 3</span><strong>Qual foi a quantidade?</strong><small>Selecione o alimento primeiro. Depois informe a porção em gramas ou medida caseira.</small></div>
@@ -934,48 +954,26 @@ function render(){
 
 const TACO_BASE='https://brolesi.github.io/taco/';
 let mealMeasureMode='grams';
+let mealFoodCategoryFilter='Sugestões';
 const HOUSEHOLD_MEASURE_RULES=[
- {match:/ovo.*galinha|galinha.*ovo/,options:[{label:'1 unidade média',grams:50,source:'Secretaria de Estado da Saúde de Goiás'}]},
- {match:/pao.*frances/,options:[{label:'1 unidade',grams:50,source:'Ministério da Saúde — Guia Alimentar'}]},
- {match:/banana.*(prata|nanica)/,options:[{label:'1 unidade',grams:86,source:'Ministério da Saúde — Guia Alimentar'}]},
- {match:/\bmaca\b/,options:[{label:'1 unidade média',grams:130,source:'Ministério da Saúde — Guia Alimentar'}]},
- {match:/\bpera\b/,options:[{label:'1 unidade média',grams:133,source:'Ministério da Saúde — Guia Alimentar'}]},
- {match:/abacaxi/,options:[{label:'1 fatia',grams:130,source:'Ministério da Saúde — Guia Alimentar'}]},
- {match:/abacate/,options:[{label:'1 colher de sopa',grams:32,source:'Ministério da Saúde — Guia Alimentar'}]},
- {match:/caqui/,options:[{label:'1 unidade',grams:113,source:'Ministério da Saúde — Guia Alimentar'}]},
- {match:/carambola/,options:[{label:'2 unidades',grams:220,source:'Ministério da Saúde — Guia Alimentar'}]},
- {match:/goiaba/,options:[{label:'1/2 unidade',grams:95,source:'Ministério da Saúde — Guia Alimentar'}]},
- {match:/kiwi/,options:[{label:'2 unidades',grams:154,source:'Ministério da Saúde — Guia Alimentar'}]},
- {match:/laranja.*baia/,options:[{label:'8 gomos',grams:144,source:'Ministério da Saúde — Guia Alimentar'}]},
- {match:/laranja.*pera/,options:[{label:'1 unidade',grams:137,source:'Ministério da Saúde — Guia Alimentar'}]},
- {match:/limao/,options:[{label:'4 unidades',grams:252,source:'Ministério da Saúde — Guia Alimentar'}]},
- {match:/mamao.*formosa/,options:[{label:'1 fatia',grams:160,source:'Ministério da Saúde — Guia Alimentar'}]},
- {match:/mamao.*papaia/,options:[{label:'1/2 unidade',grams:141.5,source:'Ministério da Saúde — Guia Alimentar'}]},
- {match:/manga/,options:[{label:'1 unidade',grams:110,source:'Ministério da Saúde — Guia Alimentar'}]},
- {match:/melancia/,options:[{label:'2 fatias',grams:296,source:'Ministério da Saúde — Guia Alimentar'}]},
- {match:/melao/,options:[{label:'2 fatias',grams:230,source:'Ministério da Saúde — Guia Alimentar'}]},
- {match:/morango/,options:[{label:'10 unidades',grams:240,source:'Ministério da Saúde — Guia Alimentar'}]},
- {match:/nectarina/,options:[{label:'2 unidades',grams:184,source:'Ministério da Saúde — Guia Alimentar'}]},
- {match:/tomate.*cereja/,options:[{label:'7 unidades',grams:70,source:'Ministério da Saúde — Guia Alimentar'}]},
- {match:/tomate.*(cru|salada)/,options:[{label:'4 fatias',grams:80,source:'Ministério da Saúde — Guia Alimentar'}]},
- {match:/arroz.*cozido/,options:[{label:'4 colheres de sopa',grams:125,source:'Ministério da Saúde — Guia Alimentar'}]},
- {match:/feijao.*cozido/,options:[{label:'1 concha',grams:86,source:'Ministério da Saúde — Guia Alimentar'}]},
- {match:/bife.*grelhado|carne bovina.*grelhado/,options:[{label:'1 bife',grams:90,source:'Ministério da Saúde — Guia Alimentar'}]},
- {match:/leite.*integral/,options:[{label:'1 copo de requeijão',grams:182,source:'Ministério da Saúde — Guia Alimentar'}]},
- {match:/aveia/,options:[{label:'2 colheres de sopa',grams:30,source:'Anvisa — Manual de Orientação ao Consumidor'}]},
- {match:/queijo minas/,options:[{label:'2 colheres de sopa',grams:50,source:'Anvisa — Manual de Orientação ao Consumidor'}]},
- {match:/requeijao/,options:[{label:'2 colheres de sopa',grams:50,source:'Anvisa — Manual de Orientação ao Consumidor'}]},
- {match:/bolo.*sem recheio/,options:[{label:'1 fatia',grams:60,source:'Anvisa — Manual de Orientação ao Consumidor'}]},
- {match:/barra de cereal/,options:[{label:'1 unidade',grams:30,source:'Anvisa — Manual de Orientação ao Consumidor'}]}
+ {ids:[488],options:[{label:'1 ovo cozido médio',grams:45,source:'POF/IBGE — medida referida, ovo cozido'}]},
+ {ids:[490],options:[{label:'1 ovo frito médio',grams:50,source:'POF/IBGE — medida referida, ovo frito'}]},
+ {ids:[410],options:[{label:'1 filé médio',grams:100,source:'POF/IBGE — referência de filé de frango preparado'}]},
+ {ids:[377],options:[{label:'1 bife médio (aproximado)',grams:100,source:'POF/IBGE — bife médio de patinho assado/frito; aproximação para grelhado'}]},
+ {ids:[326],options:[{label:'1 colher de sopa cheia',grams:25,source:'POF/IBGE — carne bovina moída preparada'},{label:'1 colher de arroz cheia',grams:60,source:'POF/IBGE — carne bovina moída preparada'},{label:'1 porção de carne moída refogada',grams:63,source:'POF/IBGE — porção do Guia Alimentar'}]},
+ {ids:[461],options:[{label:'1 fatia média',grams:45,source:'POF/IBGE — fatia média de queijo minas'},{label:'1 porção de referência',grams:50,source:'POF/IBGE — porção do Guia Alimentar para queijo minas'}]},
+ {ids:[463],options:[{label:'1 fatia média',grams:20,source:'POF/IBGE — fatia média de mussarela'},{label:'1 porção de referência',grams:45,source:'POF/IBGE — porção do Guia Alimentar para mussarela'}]},
+ {ids:[77,78,79,80],options:[{label:'1 folha média',grams:10,source:'POF/IBGE — folha média de alface'},{label:'2 colheres de sopa cheias, picada',grams:16,source:'POF/IBGE — alface picada'},{label:'1 porção média',grams:27,source:'POF/IBGE — porção média de alface'}]},
+ {ids:[157],options:[{label:'1 fatia média',grams:15,source:'POF/IBGE — fatia média de tomate'},{label:'1 tomate médio',grams:100,source:'POF/IBGE — unidade média de tomate'},{label:'1 porção',grams:80,source:'POF/IBGE — porção do Guia Alimentar para tomate'}]},
+ {ids:[142],options:[{label:'2 colheres de sopa cheias, picado',grams:36,source:'POF/IBGE — porção de pepino picado'}]},
+ {ids:[100],options:[{label:'1 colher de sopa cheia, picado',grams:10,source:'POF/IBGE — brócolis preparado'},{label:'1 porção',grams:60,source:'POF/IBGE — porção do Guia Alimentar para brócolis cozido'}]},
+ {ids:[72],options:[{label:'1 colher de sopa cheia',grams:30,source:'POF/IBGE — abobrinha refogada'},{label:'1 escumadeira média cheia',grams:90,source:'POF/IBGE — abobrinha refogada'}]},
+ {ids:[64],options:[{label:'1 pedaço médio',grams:50,source:'POF/IBGE — pedaço médio de abóbora preparada'},{label:'1 porção',grams:70,source:'POF/IBGE — porção do Guia Alimentar para abóbora'}]},
+ {ids:[3],options:[{label:'1 colher de arroz cheia',grams:45,source:'POF/IBGE — arroz branco cozido'},{label:'1 porção',grams:125,source:'POF/IBGE — porção de arroz branco cozido'}]},
+ {ids:[1],options:[{label:'1 colher de arroz cheia',grams:63,source:'POF/IBGE — arroz integral cozido'}]}
 ];
 function normalizeMeasureText(value){
- return String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('pt-BR');
-}
-function getHouseholdMeasures(food){
- const description=normalizeMeasureText(food&&(food.description||food.name));
- if(description.includes('arroz')&&description.includes('integral'))return [];
- const found=HOUSEHOLD_MEASURE_RULES.find(rule=>rule.match.test(description));
- return found?found.options:[];
+ return String(value||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLocaleLowerCase('pt-BR');
 }
 function currentMealFood(){
  const id=$('mealFoodResult').value;
@@ -1047,35 +1045,99 @@ function isFishFood(food){
  const text=normalizeMeasureText((food&&food.category||'')+' '+(food&&food.description||''));
  return /pescados|peixes|frutos do mar|atum|sardinha|tilapia|salmao|bacalhau|merluza|camarao|siri|caranguejo|ostra|mexilhao/.test(text);
 }
+function getFoodPreparation(food){
+ const prep=normalizeMeasureText(food&&(food.preparation||food.preparo)||'');
+ const text=normalizeMeasureText(food&&(food.description||food.name)||'');
+ if(prep)return prep;
+ if(/\\bcru[oa]s?\\b/.test(text))return 'cru';
+ if(/cozid[oa]|cozido\\//.test(text))return 'cozido';
+ if(/grelhad[oa]/.test(text))return 'grelhado';
+ if(/assad[oa]/.test(text))return 'assado';
+ if(/refogad[oa]/.test(text))return 'refogado';
+ if(/frit[oa]/.test(text))return 'frito';
+ if(/torrad[oa]/.test(text))return 'torrado';
+ return '';
+}
+function isUnsafeRawFood(food){
+ const category=normalizeMeasureText(food&&food.category||'');
+ const description=normalizeMeasureText(food&&(food.description||food.name)||'');
+ const raw=getFoodPreparation(food)==='cru'||/\\bcru[oa]s?\\b/.test(description);
+ if(!raw)return false;
+ const highRisk=/carnes e derivados|ovos e derivados|pescados e frutos do mar/.test(category);
+ const uncookedStaple=/arroz|feijao|macarrao|massa|pastel|pao de queijo|croquete/.test(description);
+ return highRisk||uncookedStaple;
+}
+function getFoodGroup(food){
+ const category=normalizeMeasureText(food&&food.category||'');
+ if(/carnes e derivados|ovos e derivados|pescados e frutos do mar/.test(category))return 'Proteínas';
+ if(/leite e derivados/.test(category))return 'Laticínios';
+ if(/verduras|hortalicas/.test(category))return 'Verduras';
+ if(/frutas e derivados/.test(category))return 'Frutas';
+ return 'Outros';
+}
+function getFoodPreparationLabel(food){
+ const prep=getFoodPreparation(food);
+ const labels={cru:'Cru · higienizar',cozido:'Cozido',grelhado:'Grelhado',assado:'Assado',refogado:'Refogado',frito:'Frito',torrado:'Torrado'};
+ return labels[prep]||'Preparo não especificado';
+}
+const MEAL_FOOD_QUICK_IDS=[488,490,410,408,377,326,461,463,100,116,118,70,72,77,78,79,157,142,64,109,112];
+function syncFoodCategoryButtons(){
+ document.querySelectorAll('[data-food-group]').forEach(button=>button.classList.toggle('active',button.dataset.foodGroup===mealFoodCategoryFilter));
+}
 function renderTacoSearch(){
  const q=normalizeMeasureText(($('mealFoodSearch').value||'').trim());
  const person=currentMealPerson();
- const filtered=tacoFoods.filter(f=>(!q||normalizeMeasureText((f.description||'')+' '+(f.category||'')).includes(q))&&(person==='Minha esposa'||!isFishFood(f))).slice(0,80);
  const list=$('mealFoodResultsList');
  const status=$('mealFoodCatalogStatus');
- $('mealFoodResult').innerHTML='<option value="">Selecione um alimento</option>'+filtered.map(f=>'<option value="'+f.id+'">'+esc(f.description)+' · '+esc(f.category)+'</option>').join('');
+ const safeFoods=tacoFoods.filter(f=>!isUnsafeRawFood(f)&&(person==='Minha esposa'||!isFishFood(f)));
+ let filtered=safeFoods;
+ if(mealFoodCategoryFilter!=='Sugestões'&&mealFoodCategoryFilter!=='Todos'){
+  filtered=filtered.filter(f=>getFoodGroup(f)===mealFoodCategoryFilter);
+ }
+ if(q){
+  filtered=filtered.filter(f=>normalizeMeasureText((f.description||'')+' '+(f.category||'')+' '+getFoodPreparationLabel(f)).includes(q));
+ }else if(mealFoodCategoryFilter==='Sugestões'){
+  filtered=MEAL_FOOD_QUICK_IDS.map(id=>safeFoods.find(f=>Number(f.id)===id)).filter(Boolean);
+ }else if(mealFoodCategoryFilter==='Todos'){
+  filtered=filtered.slice(0,100);
+ }else{
+  filtered=filtered.slice(0,60);
+ }
+ const catalogCount=safeFoods.length;
+ $('mealFoodResult').innerHTML='<option value="">Selecione um alimento</option>'+filtered.map(f=>'<option value="'+f.id+'">'+esc(f.description)+'</option>').join('');
  if(!tacoCatalogReady){
   list.classList.add('hidden');
   if(status)status.classList.remove('hidden');
   return;
  }
+ $('mealFoodListCaption').textContent=q
+  ?filtered.length+' resultado(s) para sua busca'
+  :mealFoodCategoryFilter==='Sugestões'?'Sugestões para registrar sua refeição'
+  :mealFoodCategoryFilter==='Todos'?'Catálogo completo · '+catalogCount+' opções seguras para este perfil'
+  :'Alimentos da categoria '+mealFoodCategoryFilter+' · '+filtered.length+' opções exibidas';
  if(!filtered.length){
-  list.innerHTML='<div class="food-results-empty">Nenhum alimento encontrado. Tente outro nome.</div>';
+  list.innerHTML='<div class="food-results-empty">Nenhum alimento adequado encontrado. Experimente outra palavra ou categoria.</div>';
  }else{
-  list.innerHTML=filtered.map(f=>'<button type="button" class="food-result-option" role="option" data-food-id="'+f.id+'"><span><strong>'+esc(f.description)+'</strong><small>'+esc(f.category||'Alimento')+'</small></span><span class="food-result-arrow">›</span></button>').join('');
+  list.innerHTML=filtered.map(f=>{
+   const prep=getFoodPreparationLabel(f);
+   const calories=f.energy_kcal!==null&&f.energy_kcal!==undefined?' · '+num(f.energy_kcal)+' kcal/100 g':'';
+   return '<button type="button" class="food-result-option" role="option" data-food-id="'+f.id+'"><span><strong>'+esc(f.description)+'</strong><small>'+esc(prep)+' · '+esc(f.category||'Alimento')+calories+'</small></span><span class="food-result-arrow">›</span></button>';
+  }).join('');
  }
- list.classList.toggle('hidden',!q);
+ list.classList.remove('hidden');
  list.querySelectorAll('[data-food-id]').forEach(button=>{
   button.addEventListener('click',()=>{
    $('mealFoodResult').value=button.dataset.foodId;
    const selected=filtered.find(f=>String(f.id)===String(button.dataset.foodId));
-   $('mealFoodSelectedLabel').innerHTML='Selecionado: <strong>'+esc(selected.description)+'</strong>';
+   const prep=getFoodPreparationLabel(selected);
+   $('mealFoodSelectedLabel').innerHTML='Selecionado: <strong>'+esc(selected.description)+'</strong><small>'+esc(prep)+'</small>';
    $('mealFoodSelectedLabel').classList.remove('hidden');
    list.classList.add('hidden');
    updateMealMeasureUI();
   });
  });
  updateMealMeasureUI();
+ syncFoodCategoryButtons();
 }
 async function fetchTacoFood(id){
  const response=await fetch(TACO_BASE+'foods/'+id+'.json');
@@ -1293,6 +1355,12 @@ $('measurementForm').onsubmit=e=>{
 
 $('mealFoodSearch').addEventListener('input',renderTacoSearch);
 $('mealFoodSearch').addEventListener('focus',()=>{if(!tacoCatalogReady)loadTacoCatalog();else renderTacoSearch();});
+document.querySelectorAll('[data-food-group]').forEach(button=>{
+ button.addEventListener('click',()=>{
+  mealFoodCategoryFilter=button.dataset.foodGroup;
+  renderTacoSearch();
+ });
+});
 document.querySelectorAll('[data-meal-type]').forEach(button=>{
  button.addEventListener('click',()=>{
   $('mealType').value=button.dataset.mealType;
@@ -1311,6 +1379,10 @@ $('addMealFood').onclick=async()=>{
   const meta=tacoFoods.find(x=>String(x.id)===String(id));
   if(person!=='Minha esposa'&&isFishFood(meta||base)){
    notice('message','Peixes e frutos do mar estão disponíveis somente para Nádia.',true);
+   return;
+  }
+  if(isUnsafeRawFood(meta||base)){
+   notice('message','Este item está cadastrado cru e foi bloqueado por segurança. Escolha a versão cozida ou preparada.',true);
    return;
   }
   let grams=0;
@@ -1355,7 +1427,6 @@ $('addMealFood').onclick=async()=>{
   $('mealFoodResult').value='';
   $('mealFoodSelectedLabel').classList.add('hidden');
   $('mealFoodSearch').value='';
-  $('mealFoodResultsList').classList.add('hidden');
   $('mealFoodGrams').value=100;
   $('mealFoodMeasureQty').value=1;
   $('mealFoodCustomQty').value=1;
