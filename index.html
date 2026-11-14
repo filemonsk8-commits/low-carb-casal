@@ -1050,7 +1050,7 @@ function getFoodPreparation(food){
  const text=normalizeMeasureText(food&&(food.description||food.name)||'');
  if(prep)return prep;
  if(/(^|[,\s])cru[oa]s?([,\s]|$)/.test(text))return 'cru';
- if(/cozid[oa]|cozido\\//.test(text))return 'cozido';
+ if(/cozid[oa]|cozido\//.test(text))return 'cozido';
  if(/grelhad[oa]/.test(text))return 'grelhado';
  if(/assad[oa]/.test(text))return 'assado';
  if(/refogad[oa]/.test(text))return 'refogado';
