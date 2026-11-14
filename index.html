@@ -667,8 +667,8 @@ function render(){
  const weekStartISO=localISODate(weekStart);
  const mealsThisWeek=meals.filter(x=>x.eaten_on>=weekStartISO&&x.eaten_on<=todayDate);
  const mealsToday=meals.filter(x=>x.eaten_on===todayDate);
- const todaysNutrition=mealsToday.reduce((a,x)=>{a.calories+=Number(x.calories_kcal||0);a.protein+=Number(x.protein_g||0);a.carbs+=Number(x.carbohydrate_g||0);a.fat+=Number(x.fat_g||0);a.fiber+=Number(x.fiber_g||0);return a;},{calories:0,protein:0,carbs:0,fat:0,fiber:0});
- if($('dailyNutritionSummary'))$('dailyNutritionSummary').innerHTML='<strong>Hoje: '+num(todaysNutrition.calories)+' kcal</strong> · Proteínas '+num(todaysNutrition.protein)+' g · Carboidratos '+num(todaysNutrition.carbs)+' g · Gorduras '+num(todaysNutrition.fat)+' g · Fibras '+num(todaysNutrition.fiber)+' g';
+ const sumKnown=key=>{const vals=mealsToday.map(x=>x[key]).filter(v=>v!==null&&v!==undefined);return vals.length?vals.reduce((a,v)=>a+Number(v),0):null;};
+ if($('dailyNutritionSummary'))$('dailyNutritionSummary').innerHTML='<strong>Hoje: '+fmtNutrient(sumKnown('calories_kcal'),'kcal')+'</strong> · Proteínas '+fmtNutrient(sumKnown('protein_g'))+' · Carboidratos '+fmtNutrient(sumKnown('carbohydrate_g'))+' · Gorduras '+fmtNutrient(sumKnown('fat_g'))+' · Fibras '+fmtNutrient(sumKnown('fiber_g'));
 
  $('todayLabel').textContent=new Intl.DateTimeFormat('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(new Date());
  $('myWeight').textContent=a?num(a.weight_kg):'—';
@@ -811,7 +811,10 @@ function nutritionValue(food,key){
 }
 function fmtNutrient(v,unit='g'){return v===null?'—':num(v)+' '+unit}
 function mealTotals(){
- return selectedMealFoods.reduce((a,x)=>{for(const k of ['calories','protein','carbs','fat','fiber'])a[k]+=Number(x[k]||0);return a;},{calories:0,protein:0,carbs:0,fat:0,fiber:0});
+ const keys=['calories','protein','carbs','fat','fiber'];
+ const out={};
+ keys.forEach(k=>{const vals=selectedMealFoods.map(x=>x[k]).filter(v=>v!==null&&v!==undefined&&Number.isFinite(Number(v)));out[k]=vals.length?vals.reduce((a,v)=>a+Number(v),0):null;});
+ return out;
 }
 function renderSelectedMealFoods(){
  const target=$('selectedMealFoods');
@@ -1017,11 +1020,11 @@ $('addMealFood').onclick=async()=>{
   if(person!=='Minha esposa'&&isFishFood(meta||base)){notice('message','Peixes e frutos do mar estão disponíveis somente para Nádia.',true);return;}
   const factor=grams/100;
   const item={id:Number(id),name:base.description||meta.description,category:base.category||meta.category,grams,
-   calories:(nutritionValue(base,'energy_kcal')||0)*factor,
-   protein:(nutritionValue(base,'protein_g')||0)*factor,
-   carbs:(nutritionValue(base,'carbohydrate_g')||0)*factor,
-   fat:(nutritionValue(base,'lipids_g')||0)*factor,
-   fiber:(nutritionValue(base,'dietary_fiber_g')||0)*factor,
+   calories:nutritionValue(base,'energy_kcal')===null?null:nutritionValue(base,'energy_kcal')*factor,
+   protein:nutritionValue(base,'protein_g')===null?null:nutritionValue(base,'protein_g')*factor,
+   carbs:nutritionValue(base,'carbohydrate_g')===null?null:nutritionValue(base,'carbohydrate_g')*factor,
+   fat:nutritionValue(base,'lipids_g')===null?null:nutritionValue(base,'lipids_g')*factor,
+   fiber:nutritionValue(base,'dietary_fiber_g')===null?null:nutritionValue(base,'dietary_fiber_g')*factor,
    source:'TACO/NEPA-UNICAMP'};
   selectedMealFoods.push(item);
   $('mealFoodResult').value='';
