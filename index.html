@@ -431,6 +431,7 @@ form{grid-template-columns:1fr}
      <input id="mealFoodSearch" placeholder="Digite o nome: ovo, frango, banana, queijo..." autocomplete="off">
      <select id="mealFoodResult" class="hidden" aria-hidden="true" tabindex="-1"><option value="">Selecione um alimento</option></select>
      <div id="mealFoodResultsList" class="food-results-list hidden" role="listbox" aria-label="Resultados da busca de alimentos"></div>
+     <div id="mealFoodCatalogStatus" class="food-help">Carregando catálogo de alimentos...</div>
      <div id="mealFoodSelectedLabel" class="food-selected-label hidden"></div>
      <p class="food-help">Escolha o alimento que corresponde ao preparo. Os valores nutricionais da TACO são calculados a partir de 100 g da parte comestível.</p>
     </div>
@@ -1000,16 +1001,24 @@ function updateMealMeasureUI(){
 }
 async function loadTacoCatalog(){
  const select=$('mealFoodResult');
+ const status=$('mealFoodCatalogStatus');
+ status.textContent='Carregando catálogo de alimentos...';
+ status.classList.remove('hidden');
  try{
-  const response=await fetch(TACO_BASE+'foods.json');
-  if(!response.ok)throw new Error('Catálogo indisponível');
+  const response=await fetch(TACO_BASE+'foods.json',{cache:'no-cache'});
+  if(!response.ok)throw new Error('Servidor respondeu '+response.status);
   const data=await response.json();
-  tacoFoods=data.foods||[];
+  if(!Array.isArray(data.foods)||!data.foods.length)throw new Error('O catálogo retornou vazio');
+  tacoFoods=data.foods;
   tacoCatalogReady=true;
+  status.textContent='Catálogo carregado: '+tacoFoods.length+' alimentos. Digite para pesquisar.';
   renderTacoSearch();
   updateMealMeasureUI();
  }catch(error){
-  select.innerHTML='<option value="">Não foi possível carregar o catálogo. Verifique a internet.</option>';
+  tacoCatalogReady=false;
+  status.innerHTML='Não foi possível carregar os alimentos. <button type="button" id="retryMealCatalog" class="secondary" style="margin-top:6px">Tentar novamente</button>';
+  $('retryMealCatalog').onclick=loadTacoCatalog;
+  select.innerHTML='<option value="">Catálogo indisponível</option>';
  }
 }
 function isFishFood(food){
@@ -1021,13 +1030,19 @@ function renderTacoSearch(){
  const person=currentMealPerson();
  const filtered=tacoFoods.filter(f=>(!q||normalizeMeasureText((f.description||'')+' '+(f.category||'')).includes(q))&&(person==='Minha esposa'||!isFishFood(f))).slice(0,80);
  const list=$('mealFoodResultsList');
+ const status=$('mealFoodCatalogStatus');
  $('mealFoodResult').innerHTML='<option value="">Selecione um alimento</option>'+filtered.map(f=>'<option value="'+f.id+'">'+esc(f.description)+' · '+esc(f.category)+'</option>').join('');
+ if(!tacoCatalogReady){
+  list.classList.add('hidden');
+  if(status)status.classList.remove('hidden');
+  return;
+ }
  if(!filtered.length){
   list.innerHTML='<div class="food-results-empty">Nenhum alimento encontrado. Tente outro nome.</div>';
  }else{
   list.innerHTML=filtered.map(f=>'<button type="button" class="food-result-option" role="option" data-food-id="'+f.id+'"><span><strong>'+esc(f.description)+'</strong><small>'+esc(f.category||'Alimento')+'</small></span><span class="food-result-arrow">›</span></button>').join('');
  }
- list.classList.toggle('hidden',!q||!tacoFoods.length);
+ list.classList.toggle('hidden',!q);
  list.querySelectorAll('[data-food-id]').forEach(button=>{
   button.addEventListener('click',()=>{
    $('mealFoodResult').value=button.dataset.foodId;
@@ -1255,7 +1270,7 @@ $('measurementForm').onsubmit=e=>{
 
 
 $('mealFoodSearch').addEventListener('input',renderTacoSearch);
-$('mealFoodSearch').addEventListener('focus',()=>{if($('mealFoodSearch').value.trim())renderTacoSearch();});
+$('mealFoodSearch').addEventListener('focus',()=>{if(!tacoCatalogReady)loadTacoCatalog();else renderTacoSearch();});
 document.querySelectorAll('[data-meal-type]').forEach(button=>{
  button.addEventListener('click',()=>{
   $('mealType').value=button.dataset.mealType;
