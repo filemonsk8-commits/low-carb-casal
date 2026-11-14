@@ -1031,7 +1031,7 @@ async function loadTacoCatalog(){
   if(!Array.isArray(data.foods)||!data.foods.length)throw new Error('O catálogo retornou vazio');
   tacoFoods=data.foods;
   tacoCatalogReady=true;
-  status.textContent='Catálogo carregado: '+tacoFoods.length+' alimentos. Digite para pesquisar.';
+  status.textContent='Catálogo carregado: '+tacoFoods.length+' alimentos. Use os filtros ou digite para pesquisar.';
   renderTacoSearch();
   updateMealMeasureUI();
  }catch(error){
@@ -1098,10 +1098,9 @@ function renderTacoSearch(){
   filtered=filtered.filter(f=>normalizeMeasureText((f.description||'')+' '+(f.category||'')+' '+getFoodPreparationLabel(f)).includes(q));
  }else if(mealFoodCategoryFilter==='Sugestões'){
   filtered=MEAL_FOOD_QUICK_IDS.map(id=>safeFoods.find(f=>Number(f.id)===id)).filter(Boolean);
- }else if(mealFoodCategoryFilter==='Todos'){
-  filtered=filtered.slice(0,100);
  }else{
-  filtered=filtered.slice(0,60);
+  // Mantém todos os alimentos seguros da categoria; a lista tem rolagem própria.
+  filtered=filtered;
  }
  const catalogCount=safeFoods.length;
  $('mealFoodResult').innerHTML='<option value="">Selecione um alimento</option>'+filtered.map(f=>'<option value="'+f.id+'">'+esc(f.description)+'</option>').join('');
