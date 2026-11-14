@@ -332,34 +332,16 @@ form{grid-template-columns:1fr}
      </select>
     </div>
     <div class="full">
-     <label for="mealFood">Escolha os alimentos</label>
-     <div class="food-picker">
-      <select id="mealFood">
-       <option value="">Selecione um alimento...</option>
-       <optgroup label="Proteínas e ovos">
-        <option>Ovos mexidos</option><option>Ovos cozidos</option><option>Omelete</option><option>Frango grelhado</option><option>Frango desfiado</option><option>Coxa ou sobrecoxa assada</option><option>Carne bovina grelhada</option><option>Carne moída</option><option>Carne assada</option><option>Hambúrguer caseiro sem pão</option>
-       </optgroup>
-       <optgroup label="Queijos e laticínios">
-        <option>Queijo muçarela</option><option>Queijo minas</option><option>Queijo parmesão</option><option>Requeijão</option><option>Iogurte natural sem açúcar</option><option>Creme de leite</option>
-       </optgroup>
-       <optgroup label="Verduras e legumes">
-        <option>Alface</option><option>Rúcula</option><option>Couve refogada</option><option>Espinafre</option><option>Repolho</option><option>Brócolis</option><option>Couve-flor</option><option>Abobrinha</option><option>Pepino</option><option>Tomate</option><option>Berinjela</option><option>Chuchu</option><option>Vagem</option><option>Pimentão</option><option>Cogumelos</option><option>Salada de folhas</option><option>Legumes refogados</option>
-       </optgroup>
-       <optgroup label="Frutas, sementes e acompanhamentos">
-        <option>Abacate</option><option>Morangos</option><option>Maçã pequena</option><option>Castanhas</option><option>Amendoim sem açúcar</option><option>Chia</option><option>Linhaça</option><option>Azeitonas</option><option>Coco sem açúcar</option>
-       </optgroup>
-       <optgroup label="Bebidas e complementos">
-        <option>Café sem açúcar</option><option>Chá sem açúcar</option><option>Água</option><option>Água com limão</option><option>Azeite de oliva</option><option>Temperos naturais</option>
-       </optgroup>
-      </select>
-      <button type="button" id="addMealFood">+ Adicionar</button>
+     <label for="mealFoodSearch">Buscar alimento (catálogo TACO – 597 itens)</label>
+     <input id="mealFoodSearch" placeholder="Digite: frango, ovo, abacate, peixe..." autocomplete="off">
+     <select id="mealFoodResult" style="margin-top:8px"><option value="">Carregando catálogo nutricional...</option></select>
+     <div class="food-picker" style="margin-top:8px">
+      <input id="mealFoodGrams" type="number" min="1" max="3000" step="1" value="100" aria-label="Quantidade em gramas" placeholder="Gramas">
+      <button type="button" id="addMealFood">+ Adicionar alimento</button>
      </div>
-     <p class="food-help">Escolha um alimento por vez. Você pode adicionar vários itens ao mesmo lançamento.</p>
+     <p class="food-help">Valores por 100 g. Informe a quantidade em gramas; calorias e nutrientes serão recalculados automaticamente. Peixes e frutos do mar só aparecem para Nádia.</p>
      <div id="selectedMealFoods" class="food-chips"><span class="food-empty">Nenhum alimento selecionado ainda.</span></div>
-    </div>
-    <div class="full">
-     <label for="mealPortion">Porção ou quantidade (opcional)</label>
-     <input id="mealPortion" placeholder="Ex.: 2 ovos, 130 g de frango, 1 pote">
+     <div id="mealNutritionTotal" class="notice">Total da refeição: 0 kcal</div>
     </div>
     <div class="full">
      <label for="mealNotes">Observações (opcional)</label>
@@ -373,6 +355,7 @@ form{grid-template-columns:1fr}
 
   <div class="card span8">
    <h2>Registros de alimentação</h2>
+   <div id="dailyNutritionSummary" class="notice">Resumo nutricional do dia</div>
    <div id="mealHistory" class="tablewrap"></div>
   </div>
  </section>
@@ -470,6 +453,8 @@ let measurements = [];
 let meals = [];
 let shopping = [];
 let selectedMealFoods = [];
+let tacoFoods = [];
+let tacoCatalogReady = false;
 
 const $ = id => document.getElementById(id);
 const today = localISODate();
@@ -555,6 +540,8 @@ async function showApp(user){
   const ownPerson=member.member_name==='Eduardo'?'Eu':'Minha esposa';
   $('person').value=ownPerson;
   $('mealPerson').value=ownPerson;
+  if(!tacoCatalogReady)loadTacoCatalog();
+  renderTacoSearch();
   $('familyInviteCode').textContent=house.invite_code;
   $('familyMemberStatus').textContent=`${householdMembers.length} de 2 perfis vinculados`;
   $('familyInviteCard').classList.toggle('hidden',householdMembers.length>=2);
@@ -680,6 +667,8 @@ function render(){
  const weekStartISO=localISODate(weekStart);
  const mealsThisWeek=meals.filter(x=>x.eaten_on>=weekStartISO&&x.eaten_on<=todayDate);
  const mealsToday=meals.filter(x=>x.eaten_on===todayDate);
+ const todaysNutrition=mealsToday.reduce((a,x)=>{a.calories+=Number(x.calories_kcal||0);a.protein+=Number(x.protein_g||0);a.carbs+=Number(x.carbohydrate_g||0);a.fat+=Number(x.fat_g||0);a.fiber+=Number(x.fiber_g||0);return a;},{calories:0,protein:0,carbs:0,fat:0,fiber:0});
+ if($('dailyNutritionSummary'))$('dailyNutritionSummary').innerHTML='<strong>Hoje: '+num(todaysNutrition.calories)+' kcal</strong> · Proteínas '+num(todaysNutrition.protein)+' g · Carboidratos '+num(todaysNutrition.carbs)+' g · Gorduras '+num(todaysNutrition.fat)+' g · Fibras '+num(todaysNutrition.fiber)+' g';
 
  $('todayLabel').textContent=new Intl.DateTimeFormat('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(new Date());
  $('myWeight').textContent=a?num(a.weight_kg):'—';
@@ -742,8 +731,9 @@ function render(){
     <td>${esc(personLabel(x.person))}</td>
     <td>${esc(x.meal_type)}</td>
     <td>${esc(x.description)}</td>
+    <td>${x.calories_kcal!==null&&x.calories_kcal!==undefined?num(x.calories_kcal)+' kcal':'—'}</td>
    </tr>`),
-  ['Data','Pessoa','Refeição','Alimentos']
+  ['Data','Pessoa','Refeição','Alimentos','Calorias']
  );
 
  $('measurementHistory').innerHTML=table(
@@ -765,10 +755,10 @@ function render(){
     <td>${fmtDate(x.eaten_on)}</td>
     <td>${esc(personLabel(x.person))}</td>
     <td>${esc(x.meal_type)}</td>
-    <td>${esc(x.description)}</td>
+    <td>${esc(x.description)}<br><small class="muted">${x.calories_kcal!==null&&x.calories_kcal!==undefined?num(x.calories_kcal)+' kcal':'Calorias não registradas'}</small></td>
     <td><button class="danger" style="padding:6px 9px" onclick="deleteMeal('${x.id}')">Excluir</button></td>
    </tr>`),
-  ['Data','Pessoa','Refeição','Descrição','']
+  ['Data','Pessoa','Refeição','Descrição / calorias','']
  );
 
  $('shoppingList').innerHTML=shopping.length
@@ -785,19 +775,56 @@ function render(){
  drawChart();
 }
 
+const TACO_BASE='https://brolesi.github.io/taco/';
+async function loadTacoCatalog(){
+ const select=$('mealFoodResult');
+ try{
+  const response=await fetch(TACO_BASE+'foods.json');
+  if(!response.ok)throw new Error('Catálogo indisponível');
+  const data=await response.json();
+  tacoFoods=data.foods||[];
+  tacoCatalogReady=true;
+  renderTacoSearch();
+ }catch(error){
+  select.innerHTML='<option value="">Não foi possível carregar o catálogo. Verifique a internet.</option>';
+ }
+}
+function isFishFood(food){
+ const text=(food.category+' '+food.description).toLowerCase();
+ return /pescados|peixes|frutos do mar|atum|sardinha|tilápia|tilapia|salmão|salmao|bacalhau|merluza|camarão|camarao|siri|caranguejo|ostra|mexilhão|mexilhao/.test(text);
+}
+function renderTacoSearch(){
+ const q=($('mealFoodSearch').value||'').trim().toLocaleLowerCase('pt-BR');
+ const person=$('mealPerson').value;
+ const filtered=tacoFoods.filter(f=>(!q||(f.description+' '+f.category).toLocaleLowerCase('pt-BR').includes(q))&&(person==='Minha esposa'||!isFishFood(f))).slice(0,80);
+ $('mealFoodResult').innerHTML='<option value="">Selecione um alimento ('+filtered.length+' resultados)</option>'+filtered.map(f=>'<option value="'+f.id+'">'+esc(f.description)+' · '+esc(f.category)+'</option>').join('');
+}
+async function fetchTacoFood(id){
+ const response=await fetch(TACO_BASE+'foods/'+id+'.json');
+ if(!response.ok)throw new Error('Não foi possível consultar os nutrientes deste alimento.');
+ const data=await response.json();
+ return data.food||data;
+}
+function nutritionValue(food,key){
+ const v=food[key];
+ return v===null||v===undefined||v===''?null:Number(v);
+}
+function fmtNutrient(v,unit='g'){return v===null?'—':num(v)+' '+unit}
+function mealTotals(){
+ return selectedMealFoods.reduce((a,x)=>{for(const k of ['calories','protein','carbs','fat','fiber'])a[k]+=Number(x[k]||0);return a;},{calories:0,protein:0,carbs:0,fat:0,fiber:0});
+}
 function renderSelectedMealFoods(){
  const target=$('selectedMealFoods');
  if(!selectedMealFoods.length){
   target.innerHTML='<span class="food-empty">Nenhum alimento selecionado ainda.</span>';
+  $('mealNutritionTotal').textContent='Total da refeição: 0 kcal';
   return;
  }
- target.innerHTML=selectedMealFoods.map((food,index)=>`<span class="food-chip">${esc(food)}<button type="button" aria-label="Remover ${esc(food)}" onclick="removeMealFood(${index})">×</button></span>`).join('');
+ target.innerHTML=selectedMealFoods.map((food,index)=>'<span class="food-chip">'+esc(food.name)+' · '+num(food.grams)+' g · '+num(food.calories)+' kcal <button type="button" aria-label="Remover alimento" onclick="removeMealFood('+index+')">×</button></span>').join('');
+ const t=mealTotals();
+ $('mealNutritionTotal').innerHTML='<strong>Total: '+num(t.calories)+' kcal</strong> · Proteínas '+num(t.protein)+' g · Carboidratos '+num(t.carbs)+' g · Gorduras '+num(t.fat)+' g · Fibras '+num(t.fiber)+' g';
 }
-
-window.removeMealFood=index=>{
- selectedMealFoods.splice(index,1);
- renderSelectedMealFoods();
-};
+window.removeMealFood=index=>{selectedMealFoods.splice(index,1);renderSelectedMealFoods();};
 
 function drawChart(){
  const svg=$('chart');
@@ -976,45 +1003,55 @@ $('measurementForm').onsubmit=e=>{
  });
 };
 
-$('addMealFood').onclick=()=>{
- const food=$('mealFood').value;
- if(!food)return;
- if(!selectedMealFoods.includes(food))selectedMealFoods.push(food);
- $('mealFood').value='';
- renderSelectedMealFoods();
+$('mealFoodSearch').addEventListener('input',renderTacoSearch);
+$('mealPerson').addEventListener('change',renderTacoSearch);
+$('addMealFood').onclick=async()=>{
+ const id=$('mealFoodResult').value;
+ const grams=Number($('mealFoodGrams').value);
+ if(!id){notice('message','Escolha um alimento do catálogo.',true);return;}
+ if(!Number.isFinite(grams)||grams<=0){notice('message','Informe a quantidade em gramas.',true);return;}
+ try{
+  const base=await fetchTacoFood(id);
+  const person=$('mealPerson').value;
+  const meta=tacoFoods.find(x=>String(x.id)===String(id));
+  if(person!=='Minha esposa'&&isFishFood(meta||base)){notice('message','Peixes e frutos do mar estão disponíveis somente para Nádia.',true);return;}
+  const factor=grams/100;
+  const item={id:Number(id),name:base.description||meta.description,category:base.category||meta.category,grams,
+   calories:(nutritionValue(base,'energy_kcal')||0)*factor,
+   protein:(nutritionValue(base,'protein_g')||0)*factor,
+   carbs:(nutritionValue(base,'carbohydrate_g')||0)*factor,
+   fat:(nutritionValue(base,'lipids_g')||0)*factor,
+   fiber:(nutritionValue(base,'dietary_fiber_g')||0)*factor,
+   source:'TACO/NEPA-UNICAMP'};
+  selectedMealFoods.push(item);
+  $('mealFoodResult').value='';
+  renderSelectedMealFoods();
+ }catch(error){notice('message',error.message,true);}
 };
 
 $('mealForm').onsubmit=e=>{
  e.preventDefault();
- const portion=$('mealPortion').value.trim();
  const notes=$('mealNotes').value.trim();
  const parts=[];
- if(selectedMealFoods.length)parts.push('Alimentos: '+selectedMealFoods.join(', '));
- if(portion)parts.push('Porção: '+portion);
+ if(selectedMealFoods.length)parts.push('Alimentos: '+selectedMealFoods.map(x=>x.name+' ('+x.grams+' g)').join(', '));
  if(notes)parts.push('Observações: '+notes);
  const description=parts.join(' | ');
- if(!description){
-  notice('message','Selecione pelo menos um alimento ou preencha as observações.',true);
-  return;
- }
-
+ if(!selectedMealFoods.length){notice('message','Adicione pelo menos um alimento do catálogo para calcular as calorias.',true);return;}
+ const totals=mealTotals();
  run(async()=>{
   const {error}=await db.from('meal_logs').insert({
-   user_id:currentUser.id,
-   household_id:currentHousehold.id,
-   person:$('mealPerson').value,
-   eaten_on:$('mealDate').value,
-   meal_type:$('mealType').value,
-   description
+   user_id:currentUser.id,household_id:currentHousehold.id,
+   person:$('mealPerson').value,eaten_on:$('mealDate').value,
+   meal_type:$('mealType').value,description,
+   calories_kcal:totals.calories,protein_g:totals.protein,
+   carbohydrate_g:totals.carbs,fat_g:totals.fat,fiber_g:totals.fiber,
+   meal_items:selectedMealFoods
   });
-
   if(error)throw error;
-
-  $('mealForm').reset();
-  selectedMealFoods=[];
-  renderSelectedMealFoods();
+  $('mealForm').reset();selectedMealFoods=[];renderSelectedMealFoods();
   $('mealDate').value=today;
   $('mealPerson').value=currentMember.member_name==='Eduardo'?'Eu':'Minha esposa';
+  renderTacoSearch();
  });
 };
 
