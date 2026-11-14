@@ -1592,7 +1592,7 @@ if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
 /* Recuperação independente do formulário caso algum erro anterior interrompa o script principal. */
 (function(){
  const form=document.getElementById('authForm');
- if(!form || !window.supabase) return;
+ if(!form) return;
  form.addEventListener('submit',async function(ev){
   ev.preventDefault();
   ev.stopImmediatePropagation();
@@ -1605,6 +1605,7 @@ if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
   msg.textContent='Conectando...';
   btn.disabled=true;
   try{
+   if(!window.supabase || typeof window.supabase.createClient!=='function') throw new Error('O serviço de acesso não carregou. Verifique sua internet, atualize a página e tente novamente. Seus dados foram mantidos nos campos.');
    const client=window.supabase.createClient("https://pdvelxvewuatedwhifpv.supabase.co","sb_publishable__QIiwci0ePZjvPTbK4mIjg_b1JWJYlV");
    const {data,error}=await client.auth.signInWithPassword({email,password});
    if(error) throw error;
