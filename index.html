@@ -199,6 +199,18 @@ form{grid-template-columns:1fr}
 @media(max-width:900px){.meal-content-grid{grid-template-columns:1fr}.meal-history-list{max-height:none}}
 @media(max-width:560px){.meal-hero{padding:20px 17px;border-radius:17px}.meal-hero-mark{width:58px;height:58px;flex-basis:58px;border-radius:16px}.meal-hero-mark span{font-size:24px}.meal-builder,.meal-history-panel{padding:14px}.meal-type-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.measure-mode-btn{font-size:9px}.quantity-controls{grid-template-columns:1fr}.quantity-controls p{grid-column:auto}.meal-card-heading h3{font-size:15px}.meal-lockup{font-size:8px}.person-choice-btn{padding:8px}.person-initial{width:30px;height:30px}}
 
+
+/* Busca de alimentos: lista própria, sem dropdown nativo do navegador */
+.food-results-list{display:grid;gap:5px;max-height:260px;overflow:auto;padding:6px;margin-top:8px;border:1px solid #315a7d;border-radius:13px;background:#091a2d;box-shadow:0 12px 28px rgba(0,0,0,.22)}
+.food-result-option{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;padding:10px 11px;text-align:left;border:1px solid transparent;border-radius:9px;background:#112b46;color:#e4f2ff}
+.food-result-option:hover,.food-result-option:focus{background:#19466d;border-color:#4aa9eb;outline:none}
+.food-result-option strong{display:block;font-size:12px;font-weight:700;line-height:1.35}
+.food-result-option small{display:block;color:#a9c3da;font-size:10px;margin-top:3px}
+.food-result-option .food-result-arrow{color:#77caff;font-size:17px;flex:0 0 auto}
+.food-results-empty{padding:12px;color:#9eb4c9;font-size:11px;text-align:center}
+.food-selected-label{margin-top:8px;padding:9px 11px;border-radius:10px;border:1px solid #3478a8;background:#123654;color:#dff2ff;font-size:11px}
+.food-selected-label strong{color:#fff}
+
 </style>
 </head>
 <body>
@@ -393,17 +405,7 @@ form{grid-template-columns:1fr}
     <span class="meal-lockup">TACO + medidas caseiras</span>
    </div>
    <form id="mealForm">
-    <div class="full">
-     <label>Quem fez a refeição?</label>
-     <div class="person-choice">
-      <button type="button" class="person-choice-btn active" data-meal-person="Eu"><span class="person-initial">E</span><span><strong>Eduardo</strong><small>Meu registro</small></span></button>
-      <button type="button" class="person-choice-btn" data-meal-person="Minha esposa"><span class="person-initial nadia-initial">N</span><span><strong>Nádia</strong><small>Registro dela</small></span></button>
-     </div>
-     <select id="mealPerson" class="hidden" aria-hidden="true" tabindex="-1">
-      <option value="Eu">Eduardo</option>
-      <option value="Minha esposa">Nádia</option>
-     </select>
-    </div>
+
 
     <div>
      <label for="mealDate">Data</label>
@@ -427,7 +429,9 @@ form{grid-template-columns:1fr}
     <div class="full food-search-area">
      <label for="mealFoodSearch">Buscar alimento no catálogo nutricional</label>
      <input id="mealFoodSearch" placeholder="Digite o nome: ovo, frango, banana, queijo..." autocomplete="off">
-     <select id="mealFoodResult" style="margin-top:9px"><option value="">Carregando catálogo nutricional...</option></select>
+     <select id="mealFoodResult" class="hidden" aria-hidden="true" tabindex="-1"><option value="">Selecione um alimento</option></select>
+     <div id="mealFoodResultsList" class="food-results-list hidden" role="listbox" aria-label="Resultados da busca de alimentos"></div>
+     <div id="mealFoodSelectedLabel" class="food-selected-label hidden"></div>
      <p class="food-help">Escolha o alimento que corresponde ao preparo. Os valores nutricionais da TACO são calculados a partir de 100 g da parte comestível.</p>
     </div>
 
@@ -607,6 +611,8 @@ function num(v){
  return Number(v).toLocaleString('pt-BR',{maximumFractionDigits:1});
 }
 
+function currentMealPerson(){return currentMember&&currentMember.member_name==='Nádia'?'Minha esposa':'Eu';}
+
 function personLabel(person){
  return person==='Eu'?'Eduardo':person==='Minha esposa'?'Nádia':String(person||'');
 }
@@ -663,9 +669,6 @@ async function showApp(user){
   $('goalWaist').value=member.target_waist_cm??'';
   const ownPerson=member.member_name==='Eduardo'?'Eu':'Minha esposa';
   $('person').value=ownPerson;
-  $('mealPerson').value=ownPerson;
-  syncMealPersonChoices();
-  syncMealTypeButtons();
   if(!tacoCatalogReady)loadTacoCatalog();
   renderTacoSearch();
   $('familyInviteCode').textContent=house.invite_code;
@@ -792,7 +795,8 @@ function render(){
  weekStart.setDate(weekStart.getDate()-6);
  const weekStartISO=localISODate(weekStart);
  const mealsThisWeek=meals.filter(x=>x.eaten_on>=weekStartISO&&x.eaten_on<=todayDate);
- const mealsToday=meals.filter(x=>x.eaten_on===todayDate);
+ const ownPersonForMeals=currentMealPerson();
+ const mealsToday=meals.filter(x=>x.eaten_on===todayDate&&x.person===ownPersonForMeals);
  const sumKnown=key=>{const vals=mealsToday.map(x=>x[key]).filter(v=>v!==null&&v!==undefined);return vals.length?vals.reduce((a,v)=>a+Number(v),0):null;};
  if($('dailyNutritionSummary'))$('dailyNutritionSummary').innerHTML='<strong>Hoje: '+fmtNutrient(sumKnown('calories_kcal'),'kcal')+'</strong> · Proteínas '+fmtNutrient(sumKnown('protein_g'))+' · Carboidratos '+fmtNutrient(sumKnown('carbohydrate_g'))+' · Gorduras '+fmtNutrient(sumKnown('fat_g'))+' · Fibras '+fmtNutrient(sumKnown('fiber_g'));
 
@@ -877,8 +881,9 @@ function render(){
  );
 
 
- $('mealHistory').innerHTML=meals.length
-  ?meals.slice().sort((a,b)=>String(b.eaten_on).localeCompare(String(a.eaten_on))).map(x=>{
+ const ownMealHistory=meals.filter(x=>x.person===currentMealPerson());
+ $('mealHistory').innerHTML=ownMealHistory.length
+  ?ownMealHistory.slice().sort((a,b)=>String(b.eaten_on).localeCompare(String(a.eaten_on))).map(x=>{
    const items=Array.isArray(x.meal_items)?x.meal_items:[];
    const foods=items.length
     ?'<div class="meal-history-foods">'+items.map(item=>'<span>'+esc(item.name)+' · '+esc(item.portionLabel||num(item.grams)+' g')+'</span>').join('')+'</div>'
@@ -953,11 +958,6 @@ function currentMealFood(){
  const id=$('mealFoodResult').value;
  return tacoFoods.find(food=>String(food.id)===String(id))||null;
 }
-function syncMealPersonChoices(){
- document.querySelectorAll('[data-meal-person]').forEach(button=>{
-  button.classList.toggle('active',button.dataset.mealPerson===$('mealPerson').value);
- });
-}
 function syncMealTypeButtons(){
  document.querySelectorAll('[data-meal-type]').forEach(button=>{
   button.classList.toggle('active',button.dataset.mealType===$('mealType').value);
@@ -1018,9 +1018,26 @@ function isFishFood(food){
 }
 function renderTacoSearch(){
  const q=normalizeMeasureText(($('mealFoodSearch').value||'').trim());
- const person=$('mealPerson').value;
+ const person=currentMealPerson();
  const filtered=tacoFoods.filter(f=>(!q||normalizeMeasureText((f.description||'')+' '+(f.category||'')).includes(q))&&(person==='Minha esposa'||!isFishFood(f))).slice(0,80);
- $('mealFoodResult').innerHTML='<option value="">Selecione um alimento ('+filtered.length+' resultados)</option>'+filtered.map(f=>'<option value="'+f.id+'">'+esc(f.description)+' · '+esc(f.category)+'</option>').join('');
+ const list=$('mealFoodResultsList');
+ $('mealFoodResult').innerHTML='<option value="">Selecione um alimento</option>'+filtered.map(f=>'<option value="'+f.id+'">'+esc(f.description)+' · '+esc(f.category)+'</option>').join('');
+ if(!filtered.length){
+  list.innerHTML='<div class="food-results-empty">Nenhum alimento encontrado. Tente outro nome.</div>';
+ }else{
+  list.innerHTML=filtered.map(f=>'<button type="button" class="food-result-option" role="option" data-food-id="'+f.id+'"><span><strong>'+esc(f.description)+'</strong><small>'+esc(f.category||'Alimento')+'</small></span><span class="food-result-arrow">›</span></button>').join('');
+ }
+ list.classList.toggle('hidden',!q||!tacoFoods.length);
+ list.querySelectorAll('[data-food-id]').forEach(button=>{
+  button.addEventListener('click',()=>{
+   $('mealFoodResult').value=button.dataset.foodId;
+   const selected=filtered.find(f=>String(f.id)===String(button.dataset.foodId));
+   $('mealFoodSelectedLabel').innerHTML='Selecionado: <strong>'+esc(selected.description)+'</strong>';
+   $('mealFoodSelectedLabel').classList.remove('hidden');
+   list.classList.add('hidden');
+   updateMealMeasureUI();
+  });
+ });
  updateMealMeasureUI();
 }
 async function fetchTacoFood(id){
@@ -1238,18 +1255,7 @@ $('measurementForm').onsubmit=e=>{
 
 
 $('mealFoodSearch').addEventListener('input',renderTacoSearch);
-$('mealPerson').addEventListener('change',()=>{
- syncMealPersonChoices();
- renderTacoSearch();
-});
-$('mealFoodResult').addEventListener('change',updateMealMeasureUI);
-document.querySelectorAll('[data-meal-person]').forEach(button=>{
- button.addEventListener('click',()=>{
-  $('mealPerson').value=button.dataset.mealPerson;
-  syncMealPersonChoices();
-  renderTacoSearch();
- });
-});
+$('mealFoodSearch').addEventListener('focus',()=>{if($('mealFoodSearch').value.trim())renderTacoSearch();});
 document.querySelectorAll('[data-meal-type]').forEach(button=>{
  button.addEventListener('click',()=>{
   $('mealType').value=button.dataset.mealType;
@@ -1264,7 +1270,7 @@ $('addMealFood').onclick=async()=>{
  if(!id){notice('message','Escolha um alimento do catálogo.',true);return;}
  try{
   const base=await fetchTacoFood(id);
-  const person=$('mealPerson').value;
+  const person=currentMealPerson();
   const meta=tacoFoods.find(x=>String(x.id)===String(id));
   if(person!=='Minha esposa'&&isFishFood(meta||base)){
    notice('message','Peixes e frutos do mar estão disponíveis somente para Nádia.',true);
@@ -1310,6 +1316,9 @@ $('addMealFood').onclick=async()=>{
   };
   selectedMealFoods.push(item);
   $('mealFoodResult').value='';
+  $('mealFoodSelectedLabel').classList.add('hidden');
+  $('mealFoodSearch').value='';
+  $('mealFoodResultsList').classList.add('hidden');
   $('mealFoodGrams').value=100;
   $('mealFoodMeasureQty').value=1;
   $('mealFoodCustomQty').value=1;
@@ -1336,7 +1345,7 @@ $('mealForm').onsubmit=e=>{
  run(async()=>{
   const {error}=await db.from('meal_logs').insert({
    user_id:currentUser.id,household_id:currentHousehold.id,
-   person:$('mealPerson').value,eaten_on:$('mealDate').value,
+   person:currentMealPerson(),eaten_on:$('mealDate').value,
    meal_type:$('mealType').value,description,
    calories_kcal:totals.calories,protein_g:totals.protein,
    carbohydrate_g:totals.carbs,fat_g:totals.fat,fiber_g:totals.fiber,
@@ -1346,8 +1355,7 @@ $('mealForm').onsubmit=e=>{
   $('mealForm').reset();
   selectedMealFoods=[];
   $('mealDate').value=today;
-  $('mealPerson').value=currentMember.member_name==='Eduardo'?'Eu':'Minha esposa';
-  $('mealType').value='Café da manhã';
+   $('mealType').value='Café da manhã';
   $('mealFoodGrams').value=100;
   $('mealFoodMeasureQty').value=1;
   $('mealFoodCustomQty').value=1;
