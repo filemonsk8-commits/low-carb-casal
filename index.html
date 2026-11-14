@@ -482,7 +482,7 @@ form{grid-template-columns:1fr}
    <div id="mealHistory" class="meal-history-list"><div class="empty">Nenhuma refeição registrada ainda.</div></div>
   </aside>
  </div>
-</section></section>
+</section>
 
 
  <section id="tab-dieta" class="diet-page hidden">
@@ -888,8 +888,6 @@ function render(){
   :'<div class="empty">Nenhuma refeição registrada ainda. Seu diário começa no primeiro lançamento.</div>';
 
 
- $('shoppingList').innerHTML=
-
  $('shoppingList').innerHTML=shopping.length
   ?shopping.map(x=>`
    <div class="checkrow ${x.is_checked?'done':''}">
@@ -911,8 +909,8 @@ const HOUSEHOLD_MEASURE_RULES=[
  {match:/ovo.*galinha|galinha.*ovo/,options:[{label:'1 unidade média',grams:50,source:'Secretaria de Estado da Saúde de Goiás'}]},
  {match:/pao.*frances/,options:[{label:'1 unidade',grams:50,source:'Ministério da Saúde — Guia Alimentar'}]},
  {match:/banana.*(prata|nanica)/,options:[{label:'1 unidade',grams:86,source:'Ministério da Saúde — Guia Alimentar'}]},
- {match:/maca/,options:[{label:'1 unidade média',grams:130,source:'Ministério da Saúde — Guia Alimentar'}]},
- {match:/pera/,options:[{label:'1 unidade média',grams:133,source:'Ministério da Saúde — Guia Alimentar'}]},
+ {match:/\bmaca\b/,options:[{label:'1 unidade média',grams:130,source:'Ministério da Saúde — Guia Alimentar'}]},
+ {match:/\bpera\b/,options:[{label:'1 unidade média',grams:133,source:'Ministério da Saúde — Guia Alimentar'}]},
  {match:/abacaxi/,options:[{label:'1 fatia',grams:130,source:'Ministério da Saúde — Guia Alimentar'}]},
  {match:/abacate/,options:[{label:'1 colher de sopa',grams:32,source:'Ministério da Saúde — Guia Alimentar'}]},
  {match:/caqui/,options:[{label:'1 unidade',grams:113,source:'Ministério da Saúde — Guia Alimentar'}]},
@@ -931,14 +929,14 @@ const HOUSEHOLD_MEASURE_RULES=[
  {match:/nectarina/,options:[{label:'2 unidades',grams:184,source:'Ministério da Saúde — Guia Alimentar'}]},
  {match:/tomate.*cereja/,options:[{label:'7 unidades',grams:70,source:'Ministério da Saúde — Guia Alimentar'}]},
  {match:/tomate/,options:[{label:'4 fatias',grams:80,source:'Ministério da Saúde — Guia Alimentar'}]},
- {match:/arroz.*cozido(?!.*integral)/,options:[{label:'4 colheres de sopa',grams:125,source:'Ministério da Saúde — Guia Alimentar'}]},
+ {match:/arroz.*cozido/,options:[{label:'4 colheres de sopa',grams:125,source:'Ministério da Saúde — Guia Alimentar'}]},
  {match:/feijao.*cozido/,options:[{label:'1 concha',grams:86,source:'Ministério da Saúde — Guia Alimentar'}]},
  {match:/bife.*grelhado|carne bovina.*grelhado/,options:[{label:'1 bife',grams:90,source:'Ministério da Saúde — Guia Alimentar'}]},
  {match:/leite.*integral/,options:[{label:'1 copo de requeijão',grams:182,source:'Ministério da Saúde — Guia Alimentar'}]},
  {match:/aveia/,options:[{label:'2 colheres de sopa',grams:30,source:'Anvisa — Manual de Orientação ao Consumidor'}]},
  {match:/queijo minas/,options:[{label:'2 colheres de sopa',grams:50,source:'Anvisa — Manual de Orientação ao Consumidor'}]},
  {match:/requeijao/,options:[{label:'2 colheres de sopa',grams:50,source:'Anvisa — Manual de Orientação ao Consumidor'}]},
- {match:/bolo.*sem recheio|bolo/,options:[{label:'1 fatia',grams:60,source:'Anvisa — Manual de Orientação ao Consumidor'}]},
+ {match:/bolo.*sem recheio/,options:[{label:'1 fatia',grams:60,source:'Anvisa — Manual de Orientação ao Consumidor'}]},
  {match:/barra de cereal/,options:[{label:'1 unidade',grams:30,source:'Anvisa — Manual de Orientação ao Consumidor'}]}
 ];
 function normalizeMeasureText(value){
@@ -946,6 +944,7 @@ function normalizeMeasureText(value){
 }
 function getHouseholdMeasures(food){
  const description=normalizeMeasureText(food&&(food.description||food.name));
+ if(description.includes('arroz')&&description.includes('integral'))return [];
  const found=HOUSEHOLD_MEASURE_RULES.find(rule=>rule.match.test(description));
  return found?found.options:[];
 }
@@ -1057,7 +1056,6 @@ function renderSelectedMealFoods(){
  const t=mealTotals();
  $('mealNutritionTotal').innerHTML='<strong>Total: '+fmtNutrient(t.calories,'kcal')+'</strong>Proteínas '+fmtNutrient(t.protein)+' · Carboidratos '+fmtNutrient(t.carbs)+' · Gorduras '+fmtNutrient(t.fat)+' · Fibras '+fmtNutrient(t.fiber);
 }
-window.removeMealFood=index=>{selectedMealFoods.splice(index,1);renderSelectedMealFoods();};
 window.removeMealFood=index=>{selectedMealFoods.splice(index,1);renderSelectedMealFoods();};
 
 function drawChart(){
@@ -1360,7 +1358,7 @@ $('mealForm').onsubmit=e=>{
  });
 };
 
-$('shoppingForm').onsubmit=e=>{$('shoppingForm').onsubmit=e=>{
+$('shoppingForm').onsubmit=e=>{
  e.preventDefault();
 
  run(async()=>{
