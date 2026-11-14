@@ -131,6 +131,74 @@ form{grid-template-columns:1fr}
  .dashboard-hero{padding:22px 19px;border-radius:18px}.profile-card,.overview-kpi,.week-card,.overview-chart,.recent-card{grid-column:span 12}.profile-card{padding:17px}.profile-weight strong{font-size:31px}.overview-kpi{grid-template-columns:1fr 1fr}.food-picker{flex-direction:column}.food-picker button{width:100%}
 }
 
+
+/* Diário de refeições: registro visual e responsivo */
+.meal-page{display:block;min-width:0}
+.meal-hero{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:25px 29px;margin-bottom:15px;border:1px solid #2e5d87;border-radius:21px;background:radial-gradient(circle at 90% 15%,rgba(67,165,255,.22),transparent 31%),linear-gradient(115deg,#102b49,#123e61 65%,#10233d)}
+.meal-kicker,.meal-step{display:block;color:#7bcaff;font-size:9px;font-weight:900;letter-spacing:1.6px;margin-bottom:6px}
+.meal-hero h2{font-size:clamp(24px,4vw,32px);letter-spacing:-.8px;margin:0 0 6px}
+.meal-hero p{font-size:12px;line-height:1.55;color:#c3d7e9;margin:0;max-width:660px}
+.meal-hero-mark{width:75px;height:75px;flex:0 0 75px;border-radius:21px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(145deg,#48a9e9,#1d6ea9);color:#05213b}
+.meal-hero-mark span{font-size:30px}.meal-hero-mark small{font-size:8px;font-weight:900;letter-spacing:1.1px}
+.meal-content-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(320px,.9fr);gap:14px;align-items:start}
+.meal-builder,.meal-history-panel{min-width:0;border-color:#315677}
+.meal-card-heading,.history-title-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.meal-card-heading h3,.history-title-row h3{font-size:17px;margin:0;letter-spacing:-.2px}
+.meal-lockup,.history-count{font-size:10px;color:#a9d5f7;border:1px solid #315a7c;background:#0c2037;padding:7px 9px;border-radius:20px;white-space:nowrap}
+.person-choice{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.person-choice-btn{display:flex;align-items:center;gap:10px;text-align:left;padding:10px;border:1px solid #355777;border-radius:13px;background:#0b1d32;color:#dbeeff}
+.person-choice-btn.active{border-color:#55b6ff;background:linear-gradient(110deg,#16446b,#10304f);box-shadow:inset 0 0 0 1px rgba(89,177,241,.18)}
+.person-initial{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;background:#2477b7;color:#fff;font-weight:900}
+.person-initial.nadia-initial{background:#238c88}
+.person-choice-btn strong,.person-choice-btn small{display:block}.person-choice-btn strong{font-size:12px}.person-choice-btn small{font-size:9px;color:#a9bfd4;margin-top:2px}
+.meal-type-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.meal-type-btn{padding:8px 4px;border:1px solid #31516e;background:#0b1d32;color:#b8cde0;border-radius:11px;min-width:0}
+.meal-type-btn span{display:block;font-size:17px}.meal-type-btn small{font-size:9px;white-space:normal;display:block;margin-top:3px;color:inherit}
+.meal-type-btn.active{border-color:#52b0f5;background:#16426a;color:#f4f9ff}
+.food-search-area select{background:#091a2d}
+.food-help{font-size:10px;color:#8fa8c1;line-height:1.45;margin:7px 0 0}
+.portion-box{padding:13px;border:1px solid #294d70;border-radius:15px;background:linear-gradient(145deg,#0d2139,#0a1a2d)}
+.portion-box-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.portion-box-head strong{font-size:13px}.portion-box-icon{font-size:19px}
+.measure-mode-buttons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-bottom:10px}
+.measure-mode-btn{padding:9px 5px;background:#183550;border:1px solid #315575;color:#b9cde0;font-size:10px}
+.measure-mode-btn.active{background:#1c5b8a;color:white;border-color:#55b6ff}
+.quantity-controls{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:9px;align-items:end}
+.quantity-controls>div{min-width:0}.quantity-controls p{grid-column:1/-1;margin:0;color:#91a9c0;font-size:10px;line-height:1.4}
+.quantity-controls input,.quantity-controls select{min-width:0}
+.measure-hint{font-size:10px;color:#9fc9e9;line-height:1.45;margin:10px 0;padding:8px 10px;border-radius:9px;background:#122d49}
+.add-food-btn{width:100%;margin-top:4px}
+.selected-food-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.selected-food-heading strong{font-size:12px}.selected-food-heading span{font-size:10px;color:#8ea9c3}
+.selected-food-list{display:grid;gap:7px}
+.food-item-card{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 11px;border:1px solid #2e5273;border-radius:12px;background:#0d2036;min-width:0}
+.food-item-main{min-width:0}.food-item-main strong{display:block;font-size:12px;overflow-wrap:anywhere;color:#edf7ff}
+.food-item-main small{display:block;color:#94b1cb;font-size:10px;margin-top:3px}
+.food-item-calories{flex:0 0 auto;text-align:right;font-size:11px;font-weight:800;color:#77ceff}
+.food-item-calories small{display:block;color:#a2b8cc;font-size:9px;font-weight:500}
+.food-item-card button{padding:5px 9px;min-width:27px;background:#4b2e40;color:#ffe2e8;border-radius:8px}
+.meal-total-panel{margin-top:10px;padding:12px;border-radius:13px;border:1px solid #3476a7;background:linear-gradient(110deg,#123e63,#102b48);font-size:11px;line-height:1.6;color:#d8ecfc}
+.meal-total-panel strong{display:block;font-size:18px;color:#fff;margin-bottom:3px}
+.save-meal-btn{width:100%;padding:14px;font-size:13px;background:linear-gradient(100deg,#48adff,#63d3ec);color:#05213a}
+.daily-nutrition-summary{padding:15px;border-radius:15px;border:1px solid #2b587c;background:linear-gradient(135deg,#0d2741,#102e4a);margin-bottom:20px}
+.daily-nutrition-summary strong{display:block;font-size:22px;color:#83d7ff;margin-bottom:7px}
+.daily-nutrition-summary small{display:block;color:#9cb8d0;font-size:10px;margin-top:6px}
+.history-title-row{margin:6px 0 12px}
+.meal-history-list{display:grid;gap:9px;max-height:880px;overflow:auto;padding-right:2px}
+.meal-history-card{padding:13px;border:1px solid #2b4c6c;border-radius:14px;background:linear-gradient(145deg,#112a45,#0c1f34)}
+.meal-history-top{display:flex;align-items:flex-start;justify-content:space-between;gap:9px}
+.meal-history-name{font-size:12px;font-weight:800;color:#f1f7ff}
+.meal-history-meta{font-size:10px;color:#91abc4;margin-top:4px}
+.meal-history-calories{font-size:12px;font-weight:850;color:#7bd4ff;text-align:right;white-space:nowrap}
+.meal-history-foods{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+.meal-history-foods span{font-size:10px;color:#c5ddf2;background:#183c5d;padding:5px 7px;border-radius:9px}
+.meal-history-description{font-size:10px;color:#aac0d5;line-height:1.5;margin:9px 0 0;overflow-wrap:anywhere}
+.meal-history-bottom{display:flex;justify-content:space-between;align-items:center;gap:8px;border-top:1px solid #29435e;padding-top:9px;margin-top:10px}
+.meal-history-macros{font-size:9px;color:#9db5cb;line-height:1.5}
+.meal-history-bottom button{padding:6px 9px;font-size:10px}
+@media(max-width:900px){.meal-content-grid{grid-template-columns:1fr}.meal-history-list{max-height:none}}
+@media(max-width:560px){.meal-hero{padding:20px 17px;border-radius:17px}.meal-hero-mark{width:58px;height:58px;flex-basis:58px;border-radius:16px}.meal-hero-mark span{font-size:24px}.meal-builder,.meal-history-panel{padding:14px}.meal-type-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.measure-mode-btn{font-size:9px}.quantity-controls{grid-template-columns:1fr}.quantity-controls p{grid-column:auto}.meal-card-heading h3{font-size:15px}.meal-lockup{font-size:8px}.person-choice-btn{padding:8px}.person-initial{width:30px;height:30px}}
+
 </style>
 </head>
 <body>
@@ -307,58 +375,114 @@ form{grid-template-columns:1fr}
   </div>
  </section>
 
- <section id="tab-refeicoes" class="grid hidden">
-  <div class="card span4 meal-form-card">
-   <h2>🍳 Registrar refeição</h2>
+ 
+<section id="tab-refeicoes" class="meal-page hidden">
+ <header class="meal-hero">
+  <div>
+   <span class="meal-kicker">ACOMPANHAMENTO ALIMENTAR</span>
+   <h2>Diário de refeições</h2>
+   <p>Registre o que comeu, escolha gramas ou uma medida do dia a dia e acompanhe os nutrientes sem complicação.</p>
+  </div>
+  <div class="meal-hero-mark"><span>🥗</span><small>MEU DIÁRIO</small></div>
+ </header>
+
+ <div class="meal-content-grid">
+  <div class="card meal-builder">
+   <div class="meal-card-heading">
+    <div><span class="meal-step">NOVO REGISTRO</span><h3>🍳 Registrar refeição</h3></div>
+    <span class="meal-lockup">TACO + medidas caseiras</span>
+   </div>
    <form id="mealForm">
     <div class="full">
-     <label for="mealPerson">Quem fez a refeição?</label>
-     <select id="mealPerson">
+     <label>Quem fez a refeição?</label>
+     <div class="person-choice">
+      <button type="button" class="person-choice-btn active" data-meal-person="Eu"><span class="person-initial">E</span><span><strong>Eduardo</strong><small>Meu registro</small></span></button>
+      <button type="button" class="person-choice-btn" data-meal-person="Minha esposa"><span class="person-initial nadia-initial">N</span><span><strong>Nádia</strong><small>Registro dela</small></span></button>
+     </div>
+     <select id="mealPerson" class="hidden" aria-hidden="true" tabindex="-1">
       <option value="Eu">Eduardo</option>
       <option value="Minha esposa">Nádia</option>
      </select>
     </div>
+
     <div>
      <label for="mealDate">Data</label>
      <input id="mealDate" type="date" required>
     </div>
     <div>
-     <label for="mealType">Tipo de refeição</label>
-     <select id="mealType">
-      <option>Café da manhã</option>
-      <option>Almoço</option>
-      <option>Jantar</option>
-      <option>Lanche</option>
+     <label>Tipo de refeição</label>
+     <div class="meal-type-grid">
+      <button type="button" class="meal-type-btn active" data-meal-type="Café da manhã"><span>☀️</span><small>Café</small></button>
+      <button type="button" class="meal-type-btn" data-meal-type="Lanche da manhã"><span>🍎</span><small>Lanche manhã</small></button>
+      <button type="button" class="meal-type-btn" data-meal-type="Almoço"><span>🍽️</span><small>Almoço</small></button>
+      <button type="button" class="meal-type-btn" data-meal-type="Lanche da tarde"><span>🥑</span><small>Lanche tarde</small></button>
+      <button type="button" class="meal-type-btn" data-meal-type="Jantar"><span>🌙</span><small>Jantar</small></button>
+      <button type="button" class="meal-type-btn" data-meal-type="Ceia"><span>🌜</span><small>Ceia</small></button>
+     </div>
+     <select id="mealType" class="hidden" aria-hidden="true" tabindex="-1">
+      <option>Café da manhã</option><option>Lanche da manhã</option><option>Almoço</option><option>Lanche da tarde</option><option>Jantar</option><option>Ceia</option>
      </select>
     </div>
-    <div class="full">
-     <label for="mealFoodSearch">Buscar alimento (catálogo TACO – 597 itens)</label>
-     <input id="mealFoodSearch" placeholder="Digite: frango, ovo, abacate, peixe..." autocomplete="off">
-     <select id="mealFoodResult" style="margin-top:8px"><option value="">Carregando catálogo nutricional...</option></select>
-     <div class="food-picker" style="margin-top:8px">
-      <input id="mealFoodGrams" type="number" min="1" max="3000" step="1" value="100" aria-label="Quantidade em gramas" placeholder="Gramas">
-      <button type="button" id="addMealFood">+ Adicionar alimento</button>
-     </div>
-     <p class="food-help">Valores por 100 g. Informe a quantidade em gramas; calorias e nutrientes serão recalculados automaticamente. Peixes e frutos do mar só aparecem para Nádia.</p>
-     <div id="selectedMealFoods" class="food-chips"><span class="food-empty">Nenhum alimento selecionado ainda.</span></div>
-     <div id="mealNutritionTotal" class="notice">Total da refeição: 0 kcal</div>
+
+    <div class="full food-search-area">
+     <label for="mealFoodSearch">Buscar alimento no catálogo nutricional</label>
+     <input id="mealFoodSearch" placeholder="Digite o nome: ovo, frango, banana, queijo..." autocomplete="off">
+     <select id="mealFoodResult" style="margin-top:9px"><option value="">Carregando catálogo nutricional...</option></select>
+     <p class="food-help">Escolha o alimento que corresponde ao preparo. Os valores nutricionais da TACO são calculados a partir de 100 g da parte comestível.</p>
     </div>
+
+    <div class="full portion-box">
+     <div class="portion-box-head"><div><span class="meal-step">QUANTIDADE</span><strong>Como você quer informar?</strong></div><span class="portion-box-icon">⚖️</span></div>
+     <div class="measure-mode-buttons">
+      <button type="button" class="measure-mode-btn active" data-measure-mode="grams">⚖️ Em gramas</button>
+      <button type="button" class="measure-mode-btn" data-measure-mode="household">🥄 Medida caseira</button>
+      <button type="button" class="measure-mode-btn" data-measure-mode="custom">✍️ Minha medida</button>
+     </div>
+     <div id="mealGramsControls" class="quantity-controls">
+      <div><label for="mealFoodGrams">Quantidade em gramas</label><input id="mealFoodGrams" type="number" min="1" max="3000" step="1" value="100" placeholder="Ex.: 100"></div>
+      <p>Use a balança ou informe a quantidade aproximada em gramas.</p>
+     </div>
+     <div id="mealCaseiraControls" class="quantity-controls hidden">
+      <div><label for="mealFoodMeasure">Medida disponível para este alimento</label><select id="mealFoodMeasure"><option value="">Selecione o alimento primeiro</option></select></div>
+      <div><label for="mealFoodMeasureQty">Quantidade de medidas</label><input id="mealFoodMeasureQty" type="number" min="0.1" max="100" step="0.1" value="1"></div>
+      <p id="mealCaseiraHint">As medidas aparecem quando há uma referência compatível com o alimento escolhido.</p>
+     </div>
+     <div id="mealCustomControls" class="quantity-controls hidden">
+      <div><label for="mealCustomMeasureName">Nome da sua medida</label><input id="mealCustomMeasureName" placeholder="Ex.: 1 concha, 1 fatia, 1 unidade"></div>
+      <div><label for="mealCustomMeasureGrams">Peso de uma medida (g)</label><input id="mealCustomMeasureGrams" type="number" min="1" max="3000" step="1" placeholder="Ex.: 80"></div>
+      <div><label for="mealFoodCustomQty">Quantidade de medidas</label><input id="mealFoodCustomQty" type="number" min="0.1" max="100" step="0.1" value="1"></div>
+      <p>Use esta opção quando o tamanho da unidade variar. Informe quantos gramas pesa uma unidade ou porção.</p>
+     </div>
+     <div id="mealMeasureHint" class="measure-hint">Selecione um alimento para ver as opções de quantidade.</div>
+     <button type="button" id="addMealFood" class="add-food-btn">＋ Adicionar alimento à refeição</button>
+    </div>
+
+    <div class="full">
+     <div class="selected-food-heading"><strong>Alimentos desta refeição</strong><span id="selectedFoodCount">0 itens</span></div>
+     <div id="selectedMealFoods" class="selected-food-list"><div class="food-empty">Nenhum alimento selecionado ainda.</div></div>
+     <div id="mealNutritionTotal" class="meal-total-panel">Adicione alimentos para calcular os nutrientes.</div>
+    </div>
+
     <div class="full">
      <label for="mealNotes">Observações (opcional)</label>
      <textarea id="mealNotes" placeholder="Ex.: preparado com azeite, sem açúcar..." rows="2"></textarea>
     </div>
     <div class="full">
-     <button type="submit">Salvar refeição</button>
+     <button type="submit" class="save-meal-btn">Salvar refeição no diário</button>
     </div>
    </form>
   </div>
 
-  <div class="card span8">
-   <h2>Registros de alimentação</h2>
-   <div id="dailyNutritionSummary" class="notice">Resumo nutricional do dia</div>
-   <div id="mealHistory" class="tablewrap"></div>
-  </div>
- </section>
+  <aside class="card meal-history-panel">
+   <div class="meal-card-heading">
+    <div><span class="meal-step">ACOMPANHAMENTO</span><h3>📊 Resumo do dia</h3></div>
+   </div>
+   <div id="dailyNutritionSummary" class="daily-nutrition-summary">Carregando resumo nutricional...</div>
+   <div class="history-title-row"><div><span class="meal-step">SEUS REGISTROS</span><h3>📋 Diário alimentar</h3></div><span class="history-count" id="mealHeroCount">0 registros</span></div>
+   <div id="mealHistory" class="meal-history-list"><div class="empty">Nenhuma refeição registrada ainda.</div></div>
+  </aside>
+ </div>
+</section></section>
 
 
  <section id="tab-dieta" class="diet-page hidden">
@@ -540,6 +664,8 @@ async function showApp(user){
   const ownPerson=member.member_name==='Eduardo'?'Eu':'Minha esposa';
   $('person').value=ownPerson;
   $('mealPerson').value=ownPerson;
+  syncMealPersonChoices();
+  syncMealTypeButtons();
   if(!tacoCatalogReady)loadTacoCatalog();
   renderTacoSearch();
   $('familyInviteCode').textContent=house.invite_code;
@@ -749,17 +875,20 @@ function render(){
   ['Data','Pessoa','Peso','Cintura','Observação','']
  );
 
- $('mealHistory').innerHTML=table(
-  meals.map(x=>`
-   <tr>
-    <td>${fmtDate(x.eaten_on)}</td>
-    <td>${esc(personLabel(x.person))}</td>
-    <td>${esc(x.meal_type)}</td>
-    <td>${esc(x.description)}<br><small class="muted">${x.calories_kcal!==null&&x.calories_kcal!==undefined?num(x.calories_kcal)+' kcal':'Calorias não registradas'}</small></td>
-    <td><button class="danger" style="padding:6px 9px" onclick="deleteMeal('${x.id}')">Excluir</button></td>
-   </tr>`),
-  ['Data','Pessoa','Refeição','Descrição / calorias','']
- );
+
+ $('mealHistory').innerHTML=meals.length
+  ?meals.slice().sort((a,b)=>String(b.eaten_on).localeCompare(String(a.eaten_on))).map(x=>{
+   const items=Array.isArray(x.meal_items)?x.meal_items:[];
+   const foods=items.length
+    ?'<div class="meal-history-foods">'+items.map(item=>'<span>'+esc(item.name)+' · '+esc(item.portionLabel||num(item.grams)+' g')+'</span>').join('')+'</div>'
+    :' <p class="meal-history-description">'+esc(x.description||'Alimentos não detalhados')+'</p>';
+   const macros='Proteínas '+fmtNutrient(x.protein_g)+' · Carboidratos '+fmtNutrient(x.carbohydrate_g)+' · Gorduras '+fmtNutrient(x.fat_g);
+   return '<article class="meal-history-card"><div class="meal-history-top"><div><div class="meal-history-name">'+esc(x.meal_type)+' · '+esc(personLabel(x.person))+'</div><div class="meal-history-meta">'+fmtDate(x.eaten_on)+'</div></div><div class="meal-history-calories">'+fmtNutrient(x.calories_kcal,'kcal')+'</div></div>'+foods+'<div class="meal-history-bottom"><div class="meal-history-macros">'+macros+'</div><button type="button" class="danger" onclick="deleteMeal(\''+esc(x.id)+'\')">Excluir</button></div></article>';
+  }).join('')
+  :'<div class="empty">Nenhuma refeição registrada ainda. Seu diário começa no primeiro lançamento.</div>';
+
+
+ $('shoppingList').innerHTML=
 
  $('shoppingList').innerHTML=shopping.length
   ?shopping.map(x=>`
@@ -775,7 +904,100 @@ function render(){
  drawChart();
 }
 
+
 const TACO_BASE='https://brolesi.github.io/taco/';
+let mealMeasureMode='grams';
+const HOUSEHOLD_MEASURE_RULES=[
+ {match:/ovo.*galinha|galinha.*ovo/,options:[{label:'1 unidade média',grams:50,source:'Secretaria de Estado da Saúde de Goiás'}]},
+ {match:/pao.*frances/,options:[{label:'1 unidade',grams:50,source:'Ministério da Saúde — Guia Alimentar'}]},
+ {match:/banana.*(prata|nanica)/,options:[{label:'1 unidade',grams:86,source:'Ministério da Saúde — Guia Alimentar'}]},
+ {match:/maca/,options:[{label:'1 unidade média',grams:130,source:'Ministério da Saúde — Guia Alimentar'}]},
+ {match:/pera/,options:[{label:'1 unidade média',grams:133,source:'Ministério da Saúde — Guia Alimentar'}]},
+ {match:/abacaxi/,options:[{label:'1 fatia',grams:130,source:'Ministério da Saúde — Guia Alimentar'}]},
+ {match:/abacate/,options:[{label:'1 colher de sopa',grams:32,source:'Ministério da Saúde — Guia Alimentar'}]},
+ {match:/caqui/,options:[{label:'1 unidade',grams:113,source:'Ministério da Saúde — Guia Alimentar'}]},
+ {match:/carambola/,options:[{label:'2 unidades',grams:220,source:'Ministério da Saúde — Guia Alimentar'}]},
+ {match:/goiaba/,options:[{label:'1/2 unidade',grams:95,source:'Ministério da Saúde — Guia Alimentar'}]},
+ {match:/kiwi/,options:[{label:'2 unidades',grams:154,source:'Ministério da Saúde — Guia Alimentar'}]},
+ {match:/laranja.*baia/,options:[{label:'8 gomos',grams:144,source:'Ministério da Saúde — Guia Alimentar'}]},
+ {match:/laranja.*pera/,options:[{label:'1 unidade',grams:137,source:'Ministério da Saúde — Guia Alimentar'}]},
+ {match:/limao/,options:[{label:'4 unidades',grams:252,source:'Ministério da Saúde — Guia Alimentar'}]},
+ {match:/mamao.*formosa/,options:[{label:'1 fatia',grams:160,source:'Ministério da Saúde — Guia Alimentar'}]},
+ {match:/mamao.*papaia/,options:[{label:'1/2 unidade',grams:141.5,source:'Ministério da Saúde — Guia Alimentar'}]},
+ {match:/manga/,options:[{label:'1 unidade',grams:110,source:'Ministério da Saúde — Guia Alimentar'}]},
+ {match:/melancia/,options:[{label:'2 fatias',grams:296,source:'Ministério da Saúde — Guia Alimentar'}]},
+ {match:/melao/,options:[{label:'2 fatias',grams:230,source:'Ministério da Saúde — Guia Alimentar'}]},
+ {match:/morango/,options:[{label:'10 unidades',grams:240,source:'Ministério da Saúde — Guia Alimentar'}]},
+ {match:/nectarina/,options:[{label:'2 unidades',grams:184,source:'Ministério da Saúde — Guia Alimentar'}]},
+ {match:/tomate.*cereja/,options:[{label:'7 unidades',grams:70,source:'Ministério da Saúde — Guia Alimentar'}]},
+ {match:/tomate/,options:[{label:'4 fatias',grams:80,source:'Ministério da Saúde — Guia Alimentar'}]},
+ {match:/arroz.*cozido(?!.*integral)/,options:[{label:'4 colheres de sopa',grams:125,source:'Ministério da Saúde — Guia Alimentar'}]},
+ {match:/feijao.*cozido/,options:[{label:'1 concha',grams:86,source:'Ministério da Saúde — Guia Alimentar'}]},
+ {match:/bife.*grelhado|carne bovina.*grelhado/,options:[{label:'1 bife',grams:90,source:'Ministério da Saúde — Guia Alimentar'}]},
+ {match:/leite.*integral/,options:[{label:'1 copo de requeijão',grams:182,source:'Ministério da Saúde — Guia Alimentar'}]},
+ {match:/aveia/,options:[{label:'2 colheres de sopa',grams:30,source:'Anvisa — Manual de Orientação ao Consumidor'}]},
+ {match:/queijo minas/,options:[{label:'2 colheres de sopa',grams:50,source:'Anvisa — Manual de Orientação ao Consumidor'}]},
+ {match:/requeijao/,options:[{label:'2 colheres de sopa',grams:50,source:'Anvisa — Manual de Orientação ao Consumidor'}]},
+ {match:/bolo.*sem recheio|bolo/,options:[{label:'1 fatia',grams:60,source:'Anvisa — Manual de Orientação ao Consumidor'}]},
+ {match:/barra de cereal/,options:[{label:'1 unidade',grams:30,source:'Anvisa — Manual de Orientação ao Consumidor'}]}
+];
+function normalizeMeasureText(value){
+ return String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('pt-BR');
+}
+function getHouseholdMeasures(food){
+ const description=normalizeMeasureText(food&&(food.description||food.name));
+ const found=HOUSEHOLD_MEASURE_RULES.find(rule=>rule.match.test(description));
+ return found?found.options:[];
+}
+function currentMealFood(){
+ const id=$('mealFoodResult').value;
+ return tacoFoods.find(food=>String(food.id)===String(id))||null;
+}
+function syncMealPersonChoices(){
+ document.querySelectorAll('[data-meal-person]').forEach(button=>{
+  button.classList.toggle('active',button.dataset.mealPerson===$('mealPerson').value);
+ });
+}
+function syncMealTypeButtons(){
+ document.querySelectorAll('[data-meal-type]').forEach(button=>{
+  button.classList.toggle('active',button.dataset.mealType===$('mealType').value);
+ });
+}
+function setMealMeasureMode(mode){
+ if(mode==='household'&&!getHouseholdMeasures(currentMealFood()).length){
+  mode='grams';
+ }
+ mealMeasureMode=mode;
+ document.querySelectorAll('[data-measure-mode]').forEach(button=>{
+  button.classList.toggle('active',button.dataset.measureMode===mode);
+ });
+ $('mealGramsControls').classList.toggle('hidden',mode!=='grams');
+ $('mealCaseiraControls').classList.toggle('hidden',mode!=='household');
+ $('mealCustomControls').classList.toggle('hidden',mode!=='custom');
+}
+function updateMealMeasureUI(){
+ const food=currentMealFood();
+ const options=getHouseholdMeasures(food);
+ const householdButton=document.querySelector('[data-measure-mode="household"]');
+ householdButton.disabled=!options.length;
+ householdButton.title=options.length?'Usar medida caseira de referência':'Não há uma medida caseira documentada para este alimento';
+ $('mealFoodMeasure').innerHTML=options.length
+  ?options.map((option,index)=>'<option value="'+index+'">'+esc(option.label)+' · '+num(option.grams)+' g</option>').join('')
+  :'<option value="">Não há medida caseira de referência para este alimento</option>';
+ if(mealMeasureMode==='household'&&!options.length)setMealMeasureMode('grams');
+ if(!food){
+  $('mealMeasureHint').textContent='Selecione um alimento para ver as opções de quantidade.';
+  $('mealCaseiraHint').textContent='As medidas aparecem quando há uma referência compatível com o alimento escolhido.';
+  return;
+ }
+ if(options.length){
+  $('mealCaseiraHint').textContent='Medida de referência encontrada para este alimento.';
+  $('mealMeasureHint').textContent='Medida disponível: '+options.map(o=>o.label+' = '+num(o.grams)+' g').join(' · ')+'. O total será convertido automaticamente.';
+ }else{
+  $('mealCaseiraHint').textContent='Não há equivalência automática segura para este alimento.';
+  $('mealMeasureHint').textContent='Para este alimento, use gramas ou “Minha medida” e informe o peso da sua unidade/porção. Não estimamos conversões sem referência.';
+ }
+}
 async function loadTacoCatalog(){
  const select=$('mealFoodResult');
  try{
@@ -785,19 +1007,21 @@ async function loadTacoCatalog(){
   tacoFoods=data.foods||[];
   tacoCatalogReady=true;
   renderTacoSearch();
+  updateMealMeasureUI();
  }catch(error){
   select.innerHTML='<option value="">Não foi possível carregar o catálogo. Verifique a internet.</option>';
  }
 }
 function isFishFood(food){
- const text=(food.category+' '+food.description).toLowerCase();
- return /pescados|peixes|frutos do mar|atum|sardinha|tilápia|tilapia|salmão|salmao|bacalhau|merluza|camarão|camarao|siri|caranguejo|ostra|mexilhão|mexilhao/.test(text);
+ const text=normalizeMeasureText((food&&food.category||'')+' '+(food&&food.description||''));
+ return /pescados|peixes|frutos do mar|atum|sardinha|tilapia|salmao|bacalhau|merluza|camarao|siri|caranguejo|ostra|mexilhao/.test(text);
 }
 function renderTacoSearch(){
- const q=($('mealFoodSearch').value||'').trim().toLocaleLowerCase('pt-BR');
+ const q=normalizeMeasureText(($('mealFoodSearch').value||'').trim());
  const person=$('mealPerson').value;
- const filtered=tacoFoods.filter(f=>(!q||(f.description+' '+f.category).toLocaleLowerCase('pt-BR').includes(q))&&(person==='Minha esposa'||!isFishFood(f))).slice(0,80);
+ const filtered=tacoFoods.filter(f=>(!q||normalizeMeasureText((f.description||'')+' '+(f.category||'')).includes(q))&&(person==='Minha esposa'||!isFishFood(f))).slice(0,80);
  $('mealFoodResult').innerHTML='<option value="">Selecione um alimento ('+filtered.length+' resultados)</option>'+filtered.map(f=>'<option value="'+f.id+'">'+esc(f.description)+' · '+esc(f.category)+'</option>').join('');
+ updateMealMeasureUI();
 }
 async function fetchTacoFood(id){
  const response=await fetch(TACO_BASE+'foods/'+id+'.json');
@@ -809,24 +1033,31 @@ function nutritionValue(food,key){
  const v=food[key];
  return v===null||v===undefined||v===''?null:Number(v);
 }
-function fmtNutrient(v,unit='g'){return v===null?'—':num(v)+' '+unit}
+function fmtNutrient(v,unit='g'){return v===null||v===undefined?'—':num(v)+' '+unit}
 function mealTotals(){
  const keys=['calories','protein','carbs','fat','fiber'];
  const out={};
- keys.forEach(k=>{const vals=selectedMealFoods.map(x=>x[k]).filter(v=>v!==null&&v!==undefined&&Number.isFinite(Number(v)));out[k]=vals.length?vals.reduce((a,v)=>a+Number(v),0):null;});
+ keys.forEach(k=>{
+  const vals=selectedMealFoods.map(x=>x[k]).filter(v=>v!==null&&v!==undefined&&Number.isFinite(Number(v)));
+  out[k]=vals.length?vals.reduce((a,v)=>a+Number(v),0):null;
+ });
  return out;
 }
 function renderSelectedMealFoods(){
  const target=$('selectedMealFoods');
+ $('selectedFoodCount').textContent=selectedMealFoods.length+' '+(selectedMealFoods.length===1?'item':'itens');
  if(!selectedMealFoods.length){
-  target.innerHTML='<span class="food-empty">Nenhum alimento selecionado ainda.</span>';
-  $('mealNutritionTotal').textContent='Total da refeição: 0 kcal';
+  target.innerHTML='<div class="food-empty">Nenhum alimento selecionado ainda.</div>';
+  $('mealNutritionTotal').textContent='Adicione alimentos para calcular os nutrientes.';
   return;
  }
- target.innerHTML=selectedMealFoods.map((food,index)=>'<span class="food-chip">'+esc(food.name)+' · '+num(food.grams)+' g · '+num(food.calories)+' kcal <button type="button" aria-label="Remover alimento" onclick="removeMealFood('+index+')">×</button></span>').join('');
+ target.innerHTML=selectedMealFoods.map((food,index)=>
+  '<article class="food-item-card"><div class="food-item-main"><strong>'+esc(food.name)+'</strong><small>'+esc(food.portionLabel||num(food.grams)+' g')+' · '+num(food.grams)+' g totais</small></div><div class="food-item-calories">'+fmtNutrient(food.calories,'kcal')+'<small>por alimento</small></div><button type="button" aria-label="Remover alimento" onclick="removeMealFood('+index+')">×</button></article>'
+ ).join('');
  const t=mealTotals();
- $('mealNutritionTotal').innerHTML='<strong>Total: '+fmtNutrient(t.calories,'kcal')+'</strong> · Proteínas '+fmtNutrient(t.protein)+' · Carboidratos '+fmtNutrient(t.carbs)+' · Gorduras '+fmtNutrient(t.fat)+' · Fibras '+fmtNutrient(t.fiber);
+ $('mealNutritionTotal').innerHTML='<strong>Total: '+fmtNutrient(t.calories,'kcal')+'</strong>Proteínas '+fmtNutrient(t.protein)+' · Carboidratos '+fmtNutrient(t.carbs)+' · Gorduras '+fmtNutrient(t.fat)+' · Fibras '+fmtNutrient(t.fiber);
 }
+window.removeMealFood=index=>{selectedMealFoods.splice(index,1);renderSelectedMealFoods();};
 window.removeMealFood=index=>{selectedMealFoods.splice(index,1);renderSelectedMealFoods();};
 
 function drawChart(){
@@ -1006,40 +1237,102 @@ $('measurementForm').onsubmit=e=>{
  });
 };
 
+
 $('mealFoodSearch').addEventListener('input',renderTacoSearch);
-$('mealPerson').addEventListener('change',renderTacoSearch);
+$('mealPerson').addEventListener('change',()=>{
+ syncMealPersonChoices();
+ renderTacoSearch();
+});
+$('mealFoodResult').addEventListener('change',updateMealMeasureUI);
+document.querySelectorAll('[data-meal-person]').forEach(button=>{
+ button.addEventListener('click',()=>{
+  $('mealPerson').value=button.dataset.mealPerson;
+  syncMealPersonChoices();
+  renderTacoSearch();
+ });
+});
+document.querySelectorAll('[data-meal-type]').forEach(button=>{
+ button.addEventListener('click',()=>{
+  $('mealType').value=button.dataset.mealType;
+  syncMealTypeButtons();
+ });
+});
+document.querySelectorAll('[data-measure-mode]').forEach(button=>{
+ button.addEventListener('click',()=>setMealMeasureMode(button.dataset.measureMode));
+});
 $('addMealFood').onclick=async()=>{
  const id=$('mealFoodResult').value;
- const grams=Number($('mealFoodGrams').value);
  if(!id){notice('message','Escolha um alimento do catálogo.',true);return;}
- if(!Number.isFinite(grams)||grams<=0){notice('message','Informe a quantidade em gramas.',true);return;}
  try{
   const base=await fetchTacoFood(id);
   const person=$('mealPerson').value;
   const meta=tacoFoods.find(x=>String(x.id)===String(id));
-  if(person!=='Minha esposa'&&isFishFood(meta||base)){notice('message','Peixes e frutos do mar estão disponíveis somente para Nádia.',true);return;}
+  if(person!=='Minha esposa'&&isFishFood(meta||base)){
+   notice('message','Peixes e frutos do mar estão disponíveis somente para Nádia.',true);
+   return;
+  }
+  let grams=0;
+  let portionLabel='';
+  let measureSource='';
+  if(mealMeasureMode==='grams'){
+   grams=Number($('mealFoodGrams').value);
+   portionLabel=num(grams)+' g';
+  }else if(mealMeasureMode==='household'){
+   const options=getHouseholdMeasures(meta||base);
+   const option=options[Number($('mealFoodMeasure').value)];
+   const quantity=Number($('mealFoodMeasureQty').value);
+   if(!option)throw new Error('Escolha uma medida caseira disponível para este alimento.');
+   if(!Number.isFinite(quantity)||quantity<=0)throw new Error('Informe uma quantidade válida de medidas.');
+   grams=option.grams*quantity;
+   portionLabel=num(quantity)+' × '+option.label+' ('+num(grams)+' g)';
+   measureSource=option.source;
+  }else{
+   const name=$('mealCustomMeasureName').value.trim();
+   const unitGrams=Number($('mealCustomMeasureGrams').value);
+   const quantity=Number($('mealFoodCustomQty').value);
+   if(!name)throw new Error('Dê um nome à sua medida, como “1 fatia” ou “1 concha”.');
+   if(!Number.isFinite(unitGrams)||unitGrams<=0)throw new Error('Informe quantos gramas tem uma medida.');
+   if(!Number.isFinite(quantity)||quantity<=0)throw new Error('Informe uma quantidade válida de medidas.');
+   grams=unitGrams*quantity;
+   portionLabel=num(quantity)+' × '+name+' ('+num(grams)+' g)';
+   measureSource='Medida informada pelo usuário';
+  }
+  if(!Number.isFinite(grams)||grams<=0||grams>3000)throw new Error('A quantidade precisa ser maior que zero e não pode ultrapassar 3.000 g.');
   const factor=grams/100;
-  const item={id:Number(id),name:base.description||meta.description,category:base.category||meta.category,grams,
+  const item={
+   id:Number(id),name:base.description||meta.description,
+   category:base.category||meta.category,grams,portionLabel,measureSource,
    calories:nutritionValue(base,'energy_kcal')===null?null:nutritionValue(base,'energy_kcal')*factor,
    protein:nutritionValue(base,'protein_g')===null?null:nutritionValue(base,'protein_g')*factor,
    carbs:nutritionValue(base,'carbohydrate_g')===null?null:nutritionValue(base,'carbohydrate_g')*factor,
    fat:nutritionValue(base,'lipids_g')===null?null:nutritionValue(base,'lipids_g')*factor,
    fiber:nutritionValue(base,'dietary_fiber_g')===null?null:nutritionValue(base,'dietary_fiber_g')*factor,
-   source:'TACO/NEPA-UNICAMP'};
+   source:'TACO/NEPA-UNICAMP'
+  };
   selectedMealFoods.push(item);
   $('mealFoodResult').value='';
+  $('mealFoodGrams').value=100;
+  $('mealFoodMeasureQty').value=1;
+  $('mealFoodCustomQty').value=1;
+  updateMealMeasureUI();
   renderSelectedMealFoods();
- }catch(error){notice('message',error.message,true);}
+ }catch(error){
+  notice('message',error.message||'Não foi possível adicionar o alimento.',true);
+ }
 };
+
 
 $('mealForm').onsubmit=e=>{
  e.preventDefault();
  const notes=$('mealNotes').value.trim();
  const parts=[];
- if(selectedMealFoods.length)parts.push('Alimentos: '+selectedMealFoods.map(x=>x.name+' ('+x.grams+' g)').join(', '));
+ if(selectedMealFoods.length)parts.push('Alimentos: '+selectedMealFoods.map(x=>x.name+' ('+(x.portionLabel||num(x.grams)+' g')+')').join(', '));
  if(notes)parts.push('Observações: '+notes);
  const description=parts.join(' | ');
- if(!selectedMealFoods.length){notice('message','Adicione pelo menos um alimento do catálogo para calcular as calorias.',true);return;}
+ if(!selectedMealFoods.length){
+  notice('message','Adicione pelo menos um alimento do catálogo para salvar a refeição.',true);
+  return;
+ }
  const totals=mealTotals();
  run(async()=>{
   const {error}=await db.from('meal_logs').insert({
@@ -1051,14 +1344,23 @@ $('mealForm').onsubmit=e=>{
    meal_items:selectedMealFoods
   });
   if(error)throw error;
-  $('mealForm').reset();selectedMealFoods=[];renderSelectedMealFoods();
+  $('mealForm').reset();
+  selectedMealFoods=[];
   $('mealDate').value=today;
   $('mealPerson').value=currentMember.member_name==='Eduardo'?'Eu':'Minha esposa';
+  $('mealType').value='Café da manhã';
+  $('mealFoodGrams').value=100;
+  $('mealFoodMeasureQty').value=1;
+  $('mealFoodCustomQty').value=1;
+  setMealMeasureMode('grams');
+  syncMealPersonChoices();
+  syncMealTypeButtons();
   renderTacoSearch();
+  renderSelectedMealFoods();
  });
 };
 
-$('shoppingForm').onsubmit=e=>{
+$('shoppingForm').onsubmit=e=>{$('shoppingForm').onsubmit=e=>{
  e.preventDefault();
 
  run(async()=>{
