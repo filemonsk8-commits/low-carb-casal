@@ -682,7 +682,7 @@ function showAuth(){
  $('joinSetup').classList.add('hidden');
 }
 
-async function showApp(user){
+const showApp = window.showApp = async function(user){
  currentUser=user;
  $('app').classList.add('hidden');
  $('auth').classList.remove('hidden');
@@ -722,7 +722,7 @@ async function showApp(user){
   $('authForm').classList.remove('hidden');
   notice('authMessage',e.message||'Não foi possível carregar seu perfil.',true);
  }
-}
+};
 
 let initialShoppingChecked = false;
 
@@ -1610,7 +1610,7 @@ if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
    const {data,error}=await client.auth.signInWithPassword({email,password});
    if(error) throw error;
    msg.textContent='Acesso confirmado. Carregando seu perfil...';
-   if(typeof showApp==='function') await showApp(data.user);
+   if(typeof window.showApp==='function') await window.showApp(data.user);
    else throw new Error('O sistema carregou parcialmente. Atualize a página e tente novamente.');
   }catch(err){
    const raw=(err&&err.message)||'';
