@@ -1587,5 +1587,41 @@ if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
 }
 
 </script>
+
+<script>
+/* Recuperação independente do formulário caso algum erro anterior interrompa o script principal. */
+(function(){
+ const form=document.getElementById('authForm');
+ if(!form || !window.supabase) return;
+ form.addEventListener('submit',async function(ev){
+  ev.preventDefault();
+  ev.stopImmediatePropagation();
+  const msg=document.getElementById('authMessage');
+  const btn=document.getElementById('loginBtn');
+  const email=document.getElementById('email').value.trim();
+  const password=document.getElementById('password').value;
+  msg.classList.remove('hidden','success');
+  msg.classList.add('error');
+  msg.textContent='Conectando...';
+  btn.disabled=true;
+  try{
+   const client=window.supabase.createClient("https://pdvelxvewuatedwhifpv.supabase.co","sb_publishable__QIiwci0ePZjvPTbK4mIjg_b1JWJYlV");
+   const {data,error}=await client.auth.signInWithPassword({email,password});
+   if(error) throw error;
+   msg.textContent='Acesso confirmado. Carregando seu perfil...';
+   if(typeof showApp==='function') await showApp(data.user);
+   else throw new Error('O sistema carregou parcialmente. Atualize a página e tente novamente.');
+  }catch(err){
+   const raw=(err&&err.message)||'';
+   let friendly=raw||'Falha de conexão. Verifique a internet e tente novamente.';
+   if(/invalid login credentials/i.test(raw)) friendly='E-mail ou senha incorretos. Confira os dados e tente novamente.';
+   else if(/email not confirmed/i.test(raw)) friendly='Seu e-mail ainda não foi confirmado. Confira a caixa de entrada e o spam.';
+   msg.textContent=friendly;
+   msg.classList.remove('hidden');
+  }finally{btn.disabled=false;}
+ },true);
+})();
+</script>
+
 </body>
 </html>
