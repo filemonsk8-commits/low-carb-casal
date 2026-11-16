@@ -1097,7 +1097,7 @@ function isUnsafeRawFood(food, detailedFood){
  // Nesses grupos, só mostramos itens com preparo explícito ou prontos para consumo.
  if(animalProtein){
   const cooked=/cozid[oa]s?|grelhad[oa]s?|assad[oa]s?|refogad[oa]s?|frit[oa]s?|ensopad[oa]s?|defumad[oa]s?/.test(preparation+' '+description);
-  const readyToEat=/presunto|mortadela|salame|peito de peru|blanquet|atum[^,]*conserva|sardinha[^,]*conserva/.test(description);
+  const readyToEat=/presunto|mortadela|salame|peito de peru|blanquet|atum.*conserva|sardinha.*conserva/.test(description);
   return !(cooked||readyToEat);
  }
  return raw&&uncookedStaple;
@@ -1198,8 +1198,9 @@ function mealTotals(){
  const keys=['calories','protein','carbs','fat','fiber'];
  const out={};
  keys.forEach(k=>{
-  const vals=selectedMealFoods.map(x=>x[k]).filter(v=>v!==null&&v!==undefined&&Number.isFinite(Number(v)));
-  out[k]=vals.length?vals.reduce((a,v)=>a+Number(v),0):null;
+  const vals=selectedMealFoods.map(x=>x[k]);
+  const complete=vals.length>0&&vals.every(v=>v!==null&&v!==undefined&&Number.isFinite(Number(v)));
+  out[k]=complete?vals.reduce((a,v)=>a+Number(v),0):null;
  });
  return out;
 }
