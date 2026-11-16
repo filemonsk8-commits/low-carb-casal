@@ -476,6 +476,8 @@ form{grid-template-columns:1fr}
       <button type="button" class="food-category-chip" data-food-group="Pães e cereais">Pães e cereais</button>
       <button type="button" class="food-category-chip" data-food-group="Verduras">Verduras</button>
       <button type="button" class="food-category-chip" data-food-group="Frutas">Frutas</button>
+      <button type="button" class="food-category-chip" data-food-group="Preparados">Preparados</button>
+      <button type="button" class="food-category-chip" data-food-group="Outros">Outros</button>
       <button type="button" class="food-category-chip" data-food-group="Todos">Todos</button>
      </div>
      <div id="mealFoodListCaption" class="food-list-caption">Sugestões para registrar sua refeição</div>
@@ -1054,7 +1056,7 @@ async function loadTacoCatalog(){
   if(!Array.isArray(data.foods)||!data.foods.length)throw new Error('O catálogo retornou vazio');
   tacoFoods=[...data.foods,...LOCAL_FOOD_CATALOG];
   tacoCatalogReady=true;
-  status.textContent='Catálogo carregado: '+tacoFoods.length+' alimentos. Use os filtros ou digite para pesquisar.';
+  status.textContent='Catálogo carregado: '+tacoFoods.length+' alimentos. Toque em uma categoria ou pesquise pelo nome.';
   renderTacoSearch();
   updateMealMeasureUI();
  }catch(error){
@@ -1092,11 +1094,12 @@ function isUnsafeRawFood(food){
 }
 function getFoodGroup(food){
  const category=normalizeMeasureText(food&&food.category||'');
- if(/carnes e derivados|ovos e derivados|pescados e frutos do mar/.test(category))return 'Proteínas';
+ if(/carnes e derivados|ovos e derivados|pescados e frutos do mar|leguminosas e derivados|nozes e sementes/.test(category))return 'Proteínas';
  if(/leite e derivados/.test(category))return 'Laticínios';
  if(/verduras|hortalicas/.test(category))return 'Verduras';
  if(/frutas e derivados/.test(category))return 'Frutas';
  if(/cereais e derivados|paes e cereais/.test(category))return 'Pães e cereais';
+ if(/alimentos preparados/.test(category))return 'Preparados';
  return 'Outros';
 }
 function getFoodPreparationLabel(food){
@@ -1109,7 +1112,9 @@ function syncFoodCategoryButtons(){
  document.querySelectorAll('[data-food-group]').forEach(button=>button.classList.toggle('active',button.dataset.foodGroup===mealFoodCategoryFilter));
 }
 function renderTacoSearch(){
- const q=normalizeMeasureText(($('mealFoodSearch').value||'').trim());
+ const rawQuery=($('mealFoodSearch').value||'').trim();
+ const q=normalizeMeasureText(rawQuery);
+ const tokens=q.split(/\\s+/).filter(Boolean);
  const person=currentMealPerson();
  const list=$('mealFoodResultsList');
  const status=$('mealFoodCatalogStatus');
@@ -1118,33 +1123,36 @@ function renderTacoSearch(){
  if(mealFoodCategoryFilter!=='Sugestões'&&mealFoodCategoryFilter!=='Todos'){
   filtered=filtered.filter(f=>getFoodGroup(f)===mealFoodCategoryFilter);
  }
- if(q){
-  filtered=filtered.filter(f=>normalizeMeasureText((f.description||'')+' '+(f.category||'')+' '+getFoodPreparationLabel(f)).includes(q));
+ if(tokens.length){
+  // Pesquisa pelo nome do alimento e preparo; não usa o nome da categoria,
+  // evitando que "carne" traga alimentos sem relação no resultado.
+  filtered=filtered.filter(f=>{
+   const searchable=normalizeMeasureText((f.description||f.name||'')+' '+(f.preparation||f.preparo||''));
+   return tokens.every(token=>searchable.includes(token));
+  });
  }else if(mealFoodCategoryFilter==='Sugestões'){
   filtered=MEAL_FOOD_QUICK_IDS.map(id=>safeFoods.find(f=>Number(f.id)===id)).filter(Boolean);
- }else{
-  // Mantém todos os alimentos seguros da categoria; a lista tem rolagem própria.
-  filtered=filtered;
  }
+ filtered.sort((a,b)=>String(a.description||a.name||'').localeCompare(String(b.description||b.name||''),'pt-BR'));
  const catalogCount=safeFoods.length;
- $('mealFoodResult').innerHTML='<option value="">Selecione um alimento</option>'+filtered.map(f=>'<option value="'+f.id+'">'+esc(f.description)+'</option>').join('');
+ $('mealFoodResult').innerHTML='<option value="">Selecione um alimento</option>'+filtered.map(f=>'<option value="'+f.id+'">'+esc(f.description||f.name||'Alimento')+'</option>').join('');
  if(!tacoCatalogReady){
   list.classList.add('hidden');
   if(status)status.classList.remove('hidden');
   return;
  }
- $('mealFoodListCaption').textContent=q
-  ?filtered.length+' resultado(s) para sua busca'
+ $('mealFoodListCaption').textContent=tokens.length
+  ?filtered.length+' resultado(s) para "'+rawQuery+'"'
   :mealFoodCategoryFilter==='Sugestões'?'Sugestões para registrar sua refeição'
   :mealFoodCategoryFilter==='Todos'?'Catálogo completo · '+catalogCount+' opções seguras para este perfil'
-  :'Alimentos da categoria '+mealFoodCategoryFilter+' · '+filtered.length+' opções exibidas';
+  :'Categoria '+mealFoodCategoryFilter+' · '+filtered.length+' alimentos disponíveis';
  if(!filtered.length){
-  list.innerHTML='<div class="food-results-empty">Nenhum alimento adequado encontrado. Experimente outra palavra ou categoria.</div>';
+  list.innerHTML='<div class="food-results-empty">Nenhum alimento encontrado nesta categoria. Escolha outra aba ou pesquise pelo nome do alimento.</div>';
  }else{
   list.innerHTML=filtered.map(f=>{
    const prep=getFoodPreparationLabel(f);
    const calories=f.energy_kcal!==null&&f.energy_kcal!==undefined?' · '+num(f.energy_kcal)+' kcal/100 g':'';
-   return '<button type="button" class="food-result-option" role="option" data-food-id="'+f.id+'"><span><strong>'+esc(f.description)+'</strong><small>'+esc(prep)+' · '+esc(f.category||'Alimento')+calories+'</small></span><span class="food-result-arrow">›</span></button>';
+   return '<button type="button" class="food-result-option" role="option" data-food-id="'+f.id+'"><span><strong>'+esc(f.description||f.name||'Alimento')+'</strong><small>'+esc(prep)+' · '+esc(f.category||'Alimento')+calories+'</small></span><span class="food-result-arrow">›</span></button>';
   }).join('');
  }
  list.classList.remove('hidden');
@@ -1153,14 +1161,13 @@ function renderTacoSearch(){
    $('mealFoodResult').value=button.dataset.foodId;
    const selected=filtered.find(f=>String(f.id)===String(button.dataset.foodId));
    const prep=getFoodPreparationLabel(selected);
-   $('mealFoodSelectedLabel').innerHTML='Selecionado: <strong>'+esc(selected.description)+'</strong><small>'+esc(prep)+'</small>';
+   $('mealFoodSelectedLabel').innerHTML='Selecionado: <strong>'+esc(selected.description||selected.name||'Alimento')+'</strong><small>'+esc(prep)+'</small>';
    $('mealFoodSelectedLabel').classList.remove('hidden');
    $('mealFoodMeasureQty').value=1;
    list.classList.add('hidden');
    updateMealMeasureUI(true);
   });
  });
- updateMealMeasureUI();
  syncFoodCategoryButtons();
 }
 async function fetchTacoFood(id){
@@ -1379,11 +1386,17 @@ $('measurementForm').onsubmit=e=>{
 };
 
 
-$('mealFoodSearch').addEventListener('input',renderTacoSearch);
+$('mealFoodSearch').addEventListener('input',()=>{
+ if(($('mealFoodSearch').value||'').trim())mealFoodCategoryFilter='Todos';
+ syncFoodCategoryButtons();
+ renderTacoSearch();
+});
 $('mealFoodSearch').addEventListener('focus',()=>{if(!tacoCatalogReady)loadTacoCatalog();else renderTacoSearch();});
 document.querySelectorAll('[data-food-group]').forEach(button=>{
  button.addEventListener('click',()=>{
   mealFoodCategoryFilter=button.dataset.foodGroup;
+  $('mealFoodSearch').value='';
+  syncFoodCategoryButtons();
   renderTacoSearch();
  });
 });
