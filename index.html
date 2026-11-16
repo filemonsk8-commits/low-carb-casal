@@ -1114,7 +1114,7 @@ function syncFoodCategoryButtons(){
 function renderTacoSearch(){
  const rawQuery=($('mealFoodSearch').value||'').trim();
  const q=normalizeMeasureText(rawQuery);
- const tokens=q.split(/\\s+/).filter(Boolean);
+ const tokens=q.split(/\s+/).filter(Boolean);
  const person=currentMealPerson();
  const list=$('mealFoodResultsList');
  const status=$('mealFoodCatalogStatus');
