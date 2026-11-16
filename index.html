@@ -1083,18 +1083,24 @@ function getFoodPreparation(food){
  if(/torrad[oa]/.test(text))return 'torrado';
  return '';
 }
-function isUnsafeRawFood(food){
- const category=normalizeMeasureText(food&&food.category||'');
- const description=normalizeMeasureText(food&&(food.description||food.name)||'');
- const preparation=normalizeMeasureText(food&&(food.preparation||food.preparo)||'');
- // A base pode registrar o preparo como "crua", "crus", "in natura"
- // ou "sem preparo"; todos devem ser tratados como não prontos para consumo.
+function isUnsafeRawFood(food, detailedFood){
+ const items=[food,detailedFood].filter(Boolean);
+ const category=normalizeMeasureText(items.map(x=>x.category||'').join(' '));
+ const description=normalizeMeasureText(items.map(x=>x.description||x.name||'').join(' '));
+ const preparation=normalizeMeasureText(items.map(x=>x.preparation||x.preparo||'').join(' '));
  const rawPattern=/\bcru[oa]s?\b|\bin natura\b|\bsem preparo\b|\bnao preparado\b|\braw\b/;
  const raw=rawPattern.test(preparation)||rawPattern.test(description);
- if(!raw)return false;
- const highRisk=/carnes e derivados|ovos e derivados|pescados e frutos do mar/.test(category);
+ const animalProtein=/carnes e derivados|ovos e derivados|pescados e frutos do mar/.test(category);
  const uncookedStaple=/arroz|feijao|macarrao|massa|pastel|pao de queijo|croquete/.test(description);
- return highRisk||uncookedStaple;
+ if(raw&&(animalProtein||uncookedStaple))return true;
+ // A lista resumida da TACO não traz sempre o campo "preparation".
+ // Nesses grupos, só mostramos itens com preparo explícito ou prontos para consumo.
+ if(animalProtein){
+  const cooked=/cozid[oa]s?|grelhad[oa]s?|assad[oa]s?|refogad[oa]s?|frit[oa]s?|ensopad[oa]s?|defumad[oa]s?/.test(preparation+' '+description);
+  const readyToEat=/presunto|mortadela|salame|peito de peru|blanquet|atum[^,]*conserva|sardinha[^,]*conserva/.test(description);
+  return !(cooked||readyToEat);
+ }
+ return raw&&uncookedStaple;
 }
 function getFoodGroup(food){
  const category=normalizeMeasureText(food&&food.category||'');
