@@ -166,6 +166,12 @@ form{grid-template-columns:1fr}
 .quantity-controls{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:9px;align-items:end}
 .quantity-controls>div{min-width:0}.quantity-controls p{grid-column:1/-1;margin:0;color:#91a9c0;font-size:10px;line-height:1.4}
 .quantity-controls input,.quantity-controls select{min-width:0}
+.simple-portion-controls{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(150px,.8fr);gap:10px;align-items:end}
+.simple-portion-controls>div{min-width:0}
+.simple-portion-controls label{font-size:11px;color:#b8cde0}
+.quantity-stepper{display:grid;grid-template-columns:38px minmax(0,1fr) 38px;gap:6px;align-items:center}
+.quantity-stepper button{height:43px;padding:6px;font-size:19px;line-height:1}
+.quantity-stepper input{text-align:center;font-weight:800;font-size:17px}
 .measure-hint{font-size:10px;color:#9fc9e9;line-height:1.45;margin:10px 0;padding:8px 10px;border-radius:9px;background:#122d49}
 .add-food-btn{width:100%;margin-top:4px}
 .selected-food-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
@@ -467,6 +473,7 @@ form{grid-template-columns:1fr}
       <button type="button" class="food-category-chip active" data-food-group="Sugestões">Sugestões</button>
       <button type="button" class="food-category-chip" data-food-group="Proteínas">Proteínas</button>
       <button type="button" class="food-category-chip" data-food-group="Laticínios">Laticínios</button>
+      <button type="button" class="food-category-chip" data-food-group="Pães e cereais">Pães e cereais</button>
       <button type="button" class="food-category-chip" data-food-group="Verduras">Verduras</button>
       <button type="button" class="food-category-chip" data-food-group="Frutas">Frutas</button>
       <button type="button" class="food-category-chip" data-food-group="Todos">Todos</button>
@@ -479,27 +486,21 @@ form{grid-template-columns:1fr}
     <div class="full meal-flow-step"><span>ETAPA 3</span><strong>Qual foi a quantidade?</strong><small>Selecione o alimento primeiro. Depois informe a porção em gramas ou medida caseira.</small></div>
     <div class="full portion-box">
      <div class="portion-box-head"><div><span class="meal-step">PORÇÃO DO ALIMENTO SELECIONADO</span><strong>Informe a quantidade</strong></div><span class="portion-box-icon">⚖️</span></div>
-     <div class="measure-mode-buttons">
-      <button type="button" class="measure-mode-btn active" data-measure-mode="grams">⚖️ Em gramas</button>
-      <button type="button" class="measure-mode-btn" data-measure-mode="household">🥄 Medida caseira</button>
-      <button type="button" class="measure-mode-btn" data-measure-mode="custom">✍️ Minha medida</button>
+     <div class="simple-portion-controls">
+      <div>
+       <label for="mealFoodMeasure">Porção</label>
+       <select id="mealFoodMeasure"><option value="grams">Gramas (g)</option></select>
+      </div>
+      <div>
+       <label for="mealFoodMeasureQty">Quantidade</label>
+       <div class="quantity-stepper">
+        <button type="button" class="secondary" id="mealQuantityMinus" aria-label="Diminuir quantidade">−</button>
+        <input id="mealFoodMeasureQty" type="number" min="0.5" max="3000" step="0.5" value="1" inputmode="decimal">
+        <button type="button" class="secondary" id="mealQuantityPlus" aria-label="Aumentar quantidade">＋</button>
+       </div>
+      </div>
      </div>
-     <div id="mealGramsControls" class="quantity-controls">
-      <div><label for="mealFoodGrams">Quantidade em gramas</label><input id="mealFoodGrams" type="number" min="1" max="3000" step="1" value="100" placeholder="Ex.: 100"></div>
-      <p>Use a balança ou informe a quantidade aproximada em gramas.</p>
-     </div>
-     <div id="mealCaseiraControls" class="quantity-controls hidden">
-      <div><label for="mealFoodMeasure">Medida disponível para este alimento</label><select id="mealFoodMeasure"><option value="">Selecione o alimento primeiro</option></select></div>
-      <div><label for="mealFoodMeasureQty">Quantidade de medidas</label><input id="mealFoodMeasureQty" type="number" min="0.1" max="100" step="0.1" value="1"></div>
-      <p id="mealCaseiraHint">As medidas aparecem quando há uma referência compatível com o alimento escolhido.</p>
-     </div>
-     <div id="mealCustomControls" class="quantity-controls hidden">
-      <div><label for="mealCustomMeasureName">Nome da sua medida</label><input id="mealCustomMeasureName" placeholder="Ex.: 1 concha, 1 fatia, 1 unidade"></div>
-      <div><label for="mealCustomMeasureGrams">Peso de uma medida (g)</label><input id="mealCustomMeasureGrams" type="number" min="1" max="3000" step="1" placeholder="Ex.: 80"></div>
-      <div><label for="mealFoodCustomQty">Quantidade de medidas</label><input id="mealFoodCustomQty" type="number" min="0.1" max="100" step="0.1" value="1"></div>
-      <p>Use esta opção quando o tamanho da unidade variar. Informe quantos gramas pesa uma unidade ou porção.</p>
-     </div>
-     <div id="mealMeasureHint" class="measure-hint">Selecione um alimento para ver as opções de quantidade.</div>
+     <div id="mealMeasureHint" class="measure-hint">Escolha um alimento para ver as opções de quantidade.</div>
      <button type="button" id="addMealFood" class="add-food-btn">＋ Adicionar alimento à refeição</button>
     </div>
 
@@ -953,8 +954,14 @@ function render(){
 
 
 const TACO_BASE='https://brolesi.github.io/taco/';
-let mealMeasureMode='grams';
 let mealFoodCategoryFilter='Sugestões';
+
+// Complementos consultados na TBCA/USP. Valores nutricionais por 100 g.
+const LOCAL_FOOD_CATALOG=[
+ {id:-1001,description:'Pão francês médio',category:'Cereais e derivados',preparation:'assado',energy_kcal:300,carbohydrate_g:61.6,protein_g:9.83,lipids_g:2.12,dietary_fiber_g:2.61,source:'TBCA/USP · BRC0002A',localOnly:true},
+ {id:-1002,description:'Pão de forma tradicional (branco)',category:'Cereais e derivados',preparation:'assado',energy_kcal:256,carbohydrate_g:49.6,protein_g:10.1,lipids_g:2.49,dietary_fiber_g:2.63,source:'TBCA/USP · BRC0003A',localOnly:true},
+ {id:-1003,description:'Pão de forma integral',category:'Cereais e derivados',preparation:'assado',energy_kcal:249,carbohydrate_g:48.6,protein_g:10.5,lipids_g:2.55,dietary_fiber_g:5.29,source:'TBCA/USP · BRC0155A',localOnly:true}
+];
 const HOUSEHOLD_MEASURE_RULES=[
  {ids:[488],options:[{label:'1 ovo cozido médio',grams:45,source:'POF/IBGE — medida referida, ovo cozido'}]},
  {ids:[490],options:[{label:'1 ovo frito médio',grams:50,source:'POF/IBGE — medida referida, ovo frito'}]},
@@ -970,8 +977,17 @@ const HOUSEHOLD_MEASURE_RULES=[
  {ids:[72],options:[{label:'1 colher de sopa cheia',grams:30,source:'POF/IBGE — abobrinha refogada'},{label:'1 escumadeira média cheia',grams:90,source:'POF/IBGE — abobrinha refogada'}]},
  {ids:[64],options:[{label:'1 pedaço médio',grams:50,source:'POF/IBGE — pedaço médio de abóbora preparada'},{label:'1 porção',grams:70,source:'POF/IBGE — porção do Guia Alimentar para abóbora'}]},
  {ids:[3],options:[{label:'1 colher de arroz cheia',grams:45,source:'POF/IBGE — arroz branco cozido'},{label:'1 porção',grams:125,source:'POF/IBGE — porção de arroz branco cozido'}]},
- {ids:[1],options:[{label:'1 colher de arroz cheia',grams:63,source:'POF/IBGE — arroz integral cozido'}]}
+ {ids:[1],options:[{label:'1 colher de arroz cheia',grams:63,source:'POF/IBGE — arroz integral cozido'}]},
+ {ids:[-1001],options:[{label:'1 pão francês médio',grams:50,source:'TBCA/USP · BRC0002A — unidade média'}]},
+ {ids:[-1002],options:[{label:'1 fatia de pão de forma',grams:25,source:'TBCA/USP · BRC0003A — fatia média'}]},
+ {ids:[-1003],options:[{label:'1 fatia de pão integral',grams:25,source:'TBCA/USP · BRC0155A — fatia média'}]}
 ];
+function getHouseholdMeasures(food){
+ if(!food)return [];
+ const id=Number(food.id);
+ const rule=HOUSEHOLD_MEASURE_RULES.find(item=>item.ids.includes(id));
+ return rule?rule.options:[];
+}
 function normalizeMeasureText(value){
  return String(value||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLocaleLowerCase('pt-BR');
 }
@@ -984,40 +1000,47 @@ function syncMealTypeButtons(){
   button.classList.toggle('active',button.dataset.mealType===$('mealType').value);
  });
 }
-function setMealMeasureMode(mode){
- if(mode==='household'&&!getHouseholdMeasures(currentMealFood()).length){
-  mode='grams';
- }
- mealMeasureMode=mode;
- document.querySelectorAll('[data-measure-mode]').forEach(button=>{
-  button.classList.toggle('active',button.dataset.measureMode===mode);
- });
- $('mealGramsControls').classList.toggle('hidden',mode!=='grams');
- $('mealCaseiraControls').classList.toggle('hidden',mode!=='household');
- $('mealCustomControls').classList.toggle('hidden',mode!=='custom');
-}
-function updateMealMeasureUI(){
+function updateMealMeasureHint(){
  const food=currentMealFood();
  const options=getHouseholdMeasures(food);
- const householdButton=document.querySelector('[data-measure-mode="household"]');
- householdButton.disabled=!options.length;
- householdButton.title=options.length?'Usar medida caseira de referência':'Não há uma medida caseira documentada para este alimento';
- $('mealFoodMeasure').innerHTML=options.length
-  ?options.map((option,index)=>'<option value="'+index+'">'+esc(option.label)+' · '+num(option.grams)+' g</option>').join('')
-  :'<option value="">Não há medida caseira de referência para este alimento</option>';
- if(mealMeasureMode==='household'&&!options.length)setMealMeasureMode('grams');
+ const selected=$('mealFoodMeasure').value;
+ const quantity=Number($('mealFoodMeasureQty').value);
  if(!food){
-  $('mealMeasureHint').textContent='Selecione um alimento para ver as opções de quantidade.';
-  $('mealCaseiraHint').textContent='As medidas aparecem quando há uma referência compatível com o alimento escolhido.';
+  $('mealMeasureHint').textContent='Escolha um alimento para ver porções simples, como unidade, fatia ou gramas.';
   return;
  }
- if(options.length){
-  $('mealCaseiraHint').textContent='Medida de referência encontrada para este alimento.';
-  $('mealMeasureHint').textContent='Medida disponível: '+options.map(o=>o.label+' = '+num(o.grams)+' g').join(' · ')+'. Referência: '+options[0].source+'. O total será convertido automaticamente.';
- }else{
-  $('mealCaseiraHint').textContent='Não há equivalência automática segura para este alimento.';
-  $('mealMeasureHint').textContent='Para este alimento, use gramas ou “Minha medida” e informe o peso da sua unidade/porção. Não estimamos conversões sem referência.';
+ if(selected==='grams'){
+  $('mealMeasureHint').textContent='Informe o peso total em gramas. Exemplo: 120 g.';
+  return;
  }
+ const option=options[Number(selected)];
+ if(!option){
+  $('mealMeasureHint').textContent='Escolha uma porção para calcular o peso aproximado.';
+  return;
+ }
+ if(!Number.isFinite(quantity)||quantity<=0){
+  $('mealMeasureHint').textContent='Informe quantas porções você comeu.';
+  return;
+ }
+ $('mealMeasureHint').textContent='Peso estimado: '+num(option.grams*quantity)+' g. '+option.source+'.';
+}
+function updateMealMeasureUI(resetQuantity=false){
+ const food=currentMealFood();
+ const options=getHouseholdMeasures(food);
+ const select=$('mealFoodMeasure');
+ const previous=select.value;
+ select.innerHTML=options.map((option,index)=>
+  '<option value="'+index+'">'+esc(option.label)+' · '+num(option.grams)+' g</option>'
+ ).join('')+(options.length?'<option value="grams">Informar em gramas</option>':'<option value="grams">Gramas (g)</option>');
+ if(resetQuantity)select.value=options.length?'0':'grams';
+ else if(options.length&&previous!=='grams'&&options[Number(previous)])select.value=previous;
+ else if(options.length)select.value='0';
+ else select.value='grams';
+ if(resetQuantity)$('mealFoodMeasureQty').value=1;
+ $('mealMeasureHint').textContent=food
+  ?(options.length?'Escolha uma unidade ou fatia e informe quantas comeu. O aplicativo calcula os gramas.':'Este alimento não tem uma porção padrão cadastrada. Informe o peso em gramas.')
+  :'Escolha um alimento para ver as opções de quantidade.';
+ updateMealMeasureHint();
 }
 async function loadTacoCatalog(){
  const select=$('mealFoodResult');
@@ -1029,7 +1052,7 @@ async function loadTacoCatalog(){
   if(!response.ok)throw new Error('Servidor respondeu '+response.status);
   const data=await response.json();
   if(!Array.isArray(data.foods)||!data.foods.length)throw new Error('O catálogo retornou vazio');
-  tacoFoods=data.foods;
+  tacoFoods=[...data.foods,...LOCAL_FOOD_CATALOG];
   tacoCatalogReady=true;
   status.textContent='Catálogo carregado: '+tacoFoods.length+' alimentos. Use os filtros ou digite para pesquisar.';
   renderTacoSearch();
@@ -1073,6 +1096,7 @@ function getFoodGroup(food){
  if(/leite e derivados/.test(category))return 'Laticínios';
  if(/verduras|hortalicas/.test(category))return 'Verduras';
  if(/frutas e derivados/.test(category))return 'Frutas';
+ if(/cereais e derivados|paes e cereais/.test(category))return 'Pães e cereais';
  return 'Outros';
 }
 function getFoodPreparationLabel(food){
@@ -1080,7 +1104,7 @@ function getFoodPreparationLabel(food){
  const labels={cru:'Cru · higienizar',cozido:'Cozido',grelhado:'Grelhado',assado:'Assado',refogado:'Refogado',frito:'Frito',torrado:'Torrado'};
  return labels[prep]||'Preparo não especificado';
 }
-const MEAL_FOOD_QUICK_IDS=[488,490,410,408,377,326,461,463,100,116,118,70,72,77,78,79,157,142,64,109,112];
+const MEAL_FOOD_QUICK_IDS=[-1001,-1002,-1003,488,490,410,408,377,326,461,463,100,116,118,70,72,77,78,79,157,142,64,109,112];
 function syncFoodCategoryButtons(){
  document.querySelectorAll('[data-food-group]').forEach(button=>button.classList.toggle('active',button.dataset.foodGroup===mealFoodCategoryFilter));
 }
@@ -1131,14 +1155,17 @@ function renderTacoSearch(){
    const prep=getFoodPreparationLabel(selected);
    $('mealFoodSelectedLabel').innerHTML='Selecionado: <strong>'+esc(selected.description)+'</strong><small>'+esc(prep)+'</small>';
    $('mealFoodSelectedLabel').classList.remove('hidden');
+   $('mealFoodMeasureQty').value=1;
    list.classList.add('hidden');
-   updateMealMeasureUI();
+   updateMealMeasureUI(true);
   });
  });
  updateMealMeasureUI();
  syncFoodCategoryButtons();
 }
 async function fetchTacoFood(id){
+ const localFood=tacoFoods.find(food=>String(food.id)===String(id)&&food.localOnly);
+ if(localFood)return localFood;
  const response=await fetch(TACO_BASE+'foods/'+id+'.json');
  if(!response.ok)throw new Error('Não foi possível consultar os nutrientes deste alimento.');
  const data=await response.json();
@@ -1366,9 +1393,21 @@ document.querySelectorAll('[data-meal-type]').forEach(button=>{
   syncMealTypeButtons();
  });
 });
-document.querySelectorAll('[data-measure-mode]').forEach(button=>{
- button.addEventListener('click',()=>setMealMeasureMode(button.dataset.measureMode));
+function adjustMealQuantity(direction){
+ const input=$('mealFoodMeasureQty');
+ const step=Number(input.step)||1;
+ let value=Number(input.value)||1;
+ value=Math.max(Number(input.min)||0.5,Math.min(Number(input.max)||3000,value+direction*step));
+ input.value=String(Math.round(value*100)/100);
+ updateMealMeasureHint();
+}
+$('mealQuantityMinus').addEventListener('click',()=>adjustMealQuantity(-1));
+$('mealQuantityPlus').addEventListener('click',()=>adjustMealQuantity(1));
+$('mealFoodMeasure').addEventListener('change',()=>{
+ $('mealFoodMeasureQty').value=1;
+ updateMealMeasureHint();
 });
+$('mealFoodMeasureQty').addEventListener('input',updateMealMeasureHint);
 $('addMealFood').onclick=async()=>{
  const id=$('mealFoodResult').value;
  if(!id){notice('message','Escolha um alimento do catálogo.',true);return;}
@@ -1387,28 +1426,21 @@ $('addMealFood').onclick=async()=>{
   let grams=0;
   let portionLabel='';
   let measureSource='';
-  if(mealMeasureMode==='grams'){
-   grams=Number($('mealFoodGrams').value);
+  const quantity=Number($('mealFoodMeasureQty').value);
+  if(!Number.isFinite(quantity)||quantity<=0)throw new Error('Informe uma quantidade válida.');
+  const measureChoice=$('mealFoodMeasure').value;
+  if(measureChoice==='grams'){
+   grams=quantity;
    portionLabel=num(grams)+' g';
-  }else if(mealMeasureMode==='household'){
-   const options=getHouseholdMeasures(meta||base);
-   const option=options[Number($('mealFoodMeasure').value)];
-   const quantity=Number($('mealFoodMeasureQty').value);
-   if(!option)throw new Error('Escolha uma medida caseira disponível para este alimento.');
-   if(!Number.isFinite(quantity)||quantity<=0)throw new Error('Informe uma quantidade válida de medidas.');
-   grams=option.grams*quantity;
-   portionLabel=num(quantity)+' × '+option.label+' ('+num(grams)+' g)';
-   measureSource=option.source;
+   measureSource='Peso informado pelo usuário';
   }else{
-   const name=$('mealCustomMeasureName').value.trim();
-   const unitGrams=Number($('mealCustomMeasureGrams').value);
-   const quantity=Number($('mealFoodCustomQty').value);
-   if(!name)throw new Error('Dê um nome à sua medida, como “1 fatia” ou “1 concha”.');
-   if(!Number.isFinite(unitGrams)||unitGrams<=0)throw new Error('Informe quantos gramas tem uma medida.');
-   if(!Number.isFinite(quantity)||quantity<=0)throw new Error('Informe uma quantidade válida de medidas.');
-   grams=unitGrams*quantity;
-   portionLabel=num(quantity)+' × '+name+' ('+num(grams)+' g)';
-   measureSource='Medida informada pelo usuário';
+   const options=getHouseholdMeasures(meta||base);
+   const option=options[Number(measureChoice)];
+   if(!option)throw new Error('Escolha uma porção disponível para este alimento.');
+   grams=option.grams*quantity;
+   const unitLabel=option.label.replace(/^1\s+/,'');
+   portionLabel=(quantity===1?option.label:num(quantity)+' × '+unitLabel)+' ('+num(grams)+' g)';
+   measureSource=option.source;
   }
   if(!Number.isFinite(grams)||grams<=0||grams>3000)throw new Error('A quantidade precisa ser maior que zero e não pode ultrapassar 3.000 g.');
   const factor=grams/100;
@@ -1420,16 +1452,14 @@ $('addMealFood').onclick=async()=>{
    carbs:nutritionValue(base,'carbohydrate_g')===null?null:nutritionValue(base,'carbohydrate_g')*factor,
    fat:nutritionValue(base,'lipids_g')===null?null:nutritionValue(base,'lipids_g')*factor,
    fiber:nutritionValue(base,'dietary_fiber_g')===null?null:nutritionValue(base,'dietary_fiber_g')*factor,
-   source:'TACO/NEPA-UNICAMP'
+   source:base.source||'TACO/NEPA-UNICAMP'
   };
   selectedMealFoods.push(item);
   $('mealFoodResult').value='';
   $('mealFoodSelectedLabel').classList.add('hidden');
   $('mealFoodSearch').value='';
-  $('mealFoodGrams').value=100;
   $('mealFoodMeasureQty').value=1;
-  $('mealFoodCustomQty').value=1;
-  updateMealMeasureUI();
+  updateMealMeasureUI(true);
   renderSelectedMealFoods();
  }catch(error){
   notice('message',error.message||'Não foi possível adicionar o alimento.',true);
@@ -1464,12 +1494,11 @@ $('mealForm').onsubmit=e=>{
   $('mealDate').value=today;
   $('mealFoodSelectedLabel').classList.add('hidden');
   $('mealFoodSearch').value='';
+  $('mealFoodResult').value='';
   $('mealFoodResultsList').classList.add('hidden');
   $('mealType').value='Café da manhã';
-  $('mealFoodGrams').value=100;
   $('mealFoodMeasureQty').value=1;
-  $('mealFoodCustomQty').value=1;
-  setMealMeasureMode('grams');
+  updateMealMeasureUI(true);
   syncMealTypeButtons();
   renderTacoSearch();
   renderSelectedMealFoods();
