@@ -1086,7 +1086,11 @@ function getFoodPreparation(food){
 function isUnsafeRawFood(food){
  const category=normalizeMeasureText(food&&food.category||'');
  const description=normalizeMeasureText(food&&(food.description||food.name)||'');
- const raw=getFoodPreparation(food)==='cru'||/(^|[,\s])cru[oa]s?([,\s]|$)/.test(description);
+ const preparation=normalizeMeasureText(food&&(food.preparation||food.preparo)||'');
+ // A base pode registrar o preparo como "crua", "crus", "in natura"
+ // ou "sem preparo"; todos devem ser tratados como não prontos para consumo.
+ const rawPattern=/\bcru[oa]s?\b|\bin natura\b|\bsem preparo\b|\bnao preparado\b|\braw\b/;
+ const raw=rawPattern.test(preparation)||rawPattern.test(description);
  if(!raw)return false;
  const highRisk=/carnes e derivados|ovos e derivados|pescados e frutos do mar/.test(category);
  const uncookedStaple=/arroz|feijao|macarrao|massa|pastel|pao de queijo|croquete/.test(description);
