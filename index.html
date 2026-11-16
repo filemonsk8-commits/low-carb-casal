@@ -991,7 +991,7 @@ function getHouseholdMeasures(food){
  return rule?rule.options:[];
 }
 function normalizeMeasureText(value){
- return String(value||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLocaleLowerCase('pt-BR');
+ return String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('pt-BR').trim();
 }
 function currentMealFood(){
  const id=$('mealFoodResult').value;
@@ -1098,7 +1098,7 @@ function getFoodGroup(food){
  if(/leite e derivados/.test(category))return 'Laticínios';
  if(/verduras|hortalicas/.test(category))return 'Verduras';
  if(/frutas e derivados/.test(category))return 'Frutas';
- if(/cereais e derivados|paes e cereais/.test(category))return 'Pães e cereais';
+ if(/cereais e derivados/.test(category))return 'Pães e cereais';
  if(/alimentos preparados/.test(category))return 'Preparados';
  return 'Outros';
 }
@@ -1124,14 +1124,15 @@ function renderTacoSearch(){
   filtered=filtered.filter(f=>getFoodGroup(f)===mealFoodCategoryFilter);
  }
  if(tokens.length){
-  // Pesquisa pelo nome do alimento e preparo; não usa o nome da categoria,
-  // evitando que "carne" traga alimentos sem relação no resultado.
   filtered=filtered.filter(f=>{
-   const searchable=normalizeMeasureText((f.description||f.name||'')+' '+(f.preparation||f.preparo||''));
+   const searchable=normalizeMeasureText([f.description,f.name,f.base_name].filter(Boolean).join(' '));
    return tokens.every(token=>searchable.includes(token));
   });
  }else if(mealFoodCategoryFilter==='Sugestões'){
-  filtered=MEAL_FOOD_QUICK_IDS.map(id=>safeFoods.find(f=>Number(f.id)===id)).filter(Boolean);
+  filtered=safeFoods.filter(f=>{
+   const name=normalizeMeasureText([f.description,f.name,f.base_name].filter(Boolean).join(' '));
+   return /ovo|frango|carne|queijo|iogurte|alface|tomate|brocolis|abobrinha|abacate/.test(name);
+  }).slice(0,36);
  }
  filtered.sort((a,b)=>String(a.description||a.name||'').localeCompare(String(b.description||b.name||''),'pt-BR'));
  const catalogCount=safeFoods.length;
@@ -1143,11 +1144,11 @@ function renderTacoSearch(){
  }
  $('mealFoodListCaption').textContent=tokens.length
   ?filtered.length+' resultado(s) para "'+rawQuery+'"'
-  :mealFoodCategoryFilter==='Sugestões'?'Sugestões para registrar sua refeição'
+  :mealFoodCategoryFilter==='Sugestões'?'Sugestões de alimentos para suas refeições'
   :mealFoodCategoryFilter==='Todos'?'Catálogo completo · '+catalogCount+' opções seguras para este perfil'
   :'Categoria '+mealFoodCategoryFilter+' · '+filtered.length+' alimentos disponíveis';
  if(!filtered.length){
-  list.innerHTML='<div class="food-results-empty">Nenhum alimento encontrado nesta categoria. Escolha outra aba ou pesquise pelo nome do alimento.</div>';
+  list.innerHTML='<div class="food-results-empty">Nenhum alimento encontrado. Confira a escrita ou escolha outra categoria.</div>';
  }else{
   list.innerHTML=filtered.map(f=>{
    const prep=getFoodPreparationLabel(f);
